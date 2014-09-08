@@ -26,12 +26,10 @@ angular.module('app', [
     'app.tables'
     'app.map'
     'app.task'
-    'app.localization'
-    'app.chart.ctrls'
-    'app.chart.directives'
+    'app.localization'    
     'app.page.ctrls'
 ])
-    
+     
 .config([
     '$routeProvider'
     ($routeProvider) ->
@@ -39,12 +37,8 @@ angular.module('app', [
             # dashboard
             .when(
                 '/'
-                redirectTo: '/dashboard'
-            )
-            .when(
-                '/dashboard'
-                templateUrl: 'views/dashboard.html'
-            )
+                redirectTo: '/pages/signin'
+            )            
 
             # UI Kit
             .when(
@@ -107,58 +101,17 @@ angular.module('app', [
                 '/maps/gmap'
                 templateUrl: 'views/maps/gmap.html'
             )
+            
+
+            # Tables            
             .when(
-                '/maps/jqvmap'
-                templateUrl: 'views/maps/jqvmap.html'
+                '/listing'
+                templateUrl: 'views/listing/list.html'
             )
 
-            # Tables
-            .when(
-                '/tables/static'
-                templateUrl: 'views/tables/static.html'
-            )
-            .when(
-                '/tables/responsive'
-                templateUrl: 'views/tables/responsive.html'
-            )
-            .when(
-                '/tables/dynamic'
-                templateUrl: 'views/tables/dynamic.html'
-            )
-
-            # Charts
-            .when(
-                '/charts/others'
-                templateUrl: 'views/charts/charts.html'
-            )
-            .when(
-                '/charts/morris'
-                templateUrl: 'views/charts/morris.html'
-            )
-            .when(
-                '/charts/flot'
-                templateUrl: 'views/charts/flot.html'
-            )
-
-            # Mail
-             .when(
-                '/mail/inbox'
-                templateUrl: 'views/mail/inbox.html'
-            )
-             .when(
-                '/mail/compose'
-                templateUrl: 'views/mail/compose.html'
-            )
-             .when(
-                '/mail/single'
-                templateUrl: 'views/mail/single.html'
-            )
 
             # Pages
-            .when(
-                '/pages/features'
-                templateUrl: 'views/pages/features.html'
-            )
+            
             .when(
                 '/pages/signin'
                 templateUrl: 'views/pages/signin.html'
@@ -186,33 +139,7 @@ angular.module('app', [
             .when(
                 '/pages/500'
                 templateUrl: 'views/pages/500.html'
-            )
-            .when(
-                '/pages/blank'
-                templateUrl: 'views/pages/blank.html'
-            )
-            .when(
-                '/pages/invoice'
-                templateUrl: 'views/pages/invoice.html'
-            )
-            .when(
-                '/pages/services'
-                templateUrl: 'views/pages/services.html'
-            )
-            .when(
-                '/pages/about'
-                templateUrl: 'views/pages/about.html'
-            )
-            .when(
-                '/pages/contact'
-                templateUrl: 'views/pages/contact.html'
-            )
-
-            # Tasks
-            .when(
-                '/tasks'
-                templateUrl: 'views/tasks/tasks.html'
-            )
+            ) 
 
             .otherwise(
                 redirectTo: '/404'

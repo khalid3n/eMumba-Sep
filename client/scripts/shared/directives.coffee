@@ -202,10 +202,13 @@ angular.module('app.directives', [])
     return {
         restrict: "A"
         controller: [
-            '$scope', '$element', '$window'
-            ($scope, $element, $window) ->
+            '$scope', '$element', '$window', 'Session', '$location'
+            ($scope, $element, $window, $location, Session) ->
                 $element.on('click', ->
-                    $window.history.back()
+                    if Session.validSession
+                        $window.history.back()
+                    else
+                        $location.path('/pages/signin')
                 )
         ]
     }

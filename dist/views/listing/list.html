@@ -9,7 +9,7 @@
                           <div class="row">
                               <div class="col-sm-4 col-xs-6">
                                   <form>
-                                      <input type="text" placeholder="search" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()">
+                                      <input type="text" placeholder="search" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></input>
                                   </form>
                               </div>
                               <div class="col-sm-3 col-xs-6 filter-result-info">
@@ -20,7 +20,7 @@
                              
                
                               <div class="col-sm-5 text-right" data-ng-controller="ModalDemoCtrl">                               
-                                <button class="btn btn-gap-v btn-info" ng-click="open()"><span class="glyphicon glyphicon-plus"></span> Add Region</button>                            
+                                <button class="btn btn-gap-v btn-info" ng-click="open('Region')"><span class="glyphicon glyphicon-plus"></span> Add Region</button>                            
                               </div>
                           </div>
                         </div>
@@ -93,7 +93,7 @@
                           <div class="row">
                               <div class="col-sm-4 col-xs-6">
                                   <form>
-                                      <input type="text" placeholder="search" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()">
+                                      <input type="text" placeholder="search" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></input>
                                   </form>
                               </div>
                               <div class="col-sm-3 col-xs-6 filter-result-info">
@@ -103,7 +103,7 @@
                               </div>
 
                               <div class="col-sm-5 text-right" data-ng-controller="ModalDemoCtrl">                               
-                                <button class="btn btn-gap-v btn-info" ng-click="open()"><span class="glyphicon glyphicon-plus"></span> Add Area</button>                            
+                                <button class="btn btn-gap-v btn-info" ng-click="open('Area')"><span class="glyphicon glyphicon-plus"></span> Add Area</button>                            
                               </div>
                           </div>
                         </div>
@@ -186,7 +186,7 @@
                           <div class="row">
                               <div class="col-sm-4 col-xs-6">
                                   <form>
-                                      <input type="text" placeholder="search" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()">
+                                      <input type="text" placeholder="search" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></input>
                                   </form>
                               </div>
                               <div class="col-sm-3 col-xs-6 filter-result-info">
@@ -196,7 +196,7 @@
                               </div>
 
                               <div class="col-sm-5 text-right" data-ng-controller="ModalDemoCtrl">                               
-                                <button class="btn btn-gap-v btn-info" ng-click="open()"><span class="glyphicon glyphicon-plus"></span> Add Territories</button>                            
+                                <button class="btn btn-gap-v btn-info" ng-click="open('Territory')"><span class="glyphicon glyphicon-plus"></span> Add Territories</button>                            
                               </div>
                           </div>
                         </div>
@@ -279,7 +279,7 @@
                           <div class="row">
                               <div class="col-sm-4 col-xs-6">
                                   <form>
-                                      <input type="text" placeholder="search" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()">
+                                      <input type="text" placeholder="search" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></input>
                                   </form>
                               </div>
                               <div class="col-sm-3 col-xs-6 filter-result-info">
@@ -289,7 +289,7 @@
                               </div>
 
                               <div class="col-sm-5 text-right" data-ng-controller="ModalDemoCtrl">                               
-                                <button class="btn btn-gap-v btn-info" ng-click="open()"><span class="glyphicon glyphicon-plus"></span> Add Bricks</button>                            
+                                <button class="btn btn-gap-v btn-info" ng-click="open('Brick')"><span class="glyphicon glyphicon-plus"></span> Add Bricks</button>                            
                               </div>
                           </div>
                         </div>
@@ -393,7 +393,7 @@
                           <div class="row">
                               <div class="col-sm-4 col-xs-6">
                                   <form>
-                                      <input type="text" placeholder="search" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()">
+                                      <input type="text" placeholder="search" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></input>
                                   </form>
                               </div>
                               <div class="col-sm-3 col-xs-6 filter-result-info">
@@ -402,7 +402,7 @@
                                   </span>              
                               </div>
                               <div class="col-sm-5 text-right" data-ng-controller="ModalDemoCtrl">                               
-                                <button class="btn btn-gap-v btn-info" ng-click="open()"><span class="glyphicon glyphicon-plus"></span> Add Location</button>                            
+                                <button class="btn btn-gap-v btn-info" ng-click="open('Location')"><span class="glyphicon glyphicon-plus"></span> Add Location</button>                            
                               </div>
                           </div>
                         </div>
@@ -518,17 +518,78 @@
 
 <script type="text/ng-template" id="myModalContent.html">
   <div class="modal-header">
-    <h3>I am a modal!</h3>
+    <h3>{{items.modalName}} Info</h3>
   </div>
   <div class="modal-body">
-    <span ng-repeat="item in items" class="list-unstyled">
-        <label class="ui-radio"><input name="radio1" type="radio" value="{{ item }}"  ng-checked="selected.item === item" ng-click="selected.item = item"><span>{{ item }}</span></label>
-    </span>
-    <br>
-    Selected: <b>{{ selected.item }}</b>
+  <form class="form-horizontal">
+    <div class="form-group" ng-show="isRegion || isArea">
+        <label for="" class="col-sm-2">ID</label>
+        <div class="col-sm-10">
+            <input tooltip="Please enter ID of Region" type="text" class="form-control" data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.id" ></input>
+        </div>
+    </div>
+    <div class="form-group" ng-show="isArea || isTeritory || isBrick">
+        <label for="" class="col-sm-2">Region</label>
+        <div class="col-sm-10">
+            <span class="ui-select">
+                <select>
+                    <option>Mustard</option>
+                    <option>Ketchup</option>
+                    <option>Barbecue</option>
+                </select>
+            </span>
+        </div>
+    </div>
+
+    <div class="form-group" ng-show="isTeritory || isBrick">
+        <label for="" class="col-sm-2">Area</label>
+        <div class="col-sm-10">
+            <span class="ui-select">
+                <select>
+                    <option>Mustard</option>
+                    <option>Ketchup</option>
+                    <option>Barbecue</option>
+                </select>
+            </span>
+        </div>
+    </div>
+
+    <div class="form-group" ng-show="isBrick">
+        <label for="" class="col-sm-2">Territory</label>
+        <div class="col-sm-10">
+            <span class="ui-select">
+                <select>
+                    <option>Mustard</option>
+                    <option>Ketchup</option>
+                    <option>Barbecue</option>
+                </select>
+            </span>
+        </div>
+    </div>
+
+    <div class="form-group" ng-show="isLocation">
+        <label for="" class="col-sm-2">Brick</label>
+        <div class="col-sm-10">
+            <span class="ui-select">
+                <select>
+                    <option>Mustard</option>
+                    <option>Ketchup</option>
+                    <option>Barbecue</option>
+                </select>
+            </span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="" class="col-sm-2">Name</label>
+        <div class="col-sm-10">
+            <input tooltip="Please enter name of Region" type="text" class="form-control" data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.name" ></input>
+        </div>
+    </div>
+  </form>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="ok()">OK</button>
+    <button class="btn btn-primary" ng-click="ok()">Save</button>
     <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
   </div>
 </script>

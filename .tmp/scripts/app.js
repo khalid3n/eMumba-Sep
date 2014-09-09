@@ -52,6 +52,28 @@
         redirectTo: '/404'
       });
     }
-  ]);
+  ]).factory("Session", function($http) {
+    var Session;
+    Session = {
+      data: {},
+      saveSession: function(data) {
+        Session.data = data;
+      },
+      updateSession: function(data) {
+        Session.data = data;
+      },
+      invalidateSession: function() {
+        Session.data = "";
+      },
+      validSession: function() {
+        if (Session.data !== "") {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    };
+    return Session;
+  });
 
 }).call(this);

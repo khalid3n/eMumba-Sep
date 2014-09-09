@@ -144,7 +144,29 @@ angular.module('app', [
             .otherwise(
                 redirectTo: '/404'
             )
-])
+]).factory "Session", ($http) ->
+  Session =
+    data: {}
+    saveSession: (data) ->
+      Session.data = data
+      return
+
+    updateSession: (data) ->
+      Session.data = data
+      return
+
+    invalidateSession: ->
+      Session.data = ""
+      return
+
+    validSession: ->
+      if Session.data isnt ""
+        true
+      else
+        false
+
+  Session
+
 # .run([
 #     '$rootScope'
 #     ($rootScope) ->

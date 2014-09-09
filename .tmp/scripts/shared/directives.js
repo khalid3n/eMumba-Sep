@@ -202,9 +202,13 @@
       return {
         restrict: "A",
         controller: [
-          '$scope', '$element', '$window', function($scope, $element, $window) {
+          '$scope', '$element', '$window', 'Session', '$location', function($scope, $element, $window, $location, Session) {
             return $element.on('click', function() {
-              return $window.history.back();
+              if (Session.validSession) {
+                return $window.history.back();
+              } else {
+                return $location.path('/pages/signin');
+              }
             });
           }
         ]

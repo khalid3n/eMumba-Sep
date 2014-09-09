@@ -110,21 +110,26 @@ angular.module('app.ui.ctrls', [])
 .controller('ModalDemoCtrl', [
     '$scope', '$modal', '$log'
     ($scope, $modal, $log) ->
+        
+                
         $scope.items = [
-            "item1"
-            "item2"
-            "item3"
+            id: "item1"
+            name: "item2"
+            modalType : "item3"
+            modalName : ""
         ]
-        $scope.open = ->
+        $scope.open = (modalName)->
+            $scope.items.modalName = modalName                   
             modalInstance = $modal.open(
                 templateUrl: "myModalContent.html"
                 controller: 'ModalInstanceCtrl'
                 resolve:
                     items: ->
-                        $scope.items
+                        $scope.items                  
             )
-            modalInstance.result.then ((selectedItem) ->
-                $scope.selected = selectedItem
+            modalInstance.result.then ((items) ->
+                $scope.items = items
+                alert $scope.items
                 return
             ), ->
                 $log.info "Modal dismissed at: " + new Date()
@@ -137,12 +142,62 @@ angular.module('app.ui.ctrls', [])
 ])
 .controller('ModalInstanceCtrl', [
     '$scope', '$modalInstance', 'items'
-    ($scope, $modalInstance, items) ->
+    ($scope, $modalInstance, items, $http) ->
         $scope.items = items
-        $scope.selected = item: $scope.items[0]
-        $scope.ok = ->
-            $modalInstance.close $scope.selected.item
-            return
+        
+        $scope.isRegion = false
+        $scope.isArea = false
+        $scope.isTeritory = false
+        $scope.isBrick = false
+        $scope.isLocation = false
+        
+        if $scope.items.modalName == 'Region'
+            $scope.isRegion = true
+            $scope.isArea = false
+            $scope.isTeritory = false
+            $scope.isBrick = false
+            $scope.isLocation = false
+        else if $scope.items.modalName == 'Area'
+            $scope.isRegion = false
+            $scope.isArea = true
+            $scope.isTeritory = false
+            $scope.isBrick = false
+            $scope.isLocation = false
+        else if $scope.items.modalName == 'Territory'
+            $scope.isRegion = false
+            $scope.isArea = false
+            $scope.isTeritory = true
+            $scope.isBrick = false
+            $scope.isLocation = false
+        else if $scope.items.modalName == 'Brick'
+            $scope.isRegion = false
+            $scope.isArea = false
+            $scope.isTeritory = false
+            $scope.isBrick = true
+            $scope.isLocation = false
+        else if $scope.items.modalName == 'Location'
+            $scope.isRegion = false
+            $scope.isArea = false
+            $scope.isTeritory = false
+            $scope.isBrick = false
+            $scope.isLocation = true
+        
+        $scope.ok = -> 
+            if $scope.isRegion
+                $modalInstance.close
+                return $scope.items
+             else if $scope.isArea
+                $modalInstance.close
+                return "area"
+             else if $scope.isTeritory
+                $modalInstance.close
+                return "Territory"
+             else if $scope.isBrick
+                $modalInstance.close
+                return "Brick"
+             else if $scope.isLocation
+                $modalInstance.close
+                return "Location"
 
         $scope.cancel = ->
             $modalInstance.dismiss "cancel"

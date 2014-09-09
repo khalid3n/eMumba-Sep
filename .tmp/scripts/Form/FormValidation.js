@@ -52,8 +52,12 @@
       };
     }
   ]).controller('signinCtrl', [
-    '$scope', function($scope) {
+    '$scope', '$location', '$http', 'Session', function($scope, $location, $http, Session) {
       var original;
+      if (Session.validSession) {
+        $location.path('/listing');
+      }
+      $scope.alertshow = false;
       $scope.user = {
         email: '',
         password: ''
@@ -71,8 +75,23 @@
         return $scope.form_signin.$valid && !angular.equals($scope.user, original);
       };
       return $scope.submitForm = function() {
-        $scope.showInfoOnSubmit = true;
-        return $scope.revert();
+        if ($scope.canSubmit()) {
+          return $http({
+            method: "post",
+            url: "/login",
+            params: [
+              {
+                email: $scope.user.email,
+                password: $scope.user.password
+              }
+            ]
+          }).success(function(data, status, headers, config) {
+            Session.saveSession(data);
+            return $location.path('/listing');
+          }).error(function(data, status, headers, config) {
+            return $scope.alertshow = true;
+          });
+        }
       };
     }
   ]).controller('signupCtrl', [

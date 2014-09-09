@@ -60,8 +60,12 @@ angular.module('app.form.validation', [])
 ])
 
 .controller('signinCtrl', [
-    '$scope'
-    ($scope) ->
+    '$scope', '$location', '$http', 'Session'
+    ($scope, $location, $http, Session) ->
+        
+        if Session.validSession
+            $location.path('/listing')
+        $scope.alertshow = false
         $scope.user =
             email: ''
             password: ''
@@ -69,7 +73,8 @@ angular.module('app.form.validation', [])
         $scope.showInfoOnSubmit = false
 
         original = angular.copy($scope.user)
-
+        
+        
         $scope.revert = ->
             $scope.user = angular.copy(original)
             $scope.form_signin.$setPristine()
@@ -81,8 +86,21 @@ angular.module('app.form.validation', [])
             return $scope.form_signin.$valid && !angular.equals($scope.user, original)
 
         $scope.submitForm = ->
-             $scope.showInfoOnSubmit = true
-             $scope.revert()
+            # http request goes here   
+            if $scope.canSubmit()
+                $http(
+                  method: "post"
+                  url: "/login"
+                  params: [
+                    email: $scope.user.email
+                    password: $scope.user.password
+                  ]
+                ).success((data, status, headers, config) ->
+                    Session.saveSession(data)
+                    $location.path('/listing') 
+                ).error (data, status, headers, config) ->
+                    $scope.alertshow = true
+                                
 ])
 
 .controller('signupCtrl', [

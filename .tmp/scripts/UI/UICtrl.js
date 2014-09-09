@@ -120,9 +120,17 @@
     }
   ]).controller('ModalDemoCtrl', [
     '$scope', '$modal', '$log', function($scope, $modal, $log) {
-      $scope.items = ["item1", "item2", "item3"];
-      $scope.open = function() {
+      $scope.items = [
+        {
+          id: "item1",
+          name: "item2",
+          modalType: "item3",
+          modalName: ""
+        }
+      ];
+      $scope.open = function(modalName) {
         var modalInstance;
+        $scope.items.modalName = modalName;
         modalInstance = $modal.open({
           templateUrl: "myModalContent.html",
           controller: 'ModalInstanceCtrl',
@@ -132,21 +140,70 @@
             }
           }
         });
-        modalInstance.result.then((function(selectedItem) {
-          $scope.selected = selectedItem;
+        modalInstance.result.then((function(items) {
+          $scope.items = items;
+          alert($scope.items);
         }), function() {
           $log.info("Modal dismissed at: " + new Date());
         });
       };
     }
   ]).controller('ModalInstanceCtrl', [
-    '$scope', '$modalInstance', 'items', function($scope, $modalInstance, items) {
+    '$scope', '$modalInstance', 'items', function($scope, $modalInstance, items, $http) {
       $scope.items = items;
-      $scope.selected = {
-        item: $scope.items[0]
-      };
+      $scope.isRegion = false;
+      $scope.isArea = false;
+      $scope.isTeritory = false;
+      $scope.isBrick = false;
+      $scope.isLocation = false;
+      if ($scope.items.modalName === 'Region') {
+        $scope.isRegion = true;
+        $scope.isArea = false;
+        $scope.isTeritory = false;
+        $scope.isBrick = false;
+        $scope.isLocation = false;
+      } else if ($scope.items.modalName === 'Area') {
+        $scope.isRegion = false;
+        $scope.isArea = true;
+        $scope.isTeritory = false;
+        $scope.isBrick = false;
+        $scope.isLocation = false;
+      } else if ($scope.items.modalName === 'Territory') {
+        $scope.isRegion = false;
+        $scope.isArea = false;
+        $scope.isTeritory = true;
+        $scope.isBrick = false;
+        $scope.isLocation = false;
+      } else if ($scope.items.modalName === 'Brick') {
+        $scope.isRegion = false;
+        $scope.isArea = false;
+        $scope.isTeritory = false;
+        $scope.isBrick = true;
+        $scope.isLocation = false;
+      } else if ($scope.items.modalName === 'Location') {
+        $scope.isRegion = false;
+        $scope.isArea = false;
+        $scope.isTeritory = false;
+        $scope.isBrick = false;
+        $scope.isLocation = true;
+      }
       $scope.ok = function() {
-        $modalInstance.close($scope.selected.item);
+        if ($scope.isRegion) {
+          $modalInstance.close;
+          return $scope.items;
+        } else if ($scope.isArea) {
+          $modalInstance.close;
+          return "area";
+        } else if ($scope.isTeritory) {
+          $modalInstance.close;
+          return "Territory";
+        } else if ($scope.isBrick) {
+          $modalInstance.close;
+          return "Brick";
+        } else if ($scope.isLocation) {
+          $modalInstance.close;
+          return "Location";
+        }
       };
       $scope.cancel = function() {
         $modalInstance.dismiss("cancel");

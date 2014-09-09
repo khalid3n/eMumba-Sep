@@ -58,7 +58,42 @@ angular.module('app.form.validation', [])
             return $scope.form_constraints.$valid && !angular.equals($scope.form, original)
 
 ])
+.controller('forgotCtrl', [
+    '$scope', '$location', '$http', 'Session', '$log'
+    ($scope, $location, $http, Session, $log) ->
+       
+        $scope.user =
+            email: ''          
 
+        $scope.showInfoOnSubmit = false
+
+        original = angular.copy($scope.user)        
+        
+        $scope.revert = ->
+            $scope.user = angular.copy(original)
+            $scope.form_forgot.$setPristine()
+
+        $scope.canRevert = ->
+            return !angular.equals($scope.user, original) || !$scope.form_forgot.$pristine
+
+        $scope.canSubmit = ->
+            return $scope.form_forgot.$valid && !angular.equals($scope.user, original)
+
+        $scope.submitForm = ->             
+            if $scope.canSubmit()
+                $http(
+                  method: "post"
+                  url: "/forgot"
+                  params: [
+                    email: $scope.user.email                    
+                  ]
+                ).success((data, status, headers, config) ->
+                    Session.invalidateSession()
+                    $location.path('/pages/signin')
+                ).error (data, status, headers, config) ->
+                    $scope.showInfoOnSubmit = true
+                                
+])
 .controller('signinCtrl', [
     '$scope', '$location', '$http', 'Session', '$log'
     ($scope, $location, $http, Session, $log) ->

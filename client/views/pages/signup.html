@@ -26,7 +26,7 @@
 
                    <div data-ng-controller="signupCtrl">
                     <alert type="danger" ng-show="showInfoOnSubmit">Oh! Some thing went wrong.</alert>
-                    <form name="form_signup" class="form-horizontal form-validation" data-ng-submit="">
+                    <form name="form_signup" class="form-horizontal form-validation" data-ng-submit="submitForm()">
                         <div class="form-group">
                             <div class="input-group input-group-lg">
                                 <span class="input-group-addon">
@@ -84,7 +84,7 @@
                         <div class="form-group">
                             <p class="text-muted text-small">By clicking on Sign up, you agree to <a href="javascript:;">terms & conditions</a> and <a href="javascript:;">privacy policy</a></p>
                             <div class="divider"></div>
-                            <button type="submit" class="btn btn-primary btn-block btn-lg" data-ng-click="submitForm()" data-ng-disabled="!canSubmit()">Sign up</button>
+                            <button type="submit" class="btn btn-primary btn-block btn-lg" data-ng-disabled="!canSubmit()">Sign up</button>
                         </div>
  
                     </form>

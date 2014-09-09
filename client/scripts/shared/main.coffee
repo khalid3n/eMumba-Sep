@@ -47,3 +47,13 @@ angular.module('app.controllers', [])
     ($scope) ->
 
 ])
+
+.controller('ActionCtrl', [
+    '$scope', '$location', 'Session'
+    ($scope, $location, Session) ->
+        $scope.logout = ->
+            Session.invalidateSession()
+            $location.path('/pages/signin')
+        $scope.profile = ->   
+            $location.path('/pages/profile')
+])

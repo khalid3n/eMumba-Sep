@@ -222,10 +222,6 @@
     }
   ]).controller('TabsDemoCtrl', [
     '$scope', '$location', '$log', 'Session', function($scope, $location, $log, Session) {
-      $log.info(Session.validSession());
-      if (!Session.validSession()) {
-        $location.path('/pages/signin');
-      }
       $scope.tabs = [
         {
           title: "Dynamic Title 1",

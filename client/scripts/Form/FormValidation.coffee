@@ -110,8 +110,7 @@ angular.module('app.form.validation', [])
             email: ''
             password: ''
             confirmPassword: ''
-            age: ''
-
+            
         $scope.showInfoOnSubmit = false
 
         original = angular.copy($scope.user)
@@ -128,8 +127,21 @@ angular.module('app.form.validation', [])
             return $scope.form_signup.$valid && !angular.equals($scope.user, original)
 
         $scope.submitForm = ->
-             $scope.showInfoOnSubmit = true
-             $scope.revert()            
+             if $scope.canSubmit()
+                $http(
+                  method: "post"
+                  url: "/signup"
+                  params: [
+                    name: $scope.user.name
+                    email: $scope.user.email
+                    password: $scope.user.password
+                  ]
+                ).success((data, status, headers, config) ->
+                    Session.invalidateSession()
+                    $location.path('/pages/signin')
+                ).error (data, status, headers, config) ->
+                    $scope.showInfoOnSubmit = true
+                       
 
 ])
 

@@ -27,6 +27,16 @@
         return $scope.taskRemainingCount = count;
       });
     }
-  ]).controller('DashboardCtrl', ['$scope', function($scope) {}]);
+  ]).controller('DashboardCtrl', ['$scope', function($scope) {}]).controller('ActionCtrl', [
+    '$scope', '$location', 'Session', function($scope, $location, Session) {
+      $scope.logout = function() {
+        Session.invalidateSession();
+        return $location.path('/pages/signin');
+      };
+      return $scope.profile = function() {
+        return $location.path('/pages/profile');
+      };
+    }
+  ]);
 
 }).call(this);

@@ -100,8 +100,7 @@
         name: '',
         email: '',
         password: '',
-        confirmPassword: '',
-        age: ''
+        confirmPassword: ''
       };
       $scope.showInfoOnSubmit = false;
       original = angular.copy($scope.user);
@@ -117,8 +116,24 @@
         return $scope.form_signup.$valid && !angular.equals($scope.user, original);
       };
       return $scope.submitForm = function() {
-        $scope.showInfoOnSubmit = true;
-        return $scope.revert();
+        if ($scope.canSubmit()) {
+          return $http({
+            method: "post",
+            url: "/signup",
+            params: [
+              {
+                name: $scope.user.name,
+                email: $scope.user.email,
+                password: $scope.user.password
+              }
+            ]
+          }).success(function(data, status, headers, config) {
+            Session.invalidateSession();
+            return $location.path('/pages/signin');
+          }).error(function(data, status, headers, config) {
+            return $scope.showInfoOnSubmit = true;
+          });
+        }
       };
     }
   ]).directive('validateEquals', [

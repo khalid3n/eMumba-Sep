@@ -204,7 +204,7 @@
         controller: [
           '$scope', '$element', '$window', 'Session', '$location', function($scope, $element, $window, $location, Session) {
             return $element.on('click', function() {
-              if (Session.validSession()) {
+              if (!Session.validSession()) {
                 return $window.history.back();
               } else {
                 return $location.path('/pages/signin');

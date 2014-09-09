@@ -55,18 +55,24 @@
   ]).factory("Session", function($http) {
     var Session;
     Session = {
-      data: {},
+      data: null,
       saveSession: function(data) {
+        Session.data = {};
         Session.data = data;
       },
       updateSession: function(data) {
-        Session.data = data;
+        if (Session.data !== null) {
+          Session.data = data;
+        } else {
+          Session.data = {};
+          Session.data = data;
+        }
       },
       invalidateSession: function() {
         Session.data = "";
       },
       validSession: function() {
-        if (Session.data !== "") {
+        if (Session.data !== null) {
           return true;
         } else {
           return false;

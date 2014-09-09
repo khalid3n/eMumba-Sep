@@ -205,7 +205,7 @@ angular.module('app.directives', [])
             '$scope', '$element', '$window', 'Session', '$location'
             ($scope, $element, $window, $location, Session) ->
                 $element.on('click', ->
-                    if Session.validSession
+                    if Session.validSession()
                         $window.history.back()
                     else
                         $location.path('/pages/signin')

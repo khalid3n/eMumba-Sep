@@ -52,12 +52,11 @@
       };
     }
   ]).controller('signinCtrl', [
-    '$scope', '$location', '$http', 'Session', function($scope, $location, $http, Session) {
+    '$scope', '$location', '$http', 'Session', '$log', function($scope, $location, $http, Session, $log) {
       var original;
-      if (Session.validSession) {
+      if (Session.validSession()) {
         $location.path('/listing');
       }
-      $scope.alertshow = false;
       $scope.user = {
         email: '',
         password: ''
@@ -89,7 +88,7 @@
             Session.saveSession(data);
             return $location.path('/listing');
           }).error(function(data, status, headers, config) {
-            return $scope.alertshow = true;
+            return $scope.showInfoOnSubmit = true;
           });
         }
       };

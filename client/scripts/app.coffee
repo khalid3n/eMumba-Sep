@@ -146,13 +146,18 @@ angular.module('app', [
             )
 ]).factory "Session", ($http) ->
   Session =
-    data: {}
+    data: null
     saveSession: (data) ->
+      Session.data = {} 
       Session.data = data
       return
 
     updateSession: (data) ->
-      Session.data = data
+      if Session.data isnt null
+        Session.data = data
+      else
+        Session.data = {} 
+        Session.data = data
       return
 
     invalidateSession: ->
@@ -160,7 +165,7 @@ angular.module('app', [
       return
 
     validSession: ->
-      if Session.data isnt ""
+      if Session.data isnt null
         true
       else
         false

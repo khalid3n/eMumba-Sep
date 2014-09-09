@@ -21,7 +21,7 @@
                 </section>
 
                 <span class="line-thru">OR</span>
-                <alert type="danger">Oh! some thing went wrong</alert>
+                <alert type="danger" ng-show="showInfoOnSubmit">Oh! Some thing went wrong.</alert>
                 <div data-ng-controller="signinCtrl">
                 <form name="form_signin" class="form-horizontal form-validation" data-ng-submit="submitForm()">
                     <fieldset>

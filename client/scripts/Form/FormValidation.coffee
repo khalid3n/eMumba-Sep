@@ -60,12 +60,12 @@ angular.module('app.form.validation', [])
 ])
 
 .controller('signinCtrl', [
-    '$scope', '$location', '$http', 'Session'
-    ($scope, $location, $http, Session) ->
-        
-        if Session.validSession
+    '$scope', '$location', '$http', 'Session', '$log'
+    ($scope, $location, $http, Session, $log) ->
+                
+        if Session.validSession()
             $location.path('/listing')
-        $scope.alertshow = false
+        
         $scope.user =
             email: ''
             password: ''
@@ -85,8 +85,7 @@ angular.module('app.form.validation', [])
         $scope.canSubmit = ->
             return $scope.form_signin.$valid && !angular.equals($scope.user, original)
 
-        $scope.submitForm = ->
-            # http request goes here   
+        $scope.submitForm = ->             
             if $scope.canSubmit()
                 $http(
                   method: "post"
@@ -99,7 +98,7 @@ angular.module('app.form.validation', [])
                     Session.saveSession(data)
                     $location.path('/listing') 
                 ).error (data, status, headers, config) ->
-                    $scope.alertshow = true
+                    $scope.showInfoOnSubmit = true
                                 
 ])
 

@@ -69,7 +69,7 @@
         }
       },
       invalidateSession: function() {
-        Session.data = "";
+        Session.data = null;
       },
       validSession: function() {
         if (Session.data !== null) {

@@ -161,7 +161,7 @@ angular.module('app', [
       return
 
     invalidateSession: ->
-      Session.data = ""
+      Session.data = null
       return
 
     validSession: ->

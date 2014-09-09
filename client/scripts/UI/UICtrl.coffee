@@ -232,8 +232,11 @@ angular.module('app.ui.ctrls', [])
 # ])
 
 .controller('TabsDemoCtrl', [
-    '$scope'
-    ($scope) ->
+    '$scope','$location', '$log', 'Session'
+    ($scope, $location, $log, Session) ->
+        $log.info Session.validSession()
+        if !Session.validSession()
+            $location.path('/pages/signin')
         $scope.tabs = [
           {
             title: "Dynamic Title 1"

@@ -4,8 +4,8 @@ angular.module('app.controllers', [])
 
 # overall control
 .controller('AppCtrl', [
-    '$scope', '$location'
-    ($scope, $location) ->
+    '$scope', '$location', 'Session'
+    ($scope, $location, Session) ->
         $scope.isSpecificPage = ->
             path = $location.path()
             return _.contains( [
@@ -24,14 +24,16 @@ angular.module('app.controllers', [])
 
         $scope.main =
             brand: 'Sanofi-WebTool'
-            name: 'Administrator' # those which uses i18n can not be replaced for now.
-
+            name: 'Administrator' # those which uses i18n can not be replaced for now.            
 ])
 
 .controller('NavCtrl', [
-    '$scope', 'taskStorage', 'filterFilter'
-    ($scope, taskStorage, filterFilter) ->
+    '$scope', 'taskStorage', 'filterFilter','$location', '$log', 'Session'
+    ($scope, taskStorage, filterFilter, $location, $log, Session) ->
         # init
+        $log.info Session.validSession()
+        if !Session.validSession()
+            $location.path('/pages/signin')
         tasks = $scope.tasks = taskStorage.get()
         $scope.taskRemainingCount = filterFilter(tasks, {completed: false}).length
 

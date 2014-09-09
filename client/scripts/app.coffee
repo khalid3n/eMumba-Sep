@@ -172,6 +172,12 @@ angular.module('app', [
 
   Session
 
+.factory "ServerUrl", ($http) ->
+   ServerUrl =
+    url: 'http://192.168.20.130:3001/'
+    getUrl: ->
+        return ServerUrl.url
+  ServerUrl
 # .run([
 #     '$rootScope'
 #     ($rootScope) ->

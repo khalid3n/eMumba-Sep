@@ -32,8 +32,8 @@ angular.module('app.controllers', [])
     ($scope, taskStorage, filterFilter, $location, $log, Session) ->
         # init
         $log.info Session.validSession()
-     #   if !Session.validSession()
-     #       $location.path('/pages/signin')
+        if !Session.validSession()
+            $location.path('/pages/signin')
         tasks = $scope.tasks = taskStorage.get()
         $scope.taskRemainingCount = filterFilter(tasks, {completed: false}).length
 

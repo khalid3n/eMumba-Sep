@@ -59,8 +59,8 @@ angular.module('app.form.validation', [])
 
 ])
 .controller('forgotCtrl', [
-    '$scope', '$location', '$http', 'Session', '$log'
-    ($scope, $location, $http, Session, $log) ->
+    '$scope', '$location', '$http', 'Session', '$log', 'ServerUrl'
+    ($scope, $location, $http, Session, $log, ServerUrl) ->
        
         $scope.user =
             email: ''          
@@ -83,10 +83,11 @@ angular.module('app.form.validation', [])
             if $scope.canSubmit()
                 $http(
                   method: "post"
-                  url: "/forgot"
-                  params: [
-                    email: $scope.user.email                    
-                  ]
+                  url: ServerUrl.getUrl() + "forgot"
+                  headers:
+                    "Content-Type": "application/json"
+                  data:
+                    email: $scope.user.email                   
                 ).success((data, status, headers, config) ->
                     Session.invalidateSession()
                     $location.path('/pages/signin')
@@ -95,8 +96,8 @@ angular.module('app.form.validation', [])
                                 
 ])
 .controller('signinCtrl', [
-    '$scope', '$location', '$http', 'Session', '$log'
-    ($scope, $location, $http, Session, $log) ->
+    '$scope', '$location', '$http', 'Session', '$log', 'ServerUrl'
+    ($scope, $location, $http, Session, $log , ServerUrl) ->
                 
         if Session.validSession()
             $location.path('/listing')
@@ -124,11 +125,12 @@ angular.module('app.form.validation', [])
             if $scope.canSubmit()
                 $http(
                   method: "post"
-                  url: "/login"
-                  params: [
+                  url: ServerUrl.getUrl() + "login"
+                  headers:
+                    "Content-Type": "application/json"
+                  data:
                     email: $scope.user.email
-                    password: $scope.user.password
-                  ]
+                    password: $scope.user.password                  
                 ).success((data, status, headers, config) ->
                     Session.saveSession(data)
                     $location.path('/listing') 
@@ -138,8 +140,8 @@ angular.module('app.form.validation', [])
 ])
 
 .controller('signupCtrl', [
-    '$scope'
-    ($scope) ->
+    '$scope', '$location', '$http', 'Session', '$log', 'ServerUrl'
+    ($scope, $location, $http, Session, $log , ServerUrl) ->
         $scope.user = 
             name: ''
             email: ''
@@ -165,12 +167,14 @@ angular.module('app.form.validation', [])
              if $scope.canSubmit()
                 $http(
                   method: "post"
-                  url: "/signup"
-                  params: [
+                  url: ServerUrl.getUrl() + "signup"
+                  headers:
+                    "Content-Type": "application/json"
+                  data:
                     name: $scope.user.name
                     email: $scope.user.email
-                    password: $scope.user.password
-                  ]
+                    password: $scope.user.password         
+
                 ).success((data, status, headers, config) ->
                     Session.invalidateSession()
                     $location.path('/pages/signin')

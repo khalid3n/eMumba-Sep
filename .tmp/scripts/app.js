@@ -80,6 +80,16 @@
       }
     };
     return Session;
+  }).factory("ServerUrl", function($http) {
+    var ServerUrl;
+    return ServerUrl = {
+      url: 'http://192.168.20.130:3001/',
+      getUrl: function() {
+        return ServerUrl.url;
+      }
+    };
   });
+
+  ServerUrl;
 
 }).call(this);

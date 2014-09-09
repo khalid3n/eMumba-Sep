@@ -51,8 +51,46 @@
         return $scope.form_constraints.$valid && !angular.equals($scope.form, original);
       };
     }
+  ]).controller('forgotCtrl', [
+    '$scope', '$location', '$http', 'Session', '$log', 'ServerUrl', function($scope, $location, $http, Session, $log, ServerUrl) {
+      var original;
+      $scope.user = {
+        email: ''
+      };
+      $scope.showInfoOnSubmit = false;
+      original = angular.copy($scope.user);
+      $scope.revert = function() {
+        $scope.user = angular.copy(original);
+        return $scope.form_forgot.$setPristine();
+      };
+      $scope.canRevert = function() {
+        return !angular.equals($scope.user, original) || !$scope.form_forgot.$pristine;
+      };
+      $scope.canSubmit = function() {
+        return $scope.form_forgot.$valid && !angular.equals($scope.user, original);
+      };
+      return $scope.submitForm = function() {
+        if ($scope.canSubmit()) {
+          return $http({
+            method: "post",
+            url: ServerUrl.getUrl() + "forgot",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            data: {
+              email: $scope.user.email
+            }
+          }).success(function(data, status, headers, config) {
+            Session.invalidateSession();
+            return $location.path('/pages/signin');
+          }).error(function(data, status, headers, config) {
+            return $scope.showInfoOnSubmit = true;
+          });
+        }
+      };
+    }
   ]).controller('signinCtrl', [
-    '$scope', '$location', '$http', 'Session', '$log', function($scope, $location, $http, Session, $log) {
+    '$scope', '$location', '$http', 'Session', '$log', 'ServerUrl', function($scope, $location, $http, Session, $log, ServerUrl) {
       var original;
       if (Session.validSession()) {
         $location.path('/listing');
@@ -77,13 +115,14 @@
         if ($scope.canSubmit()) {
           return $http({
             method: "post",
-            url: "/login",
-            params: [
-              {
-                email: $scope.user.email,
-                password: $scope.user.password
-              }
-            ]
+            url: ServerUrl.getUrl() + "login",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            data: {
+              email: $scope.user.email,
+              password: $scope.user.password
+            }
           }).success(function(data, status, headers, config) {
             Session.saveSession(data);
             return $location.path('/listing');
@@ -94,7 +133,7 @@
       };
     }
   ]).controller('signupCtrl', [
-    '$scope', function($scope) {
+    '$scope', '$location', '$http', 'Session', '$log', 'ServerUrl', function($scope, $location, $http, Session, $log, ServerUrl) {
       var original;
       $scope.user = {
         name: '',
@@ -119,14 +158,15 @@
         if ($scope.canSubmit()) {
           return $http({
             method: "post",
-            url: "/signup",
-            params: [
-              {
-                name: $scope.user.name,
-                email: $scope.user.email,
-                password: $scope.user.password
-              }
-            ]
+            url: ServerUrl.getUrl() + "signup",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            data: {
+              name: $scope.user.name,
+              email: $scope.user.email,
+              password: $scope.user.password
+            }
           }).success(function(data, status, headers, config) {
             Session.invalidateSession();
             return $location.path('/pages/signin');

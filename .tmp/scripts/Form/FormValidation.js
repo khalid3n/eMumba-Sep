@@ -165,7 +165,8 @@
             data: {
               name: $scope.user.name,
               email: $scope.user.email,
-              password: $scope.user.password
+              password: $scope.user.password,
+              passwordConfirmation: $scope.user.password
             }
           }).success(function(data, status, headers, config) {
             Session.invalidateSession();

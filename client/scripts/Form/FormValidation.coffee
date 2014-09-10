@@ -173,8 +173,8 @@ angular.module('app.form.validation', [])
                   data:
                     name: $scope.user.name
                     email: $scope.user.email
-                    password: $scope.user.password         
-
+                    password: $scope.user.password 
+                    passwordConfirmation: $scope.user.password 
                 ).success((data, status, headers, config) ->
                     Session.invalidateSession()
                     $location.path('/pages/signin')

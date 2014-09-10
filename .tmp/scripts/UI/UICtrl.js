@@ -118,69 +118,39 @@
     '$scope', function($scope) {
       return $scope.isCollapsed = false;
     }
-  ]).controller('ModalDemoCtrl', [
-    '$scope', '$modal', '$log', function($scope, $modal, $log) {
-      $scope.items = [
-        {
-          id: "item1",
-          name: "item2",
-          modalType: "item3",
-          modalName: ""
-        }
-      ];
-      $scope.open = function(modalName) {
-        var modalInstance;
-        $scope.items.modalName = modalName;
-        modalInstance = $modal.open({
-          templateUrl: "myModalContent.html",
-          controller: 'ModalInstanceCtrl',
-          resolve: {
-            items: function() {
-              return $scope.items;
-            }
-          }
-        });
-        modalInstance.result.then((function(items) {
-          $scope.items = items;
-          alert($scope.items);
-        }), function() {
-          $log.info("Modal dismissed at: " + new Date());
-        });
-      };
-    }
-  ]).controller('ModalInstanceCtrl', [
-    '$scope', '$modalInstance', 'items', function($scope, $modalInstance, items, $http) {
+  ]).controller('ModalDemoCtrl', ['$scope', '$modal', '$log', function($scope, $modal, $log) {}]).controller('ModalInstanceCtrl', [
+    '$scope', '$modalInstance', 'items', '$http', 'ServerUrl', '$log', function($scope, $modalInstance, items, $http, ServerUrl, $log) {
       $scope.items = items;
       $scope.isRegion = false;
       $scope.isArea = false;
       $scope.isTeritory = false;
       $scope.isBrick = false;
       $scope.isLocation = false;
-      if ($scope.items.modalName === 'Region') {
+      if ($scope.items.modalName === 'region') {
         $scope.isRegion = true;
         $scope.isArea = false;
         $scope.isTeritory = false;
         $scope.isBrick = false;
         $scope.isLocation = false;
-      } else if ($scope.items.modalName === 'Area') {
+      } else if ($scope.items.modalName === 'area') {
         $scope.isRegion = false;
         $scope.isArea = true;
         $scope.isTeritory = false;
         $scope.isBrick = false;
         $scope.isLocation = false;
-      } else if ($scope.items.modalName === 'Territory') {
+      } else if ($scope.items.modalName === 'territory') {
         $scope.isRegion = false;
         $scope.isArea = false;
         $scope.isTeritory = true;
         $scope.isBrick = false;
         $scope.isLocation = false;
-      } else if ($scope.items.modalName === 'Brick') {
+      } else if ($scope.items.modalName === 'brick') {
         $scope.isRegion = false;
         $scope.isArea = false;
         $scope.isTeritory = false;
         $scope.isBrick = true;
         $scope.isLocation = false;
-      } else if ($scope.items.modalName === 'Location') {
+      } else if ($scope.items.modalName === 'location') {
         $scope.isRegion = false;
         $scope.isArea = false;
         $scope.isTeritory = false;
@@ -188,22 +158,49 @@
         $scope.isLocation = true;
       }
       $scope.ok = function() {
-        if ($scope.isRegion) {
-          $modalInstance.close;
-          return $scope.items;
-        } else if ($scope.isArea) {
-          $modalInstance.close;
-          return "area";
-        } else if ($scope.isTeritory) {
-          $modalInstance.close;
-          return "Territory";
-        } else if ($scope.isBrick) {
-          $modalInstance.close;
-          return "Brick";
-        } else if ($scope.isLocation) {
-          $modalInstance.close;
-          return "Location";
-        }
+        var data, methodtype, modalname;
+        modalname = $scope.items.modalName;
+        methodtype = ($scope.items.id === "" ? "post" : "put");
+        data = {};
+        data[modalname] = {
+          _id: $scope.items.id,
+          name: $scope.items.name,
+          code: $scope.items.code
+        };
+        return $http({
+          method: methodtype,
+          url: ServerUrl.getUrl() + modalname,
+          headers: {
+            "Content-Type": "application/json"
+          },
+          data: data
+        }).success(function(data, status, headers, config) {
+          $modalInstance.close(data);
+        }).error(function(data, status, headers, config) {
+          return $modalInstance.dismiss("cancel");
+        });
+      };
+      $scope.cancel = function() {
+        $scope.isRegion = false;
+        $scope.isArea = false;
+        $scope.isTeritory = false;
+        $scope.isBrick = false;
+        $scope.isLocation = false;
+        $modalInstance.dismiss("cancel");
+      };
+    }
+  ]).controller('ModalDeleteInstanceCtrl', [
+    '$scope', '$modalInstance', 'items', '$http', 'ServerUrl', function($scope, $modalInstance, items, $http, ServerUrl) {
+      $scope.items = items;
+      $scope.confirm = function() {
+        return $http({
+          method: "delete",
+          url: ServerUrl.getUrl() + $scope.items.modalName + "/" + $scope.items.id
+        }).success(function(data, status, headers, config) {
+          return $modalInstance.dismiss("cancel");
+        }).error(function(data, status, headers, config) {
+          return $modalInstance.dismiss("cancel");
+        });
       };
       $scope.cancel = function() {
         $modalInstance.dismiss("cancel");

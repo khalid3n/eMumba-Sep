@@ -2,6 +2,169 @@
 
 angular.module('app.tables', [])
 
+.controller('tableRegionCtrl', [
+    '$scope', '$filter', '$http', 'ServerUrl', '$log','$modal'
+    ($scope, $filter, $http, ServerUrl, $log, $modal) ->
+        # filter
+
+        $scope.regions = []
+        $http(          
+          url: ServerUrl.getUrl() + "region"                           
+        ).success((data, status, headers, config) ->               
+            $scope.regions = data
+            init()
+        ).error (data, status, headers, config) ->
+           
+
+        $scope.searchKeywords = ''
+        $scope.filteredRegions = []
+        $scope.row = ''
+
+        $scope.select = (page) ->
+            start = (page - 1) * $scope.numPerPage
+            end = start + $scope.numPerPage
+            $scope.currentPageRegions = $scope.filteredRegions.slice(start, end)
+            # console.log start
+            # console.log end
+            # console.log $scope.currentPageStores
+
+        # on page change: change numPerPage, filtering string
+        $scope.onFilterChange = ->
+            $scope.select(1)
+            $scope.currentPage = 1
+            $scope.row = ''
+
+        $scope.onNumPerPageChange = ->
+            $scope.select(1)
+            $scope.currentPage = 1
+
+        $scope.onOrderChange = ->
+            $scope.select(1)
+            $scope.currentPage = 1            
+
+
+        $scope.search = ->
+            $scope.filteredRegions = $filter('filter')($scope.regions, $scope.searchKeywords)
+            $scope.onFilterChange()
+
+        # orderBy
+        $scope.order = (rowName)->
+            if $scope.row == rowName
+                return
+            $scope.row = rowName
+            $scope.filteredRegions = $filter('orderBy')($scope.regions, rowName)
+            # console.log $scope.filteredRegions
+            $scope.onOrderChange()
+
+        # pagination
+        $scope.numPerPageOpt = [3, 5, 10, 20]
+        $scope.numPerPage = $scope.numPerPageOpt[2]
+        $scope.currentPage = 1
+        $scope.currentPageRegions = []
+
+        # init
+        init = ->
+            $scope.search()
+            $scope.select($scope.currentPage)
+        
+        #delete
+        $scope.deleteAction = [
+            id: ""            
+            modalName : ""
+        ]
+        
+        $scope.delete = (modalName,id)->
+            $scope.deleteAction.modalName = modalName 
+            $scope.deleteAction.id = id                   
+            modalInstance = $modal.open(
+                templateUrl: "ModalDeleteContent.html"
+                controller: 'ModalDeleteInstanceCtrl'
+                resolve:
+                    items: ->
+                        $scope.deleteAction                  
+            )
+            modalInstance.result.then ((items) ->
+                $log.info items 
+                i = 0
+                while i < $scope.regions.length
+                  if $scope.regions[i]._id is items
+                    delete $scope.regions[i]
+                    break
+                  i++
+                $log.info $scope.regions
+                init()               
+                return
+            ), ->                
+                return
+
+            return
+
+        
+
+
+
+        $scope.items = [
+            id: ''
+            code: ''
+            name: ''
+            modalType : ''
+            modalName : ''
+        ]
+        $scope.open = (modalName)->
+            $scope.items.modalName = modalName  
+            $scope.items.id = ''                 
+            modalInstance = $modal.open(
+                templateUrl: "myModalContent.html"
+                controller: 'ModalInstanceCtrl'
+                resolve:
+                    items: ->
+                        $scope.items                  
+            )
+            modalInstance.result.then ((items) ->                
+                $log.info items                
+                $scope.regions.push items
+                $log.info $scope.regions
+                init()                  
+                return
+            ), ->                
+                return
+
+            return
+
+        
+
+        #edit
+        $scope.edit = (modalName,id,code,name)->
+            $scope.items.modalName = modalName  
+            $scope.items.id = id
+            $scope.items.code = code
+            $scope.items.name = name                 
+            modalInstance = $modal.open(
+                templateUrl: "myModalContent.html"
+                controller: 'ModalInstanceCtrl'
+                resolve:
+                    items: ->
+                        $scope.items                  
+            )
+            modalInstance.result.then ((items) ->
+                $log.info items                
+                i = 0
+                while i < $scope.regions.length
+                  if $scope.regions[i]._id is items._id
+                    $scope.regions[i] = items
+                    break
+                  i++
+                $log.info $scope.regions
+                init()                
+                return
+            ), ->
+                return
+
+            return
+
+        return
+
+])
 .controller('tableCtrl', [
     '$scope', '$filter'
     ($scope, $filter) ->
@@ -85,5 +248,60 @@ angular.module('app.tables', [])
             $scope.select($scope.currentPage)
         init()
 
+        #delete
+        $scope.deleteAction = [
+            id: ""            
+            modalName : ""
+        ]
+        
+        $scope.delete = (modalName,id)->
+            $scope.deleteAction.modalName = modalName 
+            $scope.deleteAction.id = id                   
+            modalInstance = $modal.open(
+                templateUrl: "ModalDeleteContent.html"
+                controller: 'ModalDeleteInstanceCtrl'
+                resolve:
+                    items: ->
+                        $scope.deleteAction                  
+            )
+            modalInstance.result.then ((items) ->
+                $scope.deleteAction = items 
+                init()               
+                return
+            ), ->
+                $log.info "Modal dismissed at: " + new Date()
+                return
 
+            return
+
+        return
+
+
+        #add
+        $scope.items = [
+            id: ""
+            name: ""
+            modalType : ""
+            modalName : ""
+        ]
+        $scope.open = (modalName)->
+            $scope.items.modalName = modalName                   
+            modalInstance = $modal.open(
+                templateUrl: "myModalContent.html"
+                controller: 'ModalInstanceCtrl'
+                resolve:
+                    items: ->
+                        $scope.items                  
+            )
+            modalInstance.result.then ((items) ->
+                $scope.items = items
+                alert $scope.items
+                return
+            ), ->
+                $log.info "Modal dismissed at: " + new Date()
+                return
+
+            return
+
+        return
 ])

@@ -30,8 +30,7 @@ angular.module('app.controllers', [])
 .controller('NavCtrl', [
     '$scope', 'taskStorage', 'filterFilter','$location', '$log', 'Session'
     ($scope, taskStorage, filterFilter, $location, $log, Session) ->
-        # init
-        $log.info Session.validSession()
+        # init        
         if !Session.validSession()
             $location.path('/pages/signin')
         tasks = $scope.tasks = taskStorage.get()

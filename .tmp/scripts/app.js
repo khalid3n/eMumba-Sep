@@ -57,14 +57,14 @@
     Session = {
       data: null,
       saveSession: function(data) {
-        Session.data = {};
+        Session.data = '';
         Session.data = data;
       },
       updateSession: function(data) {
         if (Session.data !== null) {
           Session.data = data;
         } else {
-          Session.data = {};
+          Session.data = '';
           Session.data = data;
         }
       },

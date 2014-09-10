@@ -110,39 +110,11 @@ angular.module('app.ui.ctrls', [])
 .controller('ModalDemoCtrl', [
     '$scope', '$modal', '$log'
     ($scope, $modal, $log) ->
-        
-                
-        $scope.items = [
-            id: "item1"
-            name: "item2"
-            modalType : "item3"
-            modalName : ""
-        ]
-        $scope.open = (modalName)->
-            $scope.items.modalName = modalName                   
-            modalInstance = $modal.open(
-                templateUrl: "myModalContent.html"
-                controller: 'ModalInstanceCtrl'
-                resolve:
-                    items: ->
-                        $scope.items                  
-            )
-            modalInstance.result.then ((items) ->
-                $scope.items = items
-                alert $scope.items
-                return
-            ), ->
-                $log.info "Modal dismissed at: " + new Date()
-                return
-
-            return
-
-        return
-
+    
 ])
 .controller('ModalInstanceCtrl', [
-    '$scope', '$modalInstance', 'items'
-    ($scope, $modalInstance, items, $http) ->
+    '$scope', '$modalInstance', 'items', '$http' , 'ServerUrl', '$log'
+    ($scope, $modalInstance, items, $http, ServerUrl, $log) ->
         $scope.items = items
         
         $scope.isRegion = false
@@ -151,31 +123,31 @@ angular.module('app.ui.ctrls', [])
         $scope.isBrick = false
         $scope.isLocation = false
         
-        if $scope.items.modalName == 'Region'
+        if $scope.items.modalName == 'region'
             $scope.isRegion = true
             $scope.isArea = false
             $scope.isTeritory = false
             $scope.isBrick = false
             $scope.isLocation = false
-        else if $scope.items.modalName == 'Area'
+        else if $scope.items.modalName == 'area'
             $scope.isRegion = false
             $scope.isArea = true
             $scope.isTeritory = false
             $scope.isBrick = false
             $scope.isLocation = false
-        else if $scope.items.modalName == 'Territory'
+        else if $scope.items.modalName == 'territory'
             $scope.isRegion = false
             $scope.isArea = false
             $scope.isTeritory = true
             $scope.isBrick = false
             $scope.isLocation = false
-        else if $scope.items.modalName == 'Brick'
+        else if $scope.items.modalName == 'brick'
             $scope.isRegion = false
             $scope.isArea = false
             $scope.isTeritory = false
             $scope.isBrick = true
             $scope.isLocation = false
-        else if $scope.items.modalName == 'Location'
+        else if $scope.items.modalName == 'location'
             $scope.isRegion = false
             $scope.isArea = false
             $scope.isTeritory = false
@@ -183,21 +155,50 @@ angular.module('app.ui.ctrls', [])
             $scope.isLocation = true
         
         $scope.ok = -> 
-            if $scope.isRegion
-                $modalInstance.close
-                return $scope.items
-             else if $scope.isArea
-                $modalInstance.close
-                return "area"
-             else if $scope.isTeritory
-                $modalInstance.close
-                return "Territory"
-             else if $scope.isBrick
-                $modalInstance.close
-                return "Brick"
-             else if $scope.isLocation
-                $modalInstance.close
-                return "Location"
+            modalname = $scope.items.modalName
+            methodtype = (if ($scope.items.id is "") then "post" else "put")
+            data = {}
+            data[modalname] =
+              _id: $scope.items.id
+              name: $scope.items.name
+              code: $scope.items.code
+            
+            $http(
+              method: methodtype              
+              url: ServerUrl.getUrl() + modalname
+              headers:
+                "Content-Type": "application/json"
+              data: data                
+            ).success((data, status, headers, config) ->                
+                $modalInstance.close data
+                return 
+            ).error (data, status, headers, config) ->
+                $modalInstance.dismiss "cancel"
+        $scope.cancel = ->
+            $scope.isRegion = false
+            $scope.isArea = false
+            $scope.isTeritory = false
+            $scope.isBrick = false
+            $scope.isLocation = false
+            $modalInstance.dismiss "cancel"
+            return
+
+        return
+])
+
+.controller('ModalDeleteInstanceCtrl', [
+    '$scope', '$modalInstance', 'items', '$http', 'ServerUrl'
+    ($scope, $modalInstance, items, $http, ServerUrl) ->
+        $scope.items = items       
+        
+        $scope.confirm = ->            
+            $http(
+                  method: "delete"
+                  url: ServerUrl.getUrl() + $scope.items.modalName + "/" + $scope.items.id                                 
+                ).success((data, status, headers, config) ->
+                    $modalInstance.dismiss "cancel"
+                ).error (data, status, headers, config) ->
+                     $modalInstance.dismiss "cancel"                 
 
         $scope.cancel = ->
             $modalInstance.dismiss "cancel"

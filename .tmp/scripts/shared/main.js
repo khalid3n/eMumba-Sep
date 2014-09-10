@@ -15,7 +15,6 @@
   ]).controller('NavCtrl', [
     '$scope', 'taskStorage', 'filterFilter', '$location', '$log', 'Session', function($scope, taskStorage, filterFilter, $location, $log, Session) {
       var tasks;
-      $log.info(Session.validSession());
       if (!Session.validSession()) {
         $location.path('/pages/signin');
       }

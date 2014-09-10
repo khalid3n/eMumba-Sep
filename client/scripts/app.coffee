@@ -148,7 +148,7 @@ angular.module('app', [
   Session =
     data: null
     saveSession: (data) ->
-      Session.data = {} 
+      Session.data = '' 
       Session.data = data
       return
 
@@ -156,7 +156,7 @@ angular.module('app', [
       if Session.data isnt null
         Session.data = data
       else
-        Session.data = {} 
+        Session.data = ''
         Session.data = data
       return
 

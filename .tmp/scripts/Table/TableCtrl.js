@@ -1,6 +1,152 @@
 (function() {
   'use strict';
-  angular.module('app.tables', []).controller('tableCtrl', [
+  angular.module('app.tables', []).controller('tableRegionCtrl', [
+    '$scope', '$filter', '$http', 'ServerUrl', '$log', '$modal', function($scope, $filter, $http, ServerUrl, $log, $modal) {
+      var init;
+      $scope.regions = [];
+      $http({
+        url: ServerUrl.getUrl() + "region"
+      }).success(function(data, status, headers, config) {
+        $scope.regions = data;
+        return init();
+      }).error(function(data, status, headers, config) {});
+      $scope.searchKeywords = '';
+      $scope.filteredRegions = [];
+      $scope.row = '';
+      $scope.select = function(page) {
+        var end, start;
+        start = (page - 1) * $scope.numPerPage;
+        end = start + $scope.numPerPage;
+        return $scope.currentPageRegions = $scope.filteredRegions.slice(start, end);
+      };
+      $scope.onFilterChange = function() {
+        $scope.select(1);
+        $scope.currentPage = 1;
+        return $scope.row = '';
+      };
+      $scope.onNumPerPageChange = function() {
+        $scope.select(1);
+        return $scope.currentPage = 1;
+      };
+      $scope.onOrderChange = function() {
+        $scope.select(1);
+        return $scope.currentPage = 1;
+      };
+      $scope.search = function() {
+        $scope.filteredRegions = $filter('filter')($scope.regions, $scope.searchKeywords);
+        return $scope.onFilterChange();
+      };
+      $scope.order = function(rowName) {
+        if ($scope.row === rowName) {
+          return;
+        }
+        $scope.row = rowName;
+        $scope.filteredRegions = $filter('orderBy')($scope.regions, rowName);
+        return $scope.onOrderChange();
+      };
+      $scope.numPerPageOpt = [3, 5, 10, 20];
+      $scope.numPerPage = $scope.numPerPageOpt[2];
+      $scope.currentPage = 1;
+      $scope.currentPageRegions = [];
+      init = function() {
+        $scope.search();
+        return $scope.select($scope.currentPage);
+      };
+      $scope.deleteAction = [
+        {
+          id: "",
+          modalName: ""
+        }
+      ];
+      $scope["delete"] = function(modalName, id) {
+        var modalInstance;
+        $scope.deleteAction.modalName = modalName;
+        $scope.deleteAction.id = id;
+        modalInstance = $modal.open({
+          templateUrl: "ModalDeleteContent.html",
+          controller: 'ModalDeleteInstanceCtrl',
+          resolve: {
+            items: function() {
+              return $scope.deleteAction;
+            }
+          }
+        });
+        modalInstance.result.then((function(items) {
+          var i;
+          $log.info(items);
+          i = 0;
+          while (i < $scope.regions.length) {
+            if ($scope.regions[i]._id === items) {
+              delete $scope.regions[i];
+              break;
+            }
+            i++;
+          }
+          $log.info($scope.regions);
+          init();
+        }), function() {});
+      };
+      $scope.items = [
+        {
+          id: '',
+          code: '',
+          name: '',
+          modalType: '',
+          modalName: ''
+        }
+      ];
+      $scope.open = function(modalName) {
+        var modalInstance;
+        $scope.items.modalName = modalName;
+        $scope.items.id = '';
+        modalInstance = $modal.open({
+          templateUrl: "myModalContent.html",
+          controller: 'ModalInstanceCtrl',
+          resolve: {
+            items: function() {
+              return $scope.items;
+            }
+          }
+        });
+        modalInstance.result.then((function(items) {
+          $log.info(items);
+          $scope.regions.push(items);
+          $log.info($scope.regions);
+          init();
+        }), function() {});
+      };
+      $scope.edit = function(modalName, id, code, name) {
+        var modalInstance;
+        $scope.items.modalName = modalName;
+        $scope.items.id = id;
+        $scope.items.code = code;
+        $scope.items.name = name;
+        modalInstance = $modal.open({
+          templateUrl: "myModalContent.html",
+          controller: 'ModalInstanceCtrl',
+          resolve: {
+            items: function() {
+              return $scope.items;
+            }
+          }
+        });
+        modalInstance.result.then((function(items) {
+          var i;
+          $log.info(items);
+          i = 0;
+          while (i < $scope.regions.length) {
+            if ($scope.regions[i]._id === items._id) {
+              $scope.regions[i] = items;
+              break;
+            }
+            i++;
+          }
+          $log.info($scope.regions);
+          init();
+        }), function() {});
+      };
+    }
+  ]).controller('tableCtrl', [
     '$scope', '$filter', function($scope, $filter) {
       var init;
       $scope.stores = [
@@ -173,7 +319,61 @@
         $scope.search();
         return $scope.select($scope.currentPage);
       };
-      return init();
+      init();
+      $scope.deleteAction = [
+        {
+          id: "",
+          modalName: ""
+        }
+      ];
+      $scope["delete"] = function(modalName, id) {
+        var modalInstance;
+        $scope.deleteAction.modalName = modalName;
+        $scope.deleteAction.id = id;
+        modalInstance = $modal.open({
+          templateUrl: "ModalDeleteContent.html",
+          controller: 'ModalDeleteInstanceCtrl',
+          resolve: {
+            items: function() {
+              return $scope.deleteAction;
+            }
+          }
+        });
+        modalInstance.result.then((function(items) {
+          $scope.deleteAction = items;
+          init();
+        }), function() {
+          $log.info("Modal dismissed at: " + new Date());
+        });
+      };
+      return;
+      $scope.items = [
+        {
+          id: "",
+          name: "",
+          modalType: "",
+          modalName: ""
+        }
+      ];
+      $scope.open = function(modalName) {
+        var modalInstance;
+        $scope.items.modalName = modalName;
+        modalInstance = $modal.open({
+          templateUrl: "myModalContent.html",
+          controller: 'ModalInstanceCtrl',
+          resolve: {
+            items: function() {
+              return $scope.items;
+            }
+          }
+        });
+        modalInstance.result.then((function(items) {
+          $scope.items = items;
+          alert($scope.items);
+        }), function() {
+          $log.info("Modal dismissed at: " + new Date());
+        });
+      };
     }
   ]);
 

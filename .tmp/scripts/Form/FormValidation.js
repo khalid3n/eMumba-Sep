@@ -1,57 +1,6 @@
 (function() {
   'use strict';
-  angular.module('app.form.validation', []).controller('wizardFormCtrl', [
-    '$scope', function($scope) {
-      $scope.wizard = {
-        firstName: 'some name',
-        lastName: '',
-        email: '',
-        password: '',
-        age: '',
-        address: ''
-      };
-      $scope.isValidateStep1 = function() {
-        console.log($scope.wizard_step1);
-        console.log($scope.wizard.firstName !== '');
-        console.log($scope.wizard.lastName === '');
-        return console.log($scope.wizard.firstName !== '' && $scope.wizard.lastName !== '');
-      };
-      return $scope.finishedWizard = function() {
-        return console.log('yoo');
-      };
-    }
-  ]).controller('formConstraintsCtrl', [
-    '$scope', function($scope) {
-      var original;
-      $scope.form = {
-        required: '',
-        minlength: '',
-        maxlength: '',
-        length_rage: '',
-        type_something: '',
-        confirm_type: '',
-        foo: '',
-        email: '',
-        url: '',
-        num: '',
-        minVal: '',
-        maxVal: '',
-        valRange: '',
-        pattern: ''
-      };
-      original = angular.copy($scope.form);
-      $scope.revert = function() {
-        $scope.form = angular.copy(original);
-        return $scope.form_constraints.$setPristine();
-      };
-      $scope.canRevert = function() {
-        return !angular.equals($scope.form, original) || !$scope.form_constraints.$pristine;
-      };
-      return $scope.canSubmit = function() {
-        return $scope.form_constraints.$valid && !angular.equals($scope.form, original);
-      };
-    }
-  ]).controller('forgotCtrl', [
+  angular.module('app.form.validation', []).controller('forgotCtrl', [
     '$scope', '$location', '$http', 'Session', '$log', 'ServerUrl', function($scope, $location, $http, Session, $log, ServerUrl) {
       var original;
       $scope.user = {
@@ -92,7 +41,7 @@
   ]).controller('signinCtrl', [
     '$scope', '$location', '$http', 'Session', '$log', 'ServerUrl', function($scope, $location, $http, Session, $log, ServerUrl) {
       var original;
-      if (Session.validSession()) {
+      if (Session.isValidSession()) {
         $location.path('/listing');
       }
       $scope.user = {

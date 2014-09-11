@@ -1,0 +1,153 @@
+<section class="panel panel-default table-dynamic col-sm-12"> 
+   <div class="panel-body">
+        <div data-ng-controller="tableUsersCtrl">
+            <div class="table-filters">
+              <div class="row">
+                  <div class="col-sm-4 col-xs-6">
+                      <form>
+                          <input type="text" placeholder="search" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></input>
+                      </form>
+                  </div>
+                  <div class="col-sm-3 col-xs-6 filter-result-info">
+                      <span>
+                          Showing {{filteredUsers.length}}/{{users.length}} entries
+                      </span>              
+                  </div>
+                 <div class="col-sm-5 text-right">  
+                  <button class="btn btn-gap-v btn-info" ng-click="open('user')"><span class="glyphicon glyphicon-plus"></span> Add User</button>                            
+                  </div>
+              </div>
+            </div>
+
+            <table class="table table-bordered table-striped table-responsive">
+              <thead>
+                  <tr>
+                      <th class="col-md-3"><div class="th">
+                          Name
+                          <span class="glyphicon glyphicon-chevron-up" data-ng-click=" order('name') " data-ng-class="{active: row == 'name'}"></span>
+                          <span class="glyphicon glyphicon-chevron-down" data-ng-click=" order('-name') " data-ng-class="{active: row == '-name'}"></span>
+                      </div></th>
+                      <th class="col-md-3"><div class="th">
+                          Designation
+                          <span class="glyphicon glyphicon-chevron-up"
+                                data-ng-click=" order('designation') "
+                                data-ng-class="{active: row == 'designation'}"></span>
+                          <span class="glyphicon glyphicon-chevron-down"
+                                data-ng-click=" order('-designation') "
+                                data-ng-class="{active: row == '-designation'}"></span>
+                      </div></th>
+                      <th class="col-md-3"><div class="th">
+                          Email
+                          <span class="glyphicon glyphicon-chevron-up"
+                                data-ng-click=" order('email') "
+                                data-ng-class="{active: row == 'email'}"></span>
+                          <span class="glyphicon glyphicon-chevron-down"
+                                data-ng-click=" order('-email') "
+                                data-ng-class="{active: row == '-email'}"></span>
+                      </div></th>
+                      <th class="col-sn"><div class="th">
+                          Authorized
+                      </div></th>  
+                      <th class="col-sn"><div class="th">
+                          Admin
+                      </div></th>                                  
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-ng-repeat="user in currentPageUsers">
+                      <td>{{user.name}}</td>
+                      <td>{{user.designation}}</td>
+                      <td>{{user.email}}</td>  
+                      <td><label class="switch switch-info"><input type="checkbox" ng-checked = "user.is_authorized" ng-model="user.is_authorized" ng-change="checkEdit('user', user._id, user.name, user.designation, user.email, user.is_authorized, user.is_admin)"><i></i></label></td> 
+                      
+                      <td><label class="switch switch-info"><input type="checkbox" ng-checked = "user.is_admin" ng-model="user.is_admin" ng-change="checkEdit('user', user._id, user.name, user.designation, user.email, user.is_authorized, user.is_admin)"><i></i>       
+                      
+                      <td class="col-sn" data-ng-show="true">
+                        <span class="glyphicon glyphicon-edit"  data-ng-click="edit('user', user._id, user.name, user.designation, user.email, user.is_authorized, user.is_admin)"></span>
+                        <span class="glyphicon glyphicon-trash" data-ng-click="delete('user', user._id)"></span>
+                      </td>
+                  </tr>
+               </tbody>
+            </table>
+
+            <footer class="table-footer">
+              <div class="row">
+                  <div class="col-md-6 page-num-info">
+                      <span>
+                          Show 
+                          <select data-ng-model="numPerPage"
+                                  data-ng-options="num for num in numPerPageOpt"
+                                  data-ng-change="onNumPerPageChange()">
+                          </select> 
+                          entries per page
+                      </span>
+                  </div>
+                  <div class="col-md-6 text-right pagination-container">
+                      <pagination class="pagination-sm"
+                                  ng-model="currentPage"
+                                  total-items="filteredUsers.length"
+                                  max-size="4"
+                                  ng-change="select(currentPage)"
+                                  items-per-page="numPerPage"
+                                  rotate="false"
+                                  boundary-links="true"></pagination>
+                  </div>
+              </div>
+            </footer>
+        </div>
+    </div>
+</section>
+
+
+
+<script type="text/ng-template" id="userModalContent.html">
+  <div class="modal-header">
+    <h3>{{items.modalName}} Info</h3>
+  </div>
+  <div class="modal-body">
+  <form class="form-horizontal">
+    <div class="form-group">
+        <label for="" class="col-sm-2">Name</label>
+        <div class="col-sm-10">
+            <input tooltip="Please enter Category name" type="text" class="form-control" data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.name" ></input>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label for="" class="col-sm-2">Designation</label>
+        <div class="col-sm-10">
+            <input tooltip="Please enter description" type="text" class="form-control" data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.designation" ></input>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2">Admin</label>
+        <div class="col-sm-10">
+            <td><label class="switch switch-info"><input type="checkbox" ng-checked="items.is_admin" data-ng-model="items.is_admin"><i></i>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2">Authorized</label>
+        <div class="col-sm-10">
+            <td><label class="switch switch-info"><input type="checkbox" ng-checked = "items.is_authorized" data-ng-model="items.is_authorized"><i></i>
+        </div>
+    </div>
+  </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">Save</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+  </div>
+</script>
+
+<script type="text/ng-template" id="ModalDeleteContent.html">
+  <div class="modal-header">
+    <h3>Confirmation!</h3>
+  </div>
+  <div class="modal-body">
+      Are you sure, You want to delete this?
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" ng-click="confirm()">Confirm</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+  </div>
+</script>

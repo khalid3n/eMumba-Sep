@@ -15,9 +15,6 @@
   ]).controller('NavCtrl', [
     '$scope', 'taskStorage', 'filterFilter', '$location', '$log', 'Session', function($scope, taskStorage, filterFilter, $location, $log, Session) {
       var tasks;
-      if (!Session.validSession()) {
-        $location.path('/pages/signin');
-      }
       tasks = $scope.tasks = taskStorage.get();
       $scope.taskRemainingCount = filterFilter(tasks, {
         completed: false
@@ -28,6 +25,9 @@
     }
   ]).controller('DashboardCtrl', ['$scope', function($scope) {}]).controller('ActionCtrl', [
     '$scope', '$location', 'Session', function($scope, $location, Session) {
+      if (!Session.isValidSession()) {
+        $location.path('/pages/signin');
+      }
       $scope.logout = function() {
         Session.invalidateSession();
         return $location.path('/pages/signin');

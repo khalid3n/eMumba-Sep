@@ -31,8 +31,7 @@ angular.module('app.controllers', [])
     '$scope', 'taskStorage', 'filterFilter','$location', '$log', 'Session'
     ($scope, taskStorage, filterFilter, $location, $log, Session) ->
         # init        
-        if !Session.validSession()
-            $location.path('/pages/signin')
+        
         tasks = $scope.tasks = taskStorage.get()
         $scope.taskRemainingCount = filterFilter(tasks, {completed: false}).length
 
@@ -50,6 +49,9 @@ angular.module('app.controllers', [])
 .controller('ActionCtrl', [
     '$scope', '$location', 'Session'
     ($scope, $location, Session) ->
+        if !Session.isValidSession()
+            $location.path('/pages/signin')
+        
         $scope.logout = ->
             Session.invalidateSession()
             $location.path('/pages/signin')

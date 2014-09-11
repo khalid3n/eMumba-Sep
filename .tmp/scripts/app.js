@@ -4,32 +4,10 @@
     '$routeProvider', function($routeProvider) {
       return $routeProvider.when('/', {
         redirectTo: '/pages/signin'
-      }).when('/ui/typography', {
-        templateUrl: 'views/ui/typography.html'
-      }).when('/ui/buttons', {
-        templateUrl: 'views/ui/buttons.html'
-      }).when('/ui/icons', {
-        templateUrl: 'views/ui/icons.html'
-      }).when('/ui/grids', {
-        templateUrl: 'views/ui/grids.html'
-      }).when('/ui/widgets', {
-        templateUrl: 'views/ui/widgets.html'
-      }).when('/ui/components', {
-        templateUrl: 'views/ui/components.html'
-      }).when('/ui/timeline', {
-        templateUrl: 'views/ui/timeline.html'
-      }).when('/ui/nested-lists', {
-        templateUrl: 'views/ui/nested-lists.html'
-      }).when('/ui/pricing-tables', {
-        templateUrl: 'views/ui/pricing-tables.html'
-      }).when('/forms/elements', {
-        templateUrl: 'views/forms/elements.html'
-      }).when('/forms/layouts', {
-        templateUrl: 'views/forms/layouts.html'
-      }).when('/forms/validation', {
-        templateUrl: 'views/forms/validation.html'
-      }).when('/forms/wizard', {
-        templateUrl: 'views/forms/wizard.html'
+      }).when('/people', {
+        templateUrl: 'views/ui/user.html'
+      }).when('/categories', {
+        templateUrl: 'views/forms/Categories.html'
       }).when('/maps/gmap', {
         templateUrl: 'views/maps/gmap.html'
       }).when('/listing', {
@@ -71,11 +49,11 @@
       invalidateSession: function() {
         Session.data = null;
       },
-      validSession: function() {
-        if (Session.data !== null) {
-          return true;
-        } else {
+      isValidSession: function() {
+        if (Session.data === null) {
           return false;
+        } else {
+          return true;
         }
       }
     };

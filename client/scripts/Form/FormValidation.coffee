@@ -2,62 +2,6 @@
 
 angular.module('app.form.validation', [])
 
-.controller('wizardFormCtrl', [
-    '$scope'
-    ($scope) ->
-        $scope.wizard =
-            firstName: 'some name'
-            lastName: ''
-            email: ''
-            password: ''
-            age: ''
-            address: ''
-
-        $scope.isValidateStep1 = ->
-            console.log $scope.wizard_step1
-            console.log $scope.wizard.firstName isnt ''
-            console.log $scope.wizard.lastName is ''
-            console.log $scope.wizard.firstName isnt '' && $scope.wizard.lastName isnt ''
-            # console.log $scope.wizard_step1.$valid
-
-
-        $scope.finishedWizard = ->
-            console.log 'yoo'
-
-])
-
-.controller('formConstraintsCtrl', [
-    '$scope'
-    ($scope) ->
-        $scope.form =
-            required: ''
-            minlength: ''
-            maxlength: ''
-            length_rage: ''
-            type_something: ''
-            confirm_type: ''
-            foo: ''
-            email: ''
-            url: ''
-            num: ''
-            minVal: ''
-            maxVal: ''
-            valRange: ''
-            pattern: ''
-
-        original = angular.copy($scope.form)
-
-        $scope.revert = ->
-            $scope.form = angular.copy(original)
-            $scope.form_constraints.$setPristine()
-
-        $scope.canRevert = ->
-            return !angular.equals($scope.form, original) || !$scope.form_constraints.$pristine
-
-        $scope.canSubmit = ->
-            return $scope.form_constraints.$valid && !angular.equals($scope.form, original)
-
-])
 .controller('forgotCtrl', [
     '$scope', '$location', '$http', 'Session', '$log', 'ServerUrl'
     ($scope, $location, $http, Session, $log, ServerUrl) ->
@@ -99,7 +43,7 @@ angular.module('app.form.validation', [])
     '$scope', '$location', '$http', 'Session', '$log', 'ServerUrl'
     ($scope, $location, $http, Session, $log , ServerUrl) ->
                 
-        if Session.validSession()
+        if Session.isValidSession()
             $location.path('/listing')
         
         $scope.user =
@@ -206,40 +150,3 @@ angular.module('app.form.validation', [])
     }
 ])
 
-
-# Comment out, use AngularJS built in directive instead.
-# unique string, use on unique username, blacklist etc. 
-
-# angularjs already support it, yet you get the picture
-# validate number value, jquery free, only number >=x,  <= y are valid, e.g. 1~100, >= 0, <= -1...
-# use with AngularJS built in type="number"
-# .directive('minvalue', [ ->
-#     return {
-#         restrict: 'A'
-#         require: 'ngModel'
-#         link: (scope, ele, attrs, ngModelCtrl) ->
-#             minVal = attrs.minvalue
-
-#             validateVal = (value) ->
-#                 valid = if value >= minVal then true else false
-#                 ngModelCtrl.$setValidity('minVal', valid)
-
-#             scope.$watch(attrs.ngModel, validateVal)
-
-#     }
-# ])
-# .directive('maxvalue', [ ->
-#     return {
-#         restrict: 'A'
-#         require: 'ngModel'
-#         link: (scope, ele, attrs, ngModelCtrl) ->
-#             maxVal = attrs.maxvalue
-
-#             validateVal = (value) ->
-#                 valid = if value <= maxVal then true else false
-#                 ngModelCtrl.$setValidity('maxVal', valid)
-
-#             scope.$watch(attrs.ngModel, validateVal)
-
-#     }
-# ])

@@ -14,12 +14,12 @@
                               </div>
                               <div class="col-sm-3 col-xs-6 filter-result-info">
                                   <span>
-                                      Showing {{filteredRegions.length}}/{{stores.length}} entries
+                                      Showing {{filteredRegions.length}}/{{regions.length}} entries
                                   </span>              
                               </div>
-                             
+                             <div class="col-sm-5 text-right">  
                               <button class="btn btn-gap-v btn-info" ng-click="open('region')"><span class="glyphicon glyphicon-plus"></span> Add Region</button>                            
-                              
+                              </div>
                           </div>
                         </div>
 
@@ -40,7 +40,7 @@
                                             data-ng-click=" order('-name') "
                                             data-ng-class="{active: row == '-name'}"></span>
                                   </div></th>
-                                  <th class="col-md-1"><div class="th">
+                                  <th class="col-sn"><div class="th">
                                       Map
                                   </div></th>                                  
                               </tr>
@@ -49,8 +49,8 @@
                               <tr data-ng-repeat="region in currentPageRegions">
                                   <td>{{region.code}}</td>
                                   <td>{{region.name}}</td>
-                                  <td>{{region._id}}</td>                                  
-                                  <td class="col-md-1" data-ng-show="true">
+                                  <td><span class="glyphicon glyphicon-globe"></span></td>                              
+                                  <td class="col-sn" data-ng-show="true">
                                     <span class="glyphicon glyphicon-edit"  data-ng-click="edit('region', region._id, region.code, region.name)"></span>
                                     <span class="glyphicon glyphicon-trash" data-ng-click="delete('region', region._id)"></span>
                                   </td>
@@ -89,7 +89,7 @@
 
 
                     <tab heading="Areas">
-                         <div data-ng-controller="tableCtrl">
+                         <div data-ng-controller="tableAreaCtrl">
                         <div class="table-filters">
                           <div class="row">
                               <div class="col-sm-4 col-xs-6">
@@ -99,11 +99,11 @@
                               </div>
                               <div class="col-sm-3 col-xs-6 filter-result-info">
                                   <span>
-                                      Showing {{filteredStores.length}}/{{stores.length}} entries
+                                      Showing {{filteredAreas.length}}/{{areas.length}} entries
                                   </span>              
                               </div>
 
-                              <div class="col-sm-5 text-right" data-ng-controller="ModalDemoCtrl">                               
+                              <div class="col-sm-5 text-right">                               
                                 <button class="btn btn-gap-v btn-info" ng-click="open('area')"><span class="glyphicon glyphicon-plus"></span> Add Area</button>                            
                               </div>
                           </div>
@@ -115,11 +115,11 @@
                                  <th class="col-md-3"> <div class="th">
                                       ID
                                       <span class="glyphicon glyphicon-chevron-up"
-                                            data-ng-click=" order('price') "
-                                            data-ng-class="{active: row == 'price'}"></span>
+                                            data-ng-click=" order('code') "
+                                            data-ng-class="{active: row == 'code'}"></span>
                                       <span class="glyphicon glyphicon-chevron-down"
-                                            data-ng-click=" order('-price') "
-                                            data-ng-class="{active: row == '-price'}"></span>
+                                            data-ng-click=" order('-code') "
+                                            data-ng-class="{active: row == '-code'}"></span>
                                   </div></th>
                                   <th class="col-md-3"><div class="th">
                                       Region
@@ -129,26 +129,26 @@
                                   <th class="col-md-3"> <div class="th">
                                       Area
                                       <span class="glyphicon glyphicon-chevron-up"
-                                            data-ng-click=" order('price') "
-                                            data-ng-class="{active: row == 'price'}"></span>
+                                            data-ng-click=" order('name') "
+                                            data-ng-class="{active: row == 'name'}"></span>
                                       <span class="glyphicon glyphicon-chevron-down"
-                                            data-ng-click=" order('-price') "
-                                            data-ng-class="{active: row == '-price'}"></span>
+                                            data-ng-click=" order('-name') "
+                                            data-ng-class="{active: row == '-name'}"></span>
                                   </div></th>                                  
-                                  <th class="col-md-1"><div class="th">
+                                  <th class="col-sn"><div class="th">
                                       Map                                      
                                   </div></th>
                               </tr>
                             </thead>
                             <tbody>
-                              <tr data-ng-repeat="store in currentPageStores">
-                                  <td>{{store.rating}}</td>
-                                  <td>{{store.name}}</td>
-                                  <td>{{store.price}}</td>
-                                  <td>{{store.sales}}</td>                                 
-                                  <td class="col-md-1" data-ng-show="true">
-                                    <span class="glyphicon glyphicon-edit"  data-ng-click=""></span>
-                                    <span class="glyphicon glyphicon-trash" data-ng-click=""></span>
+                              <tr data-ng-repeat="area in currentPageAreas">
+                                  <td>{{area.code}}</td>
+                                  <td>{{area._id}}</td>
+                                  <td>{{area.name}}</td>
+                                  <td><span class="glyphicon glyphicon-globe"></span></td>                                 
+                                  <td class="col-sn" data-ng-show="true">
+                                    <span class="glyphicon glyphicon-edit"  data-ng-click="edit('area', area._id, area.code, area.name)"></span>
+                                    <span class="glyphicon glyphicon-trash" data-ng-click="delete('area', area._id)"></span>
                                   </td>
                               </tr>
                            </tbody>
@@ -169,7 +169,7 @@
                               <div class="col-md-6 text-right pagination-container">
                                   <pagination class="pagination-sm"
                                               ng-model="currentPage"
-                                              total-items="filteredStores.length"
+                                              total-items="filteredAreas.length"
                                               max-size="4"
                                               ng-change="select(currentPage)"
                                               items-per-page="numPerPage"
@@ -180,9 +180,12 @@
                         </footer>
                       </div>
                     </tab>
-                    
+                   
+
+
+
                     <tab heading="Territories">
-                         <div data-ng-controller="tableCtrl">
+                         <div data-ng-controller="tableTerritoryCtrl">
                         <div class="table-filters">
                           <div class="row">
                               <div class="col-sm-4 col-xs-6">
@@ -192,11 +195,11 @@
                               </div>
                               <div class="col-sm-3 col-xs-6 filter-result-info">
                                   <span>
-                                      Showing {{filteredStores.length}}/{{stores.length}} entries
+                                      Showing {{filteredTerritorys.length}}/{{territorys.length}} entries
                                   </span>              
                               </div>
 
-                              <div class="col-sm-5 text-right" data-ng-controller="ModalDemoCtrl">                               
+                              <div class="col-sm-5 text-right">                               
                                 <button class="btn btn-gap-v btn-info" ng-click="open('territory')"><span class="glyphicon glyphicon-plus"></span> Add Territories</button>                            
                               </div>
                           </div>
@@ -207,8 +210,8 @@
                               <tr>
                                   <th class="col-md-3"><div class="th">
                                       Region
-                                      <span class="glyphicon glyphicon-chevron-up" data-ng-click=" order('name') " data-ng-class="{active: row == 'name'}"></span>
-                                      <span class="glyphicon glyphicon-chevron-down" data-ng-click=" order('-name') " data-ng-class="{active: row == '-name'}"></span>
+                                      <span class="glyphicon glyphicon-chevron-up" data-ng-click=" order('code') " data-ng-class="{active: row == 'code'}"></span>
+                                      <span class="glyphicon glyphicon-chevron-down" data-ng-click=" order('-code') " data-ng-class="{active: row == '-code'}"></span>
                                   </div></th>
                                   <th class="col-md-3"> <div class="th">
                                       Area
@@ -222,26 +225,26 @@
                                   <th class="col-md-3"><div class="th">
                                      Territory
                                       <span class="glyphicon glyphicon-chevron-up"
-                                            data-ng-click=" order('sales') "
-                                            data-ng-class="{active: row == 'sales'}"></span>
+                                            data-ng-click=" order('name') "
+                                            data-ng-class="{active: row == 'name'}"></span>
                                       <span class="glyphicon glyphicon-chevron-down"
-                                            data-ng-click=" order('-sales') "
-                                            data-ng-class="{active: row == '-sales'}"></span>
+                                            data-ng-click=" order('-name') "
+                                            data-ng-class="{active: row == '-name'}"></span>
                                   </div></th>                                  
-                                  <th class="col-md-1"><div class="th">
+                                  <th class="col-sn"><div class="th">
                                       Map                                      
                                   </div></th>
                               </tr>
                             </thead>
                             <tbody>
-                              <tr data-ng-repeat="store in currentPageStores">
-                                  <td>{{store.name}}</td>
-                                  <td>{{store.price}}</td>
-                                  <td>{{store.sales}}</td>
-                                  <td>{{store.rating}}</td>                                                                   
-                                  <td class="col-md-1" data-ng-show="true">
-                                    <span class="glyphicon glyphicon-edit"  data-ng-click=""></span>
-                                    <span class="glyphicon glyphicon-trash" data-ng-click=""></span>
+                              <tr data-ng-repeat="territory in currentPageTerritorys">
+                                  <td>{{territory._id}}</td>
+                                  <td>{{territory._id}}</td>
+                                  <td>{{territory.name}}</td>
+                                  <td><span class="glyphicon glyphicon-globe"></span></td>                                                                   
+                                  <td class="col-sn" data-ng-show="true">
+                                    <span class="glyphicon glyphicon-edit"  data-ng-click="edit('territory', territory._id, territory.code, territory.name)"></span>
+                                    <span class="glyphicon glyphicon-trash" data-ng-click="delete('territory', territory._id)"></span>
                                   </td>
                               </tr>
                            </tbody>
@@ -262,7 +265,7 @@
                               <div class="col-md-6 text-right pagination-container">
                                   <pagination class="pagination-sm"
                                               ng-model="currentPage"
-                                              total-items="filteredStores.length"
+                                              total-items="filteredTerritorys.length"
                                               max-size="4"
                                               ng-change="select(currentPage)"
                                               items-per-page="numPerPage"
@@ -340,7 +343,7 @@
                                             data-ng-click=" order('-color') "
                                             data-ng-class="{active: row == '-color'}"></span>
                                   </div></th>
-                                  <th class="col-md-1"><div class="th">
+                                  <th class="col-sn"><div class="th">
                                       Map                                      
                                   </div></th>
                               </tr>
@@ -352,8 +355,8 @@
                                   <td>{{store.sales}}</td>
                                   <td>{{store.rating}}</td>                                  
                                   <td>{{store.sales}}</td>
-                                  <td>{{store.rating}}</td>
-                                  <td class="col-md-1" data-ng-show="true">
+                                  <td><span class="glyphicon glyphicon-globe"></span></td>
+                                  <td class="col-sn" data-ng-show="true">
                                     <span class="glyphicon glyphicon-edit"  data-ng-click=""></span>
                                     <span class="glyphicon glyphicon-trash" data-ng-click=""></span>
                                   </td>
@@ -461,7 +464,7 @@
                                             data-ng-click=" order('-type') "
                                             data-ng-class="{active: row == '-type'}"></span>
                                   </div></th>
-                                  <th class="col-md-1"><div class="th">
+                                  <th class="col-sn"><div class="th">
                                       Map                                      
                                   </div></th>
                               </tr>
@@ -474,8 +477,8 @@
                                   <td>{{store.rating}}</td>
                                   <td>{{store.name}}</td>
                                   <td>{{store.sales}}</td>
-                                  <td>{{store.rating}}</td>
-                                  <td class="col-md-1" data-ng-show="true">
+                                  <td><span class="glyphicon glyphicon-globe"></span></td>
+                                  <td class="col-sn" data-ng-show="true">
                                     <span class="glyphicon glyphicon-edit"  data-ng-click=""></span>
                                     <span class="glyphicon glyphicon-trash" data-ng-click=""></span>
                                   </td>

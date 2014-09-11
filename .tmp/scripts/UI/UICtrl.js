@@ -1,21 +1,6 @@
 (function() {
   'use strict';
-  angular.module('app.ui.ctrls', []).controller('NotifyCtrl', [
-    '$scope', 'logger', function($scope, logger) {
-      return $scope.notify = function(type) {
-        switch (type) {
-          case 'info':
-            return logger.log("Heads up! This alert needs your attention, but it's not super important.");
-          case 'success':
-            return logger.logSuccess("Well done! You successfully read this important alert message.");
-          case 'warning':
-            return logger.logWarning("Warning! Best check yo self, you're not looking too good.");
-          case 'error':
-            return logger.logError("Oh snap! Change a few things up and try submitting again.");
-        }
-      };
-    }
-  ]).controller('AlertDemoCtrl', [
+  angular.module('app.ui.ctrls', []).controller('AlertDemoCtrl', [
     '$scope', function($scope) {
       $scope.alerts = [
         {
@@ -61,64 +46,7 @@
         return $scope.alerts.splice(index, 1);
       };
     }
-  ]).controller('ProgressDemoCtrl', [
-    '$scope', function($scope) {
-      $scope.max = 200;
-      $scope.random = function() {
-        var type, value;
-        value = Math.floor((Math.random() * 100) + 10);
-        type = void 0;
-        if (value < 25) {
-          type = "success";
-        } else if (value < 50) {
-          type = "info";
-        } else if (value < 75) {
-          type = "warning";
-        } else {
-          type = "danger";
-        }
-        $scope.showWarning = type === "danger" || type === "warning";
-        $scope.dynamic = value;
-        $scope.type = type;
-      };
-      return $scope.random();
-    }
-  ]).controller('AccordionDemoCtrl', [
-    '$scope', function($scope) {
-      $scope.oneAtATime = true;
-      $scope.groups = [
-        {
-          title: "Dynamic Group Header - 1",
-          content: "Dynamic Group Body - 1"
-        }, {
-          title: "Dynamic Group Header - 2",
-          content: "Dynamic Group Body - 2"
-        }, {
-          title: "Dynamic Group Header - 3",
-          content: "Dynamic Group Body - 3"
-        }
-      ];
-      $scope.items = ["Item 1", "Item 2", "Item 3"];
-      $scope.status = {
-        isFirstOpen: true,
-        isFirstOpen1: true,
-        isFirstOpen2: true,
-        isFirstOpen3: true,
-        isFirstOpen4: true,
-        isFirstOpen5: true,
-        isFirstOpen6: true
-      };
-      $scope.addItem = function() {
-        var newItemNo;
-        newItemNo = $scope.items.length + 1;
-        $scope.items.push("Item " + newItemNo);
-      };
-    }
-  ]).controller('CollapseDemoCtrl', [
-    '$scope', function($scope) {
-      return $scope.isCollapsed = false;
-    }
-  ]).controller('ModalDemoCtrl', ['$scope', '$modal', '$log', function($scope, $modal, $log) {}]).controller('ModalInstanceCtrl', [
+  ]).controller('ModalInstanceCtrl', [
     '$scope', '$modalInstance', 'items', '$http', 'ServerUrl', '$log', function($scope, $modalInstance, items, $http, ServerUrl, $log) {
       $scope.items = items;
       $scope.isRegion = false;
@@ -189,6 +117,70 @@
         $modalInstance.dismiss("cancel");
       };
     }
+  ]).controller('ModalCategoryInstanceCtrl', [
+    '$scope', '$modalInstance', 'items', '$http', 'ServerUrl', '$log', function($scope, $modalInstance, items, $http, ServerUrl, $log) {
+      $scope.items = items;
+      $scope.ok = function() {
+        var data, methodtype, modalname;
+        modalname = $scope.items.modalName;
+        methodtype = ($scope.items.id === "" ? "post" : "put");
+        data = {};
+        data[modalname] = {
+          _id: $scope.items.id,
+          name: $scope.items.name,
+          description: $scope.items.desc,
+          icon: $scope.items.icon
+        };
+        return $http({
+          method: methodtype,
+          url: ServerUrl.getUrl() + modalname,
+          headers: {
+            "Content-Type": "application/json"
+          },
+          data: data
+        }).success(function(data, status, headers, config) {
+          $modalInstance.close(data);
+        }).error(function(data, status, headers, config) {
+          return $modalInstance.dismiss("cancel");
+        });
+      };
+      $scope.cancel = function() {
+        $modalInstance.dismiss("cancel");
+      };
+    }
+  ]).controller('ModalUserInstanceCtrl', [
+    '$scope', '$modalInstance', 'items', '$http', 'ServerUrl', '$log', function($scope, $modalInstance, items, $http, ServerUrl, $log) {
+      $scope.items = items;
+      $scope.ok = function() {
+        var data, methodtype, modalname;
+        modalname = $scope.items.modalName;
+        methodtype = ($scope.items.id === "" ? "post" : "put");
+        data = {};
+        data[modalname] = {
+          _id: $scope.items.id,
+          name: $scope.items.name,
+          designation: $scope.items.designation,
+          email: $scope.items.email,
+          is_authorized: $scope.items.is_authorized,
+          is_admin: $scope.items.is_admin
+        };
+        return $http({
+          method: methodtype,
+          url: ServerUrl.getUrl() + modalname,
+          headers: {
+            "Content-Type": "application/json"
+          },
+          data: data
+        }).success(function(data, status, headers, config) {
+          $modalInstance.close(data);
+        }).error(function(data, status, headers, config) {
+          return $modalInstance.dismiss("cancel");
+        });
+      };
+      $scope.cancel = function() {
+        $modalInstance.dismiss("cancel");
+      };
+    }
   ]).controller('ModalDeleteInstanceCtrl', [
     '$scope', '$modalInstance', 'items', '$http', 'ServerUrl', function($scope, $modalInstance, items, $http, ServerUrl) {
       $scope.items = items;
@@ -197,7 +189,7 @@
           method: "delete",
           url: ServerUrl.getUrl() + $scope.items.modalName + "/" + $scope.items.id
         }).success(function(data, status, headers, config) {
-          return $modalInstance.dismiss("cancel");
+          return $modalInstance.close($scope.items);
         }).error(function(data, status, headers, config) {
           return $modalInstance.dismiss("cancel");
         });
@@ -230,93 +222,6 @@
         }
       ];
       return $scope.navType = "pills";
-    }
-  ]).controller('TreeDemoCtrl', [
-    '$scope', function($scope) {
-      $scope.list = [
-        {
-          id: 1,
-          title: "Item 1",
-          items: []
-        }, {
-          id: 2,
-          title: "Item 2",
-          items: [
-            {
-              id: 21,
-              title: "Item 2.1",
-              items: [
-                {
-                  id: 211,
-                  title: "Item 2.1.1",
-                  items: []
-                }, {
-                  id: 212,
-                  title: "Item 2.1.2",
-                  items: []
-                }
-              ]
-            }, {
-              id: 22,
-              title: "Item 2.2",
-              items: [
-                {
-                  id: 221,
-                  title: "Item 2.2.1",
-                  items: []
-                }, {
-                  id: 222,
-                  title: "Item 2.2.2",
-                  items: []
-                }
-              ]
-            }
-          ]
-        }, {
-          id: 3,
-          title: "Item 3",
-          items: []
-        }, {
-          id: 4,
-          title: "Item 4",
-          items: [
-            {
-              id: 41,
-              title: "Item 4.1",
-              items: []
-            }
-          ]
-        }, {
-          id: 5,
-          title: "Item 5",
-          items: []
-        }, {
-          id: 6,
-          title: "Item 6",
-          items: []
-        }, {
-          id: 7,
-          title: "Item 7",
-          items: []
-        }
-      ];
-      $scope.selectedItem = {};
-      $scope.options = {};
-      $scope.remove = function(scope) {
-        scope.remove();
-      };
-      $scope.toggle = function(scope) {
-        scope.toggle();
-      };
-      return $scope.newSubItem = function(scope) {
-        var nodeData;
-        nodeData = scope.$modelValue;
-        nodeData.items.push({
-          id: nodeData.id * 10 + nodeData.items.length,
-          title: nodeData.title + "." + (nodeData.items.length + 1),
-          items: []
-        });
-      };
     }
   ]).controller('MapDemoCtrl', [
     '$scope', '$http', '$interval', function($scope, $http, $interval) {

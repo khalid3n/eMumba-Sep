@@ -2,16 +2,6 @@
 
 angular.module('app.ui.ctrls', [])
 
-.controller('NotifyCtrl', [
-    '$scope', 'logger'
-    ($scope, logger) ->
-        $scope.notify = (type)->
-            switch type
-                when 'info' then logger.log("Heads up! This alert needs your attention, but it's not super important.") 
-                when 'success' then logger.logSuccess("Well done! You successfully read this important alert message.")
-                when 'warning' then logger.logWarning("Warning! Best check yo self, you're not looking too good.")
-                when 'error' then logger.logError("Oh snap! Change a few things up and try submitting again.")
-])
 
 .controller('AlertDemoCtrl', [
     '$scope'
@@ -38,80 +28,7 @@ angular.module('app.ui.ctrls', [])
             $scope.alerts.splice(index, 1)
 ])
 
-.controller('ProgressDemoCtrl', [
-    '$scope'
-    ($scope) ->
-        $scope.max = 200
-        $scope.random = ->
-            value = Math.floor((Math.random() * 100) + 10)
-            type = undefined
-            if value < 25
-                type = "success"
-            else if value < 50
-                type = "info"
-            else if value < 75
-                type = "warning"
-            else
-                type = "danger"
-            $scope.showWarning = (type is "danger" or type is "warning")
-            $scope.dynamic = value
-            $scope.type = type
-            return
 
-        $scope.random()
-])
-
-.controller('AccordionDemoCtrl', [
-    '$scope'
-    ($scope) ->
-        $scope.oneAtATime = true
-        $scope.groups = [
-            {
-                title: "Dynamic Group Header - 1"
-                content: "Dynamic Group Body - 1"
-            }
-            {
-                title: "Dynamic Group Header - 2"
-                content: "Dynamic Group Body - 2"
-            }
-            {
-                title: "Dynamic Group Header - 3"
-                content: "Dynamic Group Body - 3"
-            }
-        ]
-        $scope.items = [
-            "Item 1"
-            "Item 2"
-            "Item 3"
-        ]
-
-        $scope.status =
-            isFirstOpen: true
-            isFirstOpen1: true
-            isFirstOpen2: true
-            isFirstOpen3: true
-            isFirstOpen4: true
-            isFirstOpen5: true
-            isFirstOpen6: true
-
-        $scope.addItem = ->
-            newItemNo = $scope.items.length + 1
-            $scope.items.push "Item " + newItemNo
-            return
-        return
-])
-
-.controller('CollapseDemoCtrl', [
-    '$scope'
-    ($scope) ->
-        $scope.isCollapsed = false
-])
-
-.controller('ModalDemoCtrl', [
-    '$scope', '$modal', '$log'
-    ($scope, $modal, $log) ->
-    
-])
 .controller('ModalInstanceCtrl', [
     '$scope', '$modalInstance', 'items', '$http' , 'ServerUrl', '$log'
     ($scope, $modalInstance, items, $http, ServerUrl, $log) ->
@@ -186,6 +103,74 @@ angular.module('app.ui.ctrls', [])
         return
 ])
 
+.controller('ModalCategoryInstanceCtrl', [
+    '$scope', '$modalInstance', 'items', '$http' , 'ServerUrl', '$log'
+    ($scope, $modalInstance, items, $http, ServerUrl, $log) ->
+        $scope.items = items     
+        
+        $scope.ok = -> 
+            modalname = $scope.items.modalName
+            methodtype = (if ($scope.items.id is "") then "post" else "put")
+            data = {}
+            data[modalname] =
+              _id: $scope.items.id
+              name: $scope.items.name
+              description: $scope.items.desc
+              icon: $scope.items.icon
+            
+            $http(
+              method: methodtype              
+              url: ServerUrl.getUrl() + modalname
+              headers:
+                "Content-Type": "application/json"
+              data: data                
+            ).success((data, status, headers, config) ->                
+                $modalInstance.close data
+                return 
+            ).error (data, status, headers, config) ->
+                $modalInstance.dismiss "cancel"
+        $scope.cancel = ->            
+            $modalInstance.dismiss "cancel"
+            return
+
+        return
+])
+
+.controller('ModalUserInstanceCtrl', [
+    '$scope', '$modalInstance', 'items', '$http' , 'ServerUrl', '$log'
+    ($scope, $modalInstance, items, $http, ServerUrl, $log) ->
+        $scope.items = items     
+        
+        $scope.ok = -> 
+            modalname = $scope.items.modalName
+            methodtype = (if ($scope.items.id is "") then "post" else "put")
+            data = {}
+            data[modalname] =
+              _id: $scope.items.id
+              name: $scope.items.name
+              designation: $scope.items.designation
+              email: $scope.items.email
+              is_authorized: $scope.items.is_authorized
+              is_admin: $scope.items.is_admin
+            
+            $http(
+              method: methodtype              
+              url: ServerUrl.getUrl() + modalname
+              headers:
+                "Content-Type": "application/json"
+              data: data                
+            ).success((data, status, headers, config) ->                
+                $modalInstance.close data
+                return 
+            ).error (data, status, headers, config) ->
+                $modalInstance.dismiss "cancel"
+        $scope.cancel = ->            
+            $modalInstance.dismiss "cancel"
+            return
+
+        return
+])
+
 .controller('ModalDeleteInstanceCtrl', [
     '$scope', '$modalInstance', 'items', '$http', 'ServerUrl'
     ($scope, $modalInstance, items, $http, ServerUrl) ->
@@ -196,7 +181,7 @@ angular.module('app.ui.ctrls', [])
                   method: "delete"
                   url: ServerUrl.getUrl() + $scope.items.modalName + "/" + $scope.items.id                                 
                 ).success((data, status, headers, config) ->
-                    $modalInstance.dismiss "cancel"
+                    $modalInstance.close $scope.items
                 ).error (data, status, headers, config) ->
                      $modalInstance.dismiss "cancel"                 
 
@@ -250,84 +235,7 @@ angular.module('app.ui.ctrls', [])
 
         $scope.navType = "pills"
 ])
-.controller('TreeDemoCtrl', [
-    '$scope'
-    ($scope) ->
-        $scope.list = [
-            id: 1
-            title: "Item 1"
-            items: []
-        ,
-            id: 2
-            title: "Item 2"
-            items: [
-                id: 21
-                title: "Item 2.1"
-                items: [
-                    id: 211
-                    title: "Item 2.1.1"
-                    items: []
-                ,
-                    id: 212
-                    title: "Item 2.1.2"
-                    items: []
-                ]
-            ,
-                id: 22
-                title: "Item 2.2"
-                items: [
-                    id: 221
-                    title: "Item 2.2.1"
-                    items: []
-                ,
-                    id: 222
-                    title: "Item 2.2.2"
-                    items: []
-                ]
-            ]
-        ,
-            id: 3
-            title: "Item 3"
-            items: []
-        ,
-            id: 4
-            title: "Item 4"
-            items: [
-                id: 41
-                title: "Item 4.1"
-                items: []
-            ]
-        ,
-            id: 5
-            title: "Item 5"
-            items: []
-        ,
-            id: 6
-            title: "Item 6"
-            items: []
-        ,
-            id: 7
-            title: "Item 7"
-            items: []
-        ]
-        $scope.selectedItem = {}
-        $scope.options = {}
-        $scope.remove = (scope) ->
-            scope.remove()
-            return
 
-        $scope.toggle = (scope) ->
-            scope.toggle()
-            return
-
-        $scope.newSubItem = (scope) ->
-            nodeData = scope.$modelValue
-            nodeData.items.push
-                id: nodeData.id * 10 + nodeData.items.length
-                title: nodeData.title + "." + (nodeData.items.length + 1)
-                items: []
-            return
-])
 .controller('MapDemoCtrl', [
     '$scope', '$http', '$interval'
     ($scope, $http, $interval) ->

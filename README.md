@@ -1,4 +1,5 @@
-Sanofi
+Emumba Project
 ======
 
-Sanofi-webtool
+
+A web tool to map locations of different organization on Google Map. 

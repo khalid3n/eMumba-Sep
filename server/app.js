@@ -12,7 +12,6 @@ app.use(morgan());
 
 //Routes
 var routes = {};
-routes.posts = require('./route/posts.js');
 routes.users = require('./route/users.js');
 routes.regions = require('./route/regions.js');
 routes.areas = require('./route/areas.js');

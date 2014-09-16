@@ -1,31 +1,26 @@
-<div class="page">
 
-    <section class="panel panel-default">
-        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> Google Map</strong></div>
-        <div class="panel-body">
-            <map class="ui-map" zoom="11" center="[40.74, -74.18]" scrollwheel="false">
-                <marker position="[40.72, -74.20]" title="marker" animation="Animation.DROP"></marker>
-                <marker position="[40.73, -74.19]" title="drag me" draggable="true"></marker>
-            </map>
-        </div>
-    </section>
 
-    <section class="panel panel-default">
-        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> Dynamic Map</strong></div>
-        <div class="panel-body" data-ng-controller="MapDemoCtrl">
-            <map class="ui-map" zoom="14" center="[43.6650000, -79.4103000]"></map>
-        </div>
-    </section>
+<section class="panel panel-default col-sm-12">    
+    <div class="panel-body">
+        <map class="ui-map" zoom="11" center="[40.74, -74.18]" scrollwheel="false">
+            <marker position="[40.72, -74.20]" title="marker" animation="Animation.DROP" draggable="true"></marker>
+            
+            <marker position="[40.73, -74.19]" title="drag me" draggable="true" on-click="showInfoWindow(event, 'marker-info')"> </marker>
+            <info-window id="marker-info">
+                <h4> I am an InfoWindow </h4>
+                I am here with you!                
+            </info-window>
+            
+            <shape name="polygon" fill-color="#FF0000" stroke-color="#FF0000" stroke-opacity="1.0" stroke-weight="0.5"
+                paths="[[40.84,-74.33],[40.74,-74.33],[40.74,-74.23],[40.84,-74.33]]" editable="true" draggable="true" />
+            
+            <shape name="rectangle" fill-color="#00FF00" stroke-color='#00FF00' stroke-opacity="0.8" stroke-weight="0.5"
+                bounds="[[40.69,-74.18], [40.78,-74.09]]" editable="true" draggable="true" />
+            
+            <shape name="circle" fill-color="#0000FF" stroke-color='#0000FF' stroke-opacity="0.8"stroke-weight="0.5" 
+                center="[40.70,-74.44]" radius="4000" editable="true" draggable="true" />
+        </map>
+    </div>
+</section>
 
-    <section class="panel panel-default">
-        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> Styled Map</strong></div>
-        <div class="panel-body">
-            <map class="ui-map" zoom="11" center="[40.73, -74.19]"
-                 scrollwheel="false"
-                 styles='[{"featureType": "all", "stylers": [{ "saturation": -100 } ] }]'>
-                <marker position="[40.73, -74.19]" title="drag me" draggable="true"></marker>
-            </map>
-        </div>
-    </section>
-
-</div>
+   

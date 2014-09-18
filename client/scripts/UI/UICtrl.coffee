@@ -218,8 +218,8 @@ angular.module('app.ui.ctrls', [])
 # ])
 
 .controller('TabsDemoCtrl', [
-    '$scope','$location', '$log', 'Session'
-    ($scope, $location, $log, Session) ->
+    '$scope','$location', '$log'
+    ($scope, $location, $log) ->
 
         $scope.tabs = [
           {
@@ -236,32 +236,6 @@ angular.module('app.ui.ctrls', [])
         $scope.navType = "pills"
 ])
 
-.controller('MapDemoCtrl', [
-    '$scope', '$http', '$interval'
-    ($scope, $http, $interval) ->
-        markers = []
-        i = 0
-
-        while i < 8
-            markers[i] = new google.maps.Marker(title: "Marker: " + i)
-            i++
-        $scope.GenerateMapMarkers = ->
-            d = new Date() #To show marker location changes over time
-            $scope.date = d.toLocaleString()
-            numMarkers = Math.floor(Math.random() * 4) + 4 #between 4 to 8 markers
-            i = 0
-            while i < numMarkers
-                lat = 43.6600000 + (Math.random() / 100)
-                lng = -79.4103000 + (Math.random() / 100)
-                loc = new google.maps.LatLng(lat, lng)
-                markers[i].setPosition loc
-                markers[i].setMap $scope.map
-                i++
-            return
-
-        $interval $scope.GenerateMapMarkers, 2000
-        return        
-])
 
 
 

@@ -2,6 +2,7 @@
 
 angular.module('app.tables', [])
 
+#Region
 .controller('tableRegionCtrl', [
     '$scope', '$filter', '$http', 'ServerUrl', '$log','$modal'
     ($scope, $filter, $http, ServerUrl, $log, $modal) ->
@@ -166,7 +167,7 @@ angular.module('app.tables', [])
 
 ])
 
-
+#Area
 .controller('tableAreaCtrl', [
     '$scope', '$filter', '$http', 'ServerUrl', '$log','$modal'
     ($scope, $filter, $http, ServerUrl, $log, $modal) ->
@@ -331,6 +332,7 @@ angular.module('app.tables', [])
 
 ])
 
+#Territory
 .controller('tableTerritoryCtrl', [
     '$scope', '$filter', '$http', 'ServerUrl', '$log','$modal'
     ($scope, $filter, $http, ServerUrl, $log, $modal) ->
@@ -666,7 +668,7 @@ angular.module('app.tables', [])
 ])
 
 
-#Category
+#Users
 
 .controller('tableUsersCtrl', [
     '$scope', '$filter', '$http', 'ServerUrl', '$log','$modal'

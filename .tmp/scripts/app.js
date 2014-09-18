@@ -30,27 +30,51 @@
         redirectTo: '/404'
       });
     }
-  ]).factory("Session", function($http) {
+  ]).run([
+    '$rootScope', 'Session', '$location', function($rootScope, Session, $location) {
+      return $rootScope.$on('$routeChangeStart', function(event, next, current) {
+        if (!Session.isValidSession()) {
+          if (next.templateUrl === "views/pages/signin.html") {
+
+          } else if (next.templateUrl === "views/pages/signup.html") {
+
+          } else if (next.templateUrl === "views/pages/forgot-password.html") {
+
+          } else if (next.templateUrl === "views/pages/404.html") {
+
+          } else if (next.templateUrl === "views/pages/500.html") {
+
+          } else {
+            return $location.path('/pages/signin');
+          }
+        }
+      });
+    }
+  ]).factory("Session", function($window) {
     var Session;
     Session = {
       data: null,
       saveSession: function(data) {
         Session.data = '';
         Session.data = data;
+        $window.sessionStorage.token = data;
       },
       updateSession: function(data) {
         if (Session.data !== null) {
           Session.data = data;
+          $window.sessionStorage.token = data;
         } else {
           Session.data = '';
           Session.data = data;
+          $window.sessionStorage.token = data;
         }
       },
       invalidateSession: function() {
-        Session.data = null;
+        delete Session.data;
+        delete $window.sessionStorage.token;
       },
       isValidSession: function() {
-        if (Session.data === null) {
+        if (!Session.data && !$window.sessionStorage.token) {
           return false;
         } else {
           return true;
@@ -58,16 +82,15 @@
       }
     };
     return Session;
-  }).factory("ServerUrl", function($http) {
+  }).factory("ServerUrl", function() {
     var ServerUrl;
-    return ServerUrl = {
-      url: 'http://192.168.20.130:3001/',
+    ServerUrl = {
+      url: "http://192.168.20.130:3001/",
       getUrl: function() {
         return ServerUrl.url;
       }
     };
+    return ServerUrl;
   });
-
-  ServerUrl;
 
 }).call(this);

@@ -202,14 +202,8 @@
       return {
         restrict: "A",
         controller: [
-          '$scope', '$element', '$window', 'Session', '$location', function($scope, $element, $window, $location, Session) {
-            return $element.on('click', function() {
-              if (Session.isValidSession()) {
-                return $window.history.back();
-              } else {
-                return $location.path('/pages/signin');
-              }
-            });
+          '$scope', '$element', '$window', function($scope, $element, $window) {
+            return $window.history.back();
           }
         ]
       };

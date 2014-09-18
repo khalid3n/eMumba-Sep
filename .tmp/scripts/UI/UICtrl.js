@@ -210,7 +210,7 @@
       return $scope.bigCurrentPage = 1;
     }
   ]).controller('TabsDemoCtrl', [
-    '$scope', '$location', '$log', 'Session', function($scope, $location, $log, Session) {
+    '$scope', '$location', '$log', function($scope, $location, $log) {
       $scope.tabs = [
         {
           title: "Dynamic Title 1",
@@ -222,34 +222,6 @@
         }
       ];
       return $scope.navType = "pills";
-    }
-  ]).controller('MapDemoCtrl', [
-    '$scope', '$http', '$interval', function($scope, $http, $interval) {
-      var i, markers;
-      markers = [];
-      i = 0;
-      while (i < 8) {
-        markers[i] = new google.maps.Marker({
-          title: "Marker: " + i
-        });
-        i++;
-      }
-      $scope.GenerateMapMarkers = function() {
-        var d, lat, lng, loc, numMarkers;
-        d = new Date();
-        $scope.date = d.toLocaleString();
-        numMarkers = Math.floor(Math.random() * 4) + 4;
-        i = 0;
-        while (i < numMarkers) {
-          lat = 43.6600000 + (Math.random() / 100);
-          lng = -79.4103000 + (Math.random() / 100);
-          loc = new google.maps.LatLng(lat, lng);
-          markers[i].setPosition(loc);
-          markers[i].setMap($scope.map);
-          i++;
-        }
-      };
-      $interval($scope.GenerateMapMarkers, 2000);
     }
   ]);
 

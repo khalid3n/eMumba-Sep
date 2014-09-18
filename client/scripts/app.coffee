@@ -3,7 +3,7 @@
 angular.module('app', [
     # Angular modules
     'ngRoute'
-    'ngAnimate'
+    'ngAnimate'    
 
     # 3rd Party Modules
     'ui.bootstrap'
@@ -102,49 +102,64 @@ angular.module('app', [
             .otherwise(
                 redirectTo: '/404'
             )
-]).factory "Session", ($http) ->
+])
+
+.run([
+     '$rootScope', 'Session', '$location'
+     ($rootScope, Session, $location) ->
+
+         $rootScope.$on('$routeChangeStart', (event, next, current) ->
+             if !Session.isValidSession()
+                if next.templateUrl == "views/pages/signin.html"
+                else if next.templateUrl == "views/pages/signup.html"
+                else if next.templateUrl == "views/pages/forgot-password.html"
+                else if next.templateUrl == "views/pages/404.html"
+                else if next.templateUrl == "views/pages/500.html"
+                else
+                    $location.path('/pages/signin')
+         )
+
+])
+
+
+.factory "Session", ($window) ->
   Session =
     data: null
     saveSession: (data) ->
       Session.data = '' 
       Session.data = data
+      $window.sessionStorage.token = data
       return
 
     updateSession: (data) ->
       if Session.data isnt null
         Session.data = data
+        $window.sessionStorage.token = data
       else
         Session.data = ''
         Session.data = data
+        $window.sessionStorage.token = data
       return
 
     invalidateSession: ->
-      Session.data = null
+      delete Session.data
+      delete $window.sessionStorage.token
       return
 
     isValidSession: ->
-      if Session.data is null
+      if !Session.data && !$window.sessionStorage.token        
         false
-      else
+      else        
         true
 
   Session
 
-.factory "ServerUrl", ($http) ->
-   ServerUrl =
-    url: 'http://192.168.20.130:3001/'
+.factory "ServerUrl", ->
+  ServerUrl =
+    url: "http://192.168.20.130:3001/"
     getUrl: ->
-        return ServerUrl.url
+      ServerUrl.url
+
   ServerUrl
-# .run([
-#     '$rootScope'
-#     ($rootScope) ->
 
-#         $rootScope.$on('$routeChangeStart', (event, next, current) ->
-#             console.log 'routeChangeStart'
-#         )
 
-#         $rootScope.$on('$routeChangeSuccess', (event, current, previous, rejection) ->
-#             console.log 'routeChangeSuccess'
-#         )
-# ])

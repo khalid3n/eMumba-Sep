@@ -4,8 +4,8 @@ angular.module('app.controllers', [])
 
 # overall control
 .controller('AppCtrl', [
-    '$scope', '$location', 'Session'
-    ($scope, $location, Session) ->
+    '$scope', '$location'
+    ($scope, $location) ->
         $scope.isSpecificPage = ->
             path = $location.path()
             return _.contains( [
@@ -28,8 +28,8 @@ angular.module('app.controllers', [])
 ])
 
 .controller('NavCtrl', [
-    '$scope', 'taskStorage', 'filterFilter','$location', '$log', 'Session'
-    ($scope, taskStorage, filterFilter, $location, $log, Session) ->
+    '$scope', 'taskStorage', 'filterFilter','$location', '$log'
+    ($scope, taskStorage, filterFilter, $location, $log) ->
         # init        
         
         tasks = $scope.tasks = taskStorage.get()
@@ -49,9 +49,6 @@ angular.module('app.controllers', [])
 .controller('ActionCtrl', [
     '$scope', '$location', 'Session'
     ($scope, $location, Session) ->
-        if !Session.isValidSession()
-            $location.path('/pages/signin')
-        
         $scope.logout = ->
             Session.invalidateSession()
             $location.path('/pages/signin')

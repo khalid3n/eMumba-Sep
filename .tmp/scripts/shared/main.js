@@ -1,7 +1,7 @@
 (function() {
   'use strict';
   angular.module('app.controllers', []).controller('AppCtrl', [
-    '$scope', '$location', 'Session', function($scope, $location, Session) {
+    '$scope', '$location', function($scope, $location) {
       $scope.isSpecificPage = function() {
         var path;
         path = $location.path();
@@ -13,7 +13,7 @@
       };
     }
   ]).controller('NavCtrl', [
-    '$scope', 'taskStorage', 'filterFilter', '$location', '$log', 'Session', function($scope, taskStorage, filterFilter, $location, $log, Session) {
+    '$scope', 'taskStorage', 'filterFilter', '$location', '$log', function($scope, taskStorage, filterFilter, $location, $log) {
       var tasks;
       tasks = $scope.tasks = taskStorage.get();
       $scope.taskRemainingCount = filterFilter(tasks, {
@@ -25,9 +25,6 @@
     }
   ]).controller('DashboardCtrl', ['$scope', function($scope) {}]).controller('ActionCtrl', [
     '$scope', '$location', 'Session', function($scope, $location, Session) {
-      if (!Session.isValidSession()) {
-        $location.path('/pages/signin');
-      }
       $scope.logout = function() {
         Session.invalidateSession();
         return $location.path('/pages/signin');

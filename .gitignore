@@ -2,5 +2,4 @@ node_modules/
 .sass-cache/
 .tmp/
 server/node_modules/
-dist/
 server/npm-debug.log

@@ -44,13 +44,16 @@
         if (event.type === google.maps.drawing.OverlayType.CIRCLE) {
           $log.info(event.overlay.getCenter());
           google.maps.event.addListener(event.overlay, 'radius_changed', function(circle) {
+            return $log.info(event.overlay.getRadius());
+          });
+          google.maps.event.addListener(event.overlay, 'dragend', function(circle) {
             return $log.info(event.overlay.getCenter());
           });
         }
         if (event.type === google.maps.drawing.OverlayType.POLYGON) {
-          $log.info(event.overlay.getPaths().getArray());
+          $log.info(event.overlay.getPaths().getArray()[0].j);
           google.maps.event.addListener(event.overlay, 'mouseup', function(polygon) {
-            return $log.info(event.overlay.getPaths().getArray());
+            return $log.info(event.overlay.getPaths().getArray()[0].j);
           });
         }
         if (event.type === google.maps.drawing.OverlayType.RECTANGLE) {

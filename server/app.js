@@ -6,7 +6,7 @@ var morgan  = require('morgan'); // logger
 //var tokenManager = require('./config/token_manager');
 //var secret = require('./config/secret');
 
-app.listen(3001);
+app.listen(3002);
 app.use(bodyParser());
 app.use(morgan());
 
@@ -73,4 +73,4 @@ app.post('/category', routes.categories.create);
 app.delete('/category/:id', routes.categories.delete); 
 app.put('/category', routes.categories.update);
 
-console.log('Blog API is starting on port 3001');
+console.log('Blog API is starting on port 3002');

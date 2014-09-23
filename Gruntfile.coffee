@@ -28,7 +28,7 @@ module.exports = (grunt) ->
         watch:
             coffee:
                 files: ["<%= yeoman.app %>/scripts/**/*.coffee"]
-                tasks: ["coffee:dist"]
+                tasks: ["coffee:dist", "copy:dist", "concat", "uglify", "usemin"]
 
             compass:
                 files: ["<%= yeoman.app %>/styles/**/*.{scss,sass}"]

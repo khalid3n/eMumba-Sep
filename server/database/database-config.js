@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
-var mongodbURL = 'mongodb://localhost/blog';
+var mongodbURL = 'mongodb://localhost/sanofi-db';
 var mongodbOptions = { };
 
 mongoose.connect(mongodbURL, mongodbOptions, function (err, res) {
@@ -42,38 +42,49 @@ var Region = new Schema({
     name: { type: String },  
 });
 
-var Temp = new Schema({
-    code: { type: String},
-    name: { type: String}, 
-    region: [Region]
+var A = new Schema({
+    name: { type: String }, 
+    description: { type: String }
+});
+
+var Parent = new Schema({
+    parentname: { type: String }, 
+    _name: { type: String, ref: "A"}
 });
 
 
 var Area = new Schema({
     code: { type: String },
-    name: { type: String },  
+    name: { type: String },
+    _region: { type: String, ref: "Region" }  
 });
 
 var Territory = new Schema({
     code: { type: String },
-    name: { type: String },  
-});
-
-var Brick = new Schema({
-    code: { type: String },
-    name: { type: String },  
-});
-
-
-var Location = new Schema({
-    code: { type: String },
-    name: { type: String },  
+    name: { type: String },
+    _area: { type: String, ref: "Area" }  
 });
 
 var Category = new Schema({
     name: { type: String },
     description: { type: String },
     icon: { type: String }
+});
+
+var Brick = new Schema({
+    code: { type: String },
+    name: { type: String },
+    color: { type: String}
+    _territory: { type: String, ref: "Territory"}
+
+});
+
+
+var Location = new Schema({
+    code: { type: String },
+    name: { type: String },
+    _brick: { type: String, ref: "Brick"},
+    _catogory: { type: String, ref: "Category"}  
 });
 //////////////////Schema////////////////////////
 
@@ -112,6 +123,8 @@ var areaModel = mongoose.model('Area', Area);
 var territoryModel = mongoose.model('Territory', Territory);
 var locationModel = mongoose.model('Location', Location);
 var categoryModel = mongoose.model('Category', Category );
+var aModel = mongoose.model('A', A);
+var parentModel = mongoose.model('Parent', Parent );
 
 
 // Export Models
@@ -122,3 +135,5 @@ exports.areaModel = areaModel;
 exports.territoryModel = territoryModel;
 exports.locationModel = locationModel;
 exports.categoryModel = categoryModel;
+exports.aModel = aModel;
+exports.parentModel = parentModel;

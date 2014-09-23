@@ -280,12 +280,12 @@ module.exports = (grunt) ->
 
 
     grunt.registerTask "server", (target) ->
-        return grunt.task.run(["build", "open", "watch"])  if target is "dist"
-        grunt.task.run ["clean:server", "open", "watch"]
+        return grunt.task.run(["build", "watch"])  if target is "dist"
+        grunt.task.run ["clean:server", "watch"]
 
     grunt.registerTask "lessServer", (target) ->
-        return grunt.task.run(["buildLess", "open", "connect:dist:keepalive"])  if target is "dist"
-        grunt.task.run ["clean:server", "open", "watch"]
+        return grunt.task.run(["buildLess", "connect:dist:keepalive"])  if target is "dist"
+        grunt.task.run ["clean:server", "watch"]
 
     grunt.registerTask "build", ["clean:dist", "useminPrepare", "concurrent:dist", "copy:dist", "concat", "uglify", "usemin"]
     grunt.registerTask "buildLess", ["clean:dist", "useminPrepare", "concurrent:lessDist", "copy:dist", "concat", "uglify", "usemin"]

@@ -46,12 +46,19 @@ angular.module('app.map', [])
         )
         $scope.drawingManager.setMap $scope.map
 
-        google.maps.event.addListener $scope.drawingManager, 'overlaycomplete', (event) ->
+        google.maps.event.addListener $scope.drawingManager, 'overlaycomplete', (event) ->         
           if event.type == google.maps.drawing.OverlayType.CIRCLE 
             $log.info event.overlay.getCenter()
+            google.maps.event.addListener event.overlay, 'radius_changed', (circle) ->
+              $log.info event.overlay.getCenter()
+          
           if event.type == google.maps.drawing.OverlayType.POLYGON 
-            $log.info event.overlay.getPaths()
+            $log.info event.overlay.getPaths().getArray()
+            google.maps.event.addListener event.overlay, 'mouseup', (polygon) ->
+              $log.info event.overlay.getPaths().getArray()
+          
           if event.type == google.maps.drawing.OverlayType.RECTANGLE 
             $log.info event.overlay.getBounds()  
-        
+            google.maps.event.addListener event.overlay, 'dragend', (rectangle) ->
+              $log.info event.overlay.getBounds()            
 ])

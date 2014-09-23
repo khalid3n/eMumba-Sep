@@ -38,38 +38,28 @@ angular.module('app', [
             .when(
                 '/'
                 redirectTo: '/pages/signin'
-            )            
-
+            )      
             # UI Kit
             .when(
                 '/people'
                 templateUrl: 'views/ui/user.html'
             )
-            
-
             # Categories
             .when(
                 '/categories'
                 templateUrl: 'views/forms/Categories.html'
             )
-            
-
             # Maps
             .when(
                 '/maps/gmap'
                 templateUrl: 'views/maps/gmap.html'
-            )
-            
-
+            )            
             # Tables            
             .when(
                 '/listing'
                 templateUrl: 'views/listing/list.html'
             )
-
-
-            # Pages
-            
+            # Pages            
             .when(
                 '/pages/signin'
                 templateUrl: 'views/pages/signin.html'
@@ -98,7 +88,6 @@ angular.module('app', [
                 '/pages/500'
                 templateUrl: 'views/pages/500.html'
             ) 
-
             .otherwise(
                 redirectTo: '/404'
             )

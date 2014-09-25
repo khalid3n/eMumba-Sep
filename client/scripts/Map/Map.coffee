@@ -62,6 +62,5 @@ angular.module('app.map', [])
           if event.type == google.maps.drawing.OverlayType.RECTANGLE 
             $log.info event.overlay.getBounds()  
             google.maps.event.addListener event.overlay, 'dragend', (rectangle) ->
-              $log.info event.overlay.getBounds()            
-        
+              $log.info event.overlay.getBounds()
 ])

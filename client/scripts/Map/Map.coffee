@@ -6,6 +6,8 @@ angular.module('app.map', [])
     '$scope', '$http', '$interval', '$log'
     ($scope, $http, $interval, $log) ->
  
+        $log.info $scope.map
+
         $scope.drawingManager = new google.maps.drawing.DrawingManager(          
           drawingControl: true
           drawingControlOptions:

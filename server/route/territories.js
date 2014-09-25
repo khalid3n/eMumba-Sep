@@ -2,13 +2,21 @@ var db = require('../database/database-config.js');
 
 
 exports.getAll = function(req, res) {
-  var query = db.territoryModel.find();
-  query.exec(function(err, results) {
-    if (err) {
-        console.log(err);
-        return res.send(400);
-      }
-      return res.json(200, results);
+  var Territory = db.territoryModel;
+  Territory.find()
+  .lean()
+  .populate({ path: '_area' })
+  .exec(function(err, docs) {
+
+    var options = {
+      path: '_area._region',
+      model: 'Region'
+    };
+
+    if (err) return res.json(500);
+    Territory.populate(docs, options, function (err, territories) {
+      res.json(territories);
+    });
   });
 };
 
@@ -82,6 +90,7 @@ exports.create = function(req, res) {
   var territoryModel = new db.territoryModel();
   territoryModel.code = territory.code;
   territoryModel.name = territory.name;
+  territoryModel._area = territory._ref._id
 
   territoryModel.save(function(err, territory) {
     if (err) {

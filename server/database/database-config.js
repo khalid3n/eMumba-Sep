@@ -42,16 +42,6 @@ var Region = new Schema({
     name: { type: String },  
 });
 
-var A = new Schema({
-    name: { type: String }, 
-    description: { type: String }
-});
-
-var Parent = new Schema({
-    parentname: { type: String }, 
-    _name: { type: String, ref: "A"}
-});
-
 
 var Area = new Schema({
     code: { type: String },
@@ -74,17 +64,15 @@ var Category = new Schema({
 var Brick = new Schema({
     code: { type: String },
     name: { type: String },
-    color: { type: String}
+    color: { type: String},
     _territory: { type: String, ref: "Territory"}
 
 });
 
-
 var Location = new Schema({
-    code: { type: String },
     name: { type: String },
     _brick: { type: String, ref: "Brick"},
-    _catogory: { type: String, ref: "Category"}  
+    _category: { type: String, ref: "Category"}  
 });
 //////////////////Schema////////////////////////
 
@@ -121,10 +109,9 @@ var postModel = mongoose.model('Post', Post);
 var regionModel = mongoose.model('Region', Region);
 var areaModel = mongoose.model('Area', Area);
 var territoryModel = mongoose.model('Territory', Territory);
-var locationModel = mongoose.model('Location', Location);
 var categoryModel = mongoose.model('Category', Category );
-var aModel = mongoose.model('A', A);
-var parentModel = mongoose.model('Parent', Parent );
+var brickModel = mongoose.model('Brick', Brick);
+var locationModel = mongoose.model('Location', Location);
 
 
 // Export Models
@@ -133,7 +120,6 @@ exports.postModel = postModel;
 exports.regionModel = regionModel;
 exports.areaModel = areaModel;
 exports.territoryModel = territoryModel;
-exports.locationModel = locationModel;
 exports.categoryModel = categoryModel;
-exports.aModel = aModel;
-exports.parentModel = parentModel;
+exports.brickModel = brickModel;
+exports.locationModel = locationModel;

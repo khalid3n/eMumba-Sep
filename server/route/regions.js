@@ -1,8 +1,9 @@
 var db = require('../database/database-config.js');
 
 
-/*exports.getAll = function(req, res) {
+exports.getAll = function(req, res) {
 	var query = db.regionModel.find();
+  
 	query.exec(function(err, results) {
 		if (err) {
   			console.log(err);
@@ -10,9 +11,9 @@ var db = require('../database/database-config.js');
   		}
   		return res.json(200, results);
 	});
-};*/
+};
 
-exports.getAll = function(req, res) {
+/*exports.getAll = function(req, res) {
   var query = db.parentModel.find();
   query.populate('_name')
   query.exec(function(err, results) {
@@ -22,7 +23,7 @@ exports.getAll = function(req, res) {
       }
       return res.json(200, results);
   });
-};
+};*/
 
 exports.delete = function(req, res) {
   //if (!req.user) {
@@ -84,7 +85,7 @@ exports.update = function(req, res) {
   });
 };
 
-/*exports.create = function(req, res) {
+exports.create = function(req, res) {
   //check for logged in user
   //if (!req.user) {
   //  return res.send(401);
@@ -108,22 +109,22 @@ exports.update = function(req, res) {
     //return res.send(200);
   });
 };
-*/
-exports.create = function(req, res) {
+
+/*exports.create = function(req, res) {
 
   var a = req.body.a;
   //var aModel = new db.aModel();
   //aModel.description = a.description;
   //aModel.name = a.name; 
 
-  /*aModel.save(function(err, a) {
+  aModel.save(function(err, a) {
     if (err) {
       console.log(err);
       return res.send(400);
     }
     return res.json(200, a);
     //return res.send(200);
-  });*/
+  });
 
   console.log(a);
   var parentModel = new db.parentModel();
@@ -139,4 +140,4 @@ exports.create = function(req, res) {
     //return res.send(200);
   });
 
-};
+};*/

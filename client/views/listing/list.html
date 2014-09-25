@@ -27,7 +27,7 @@
                           <thead>
                               <tr>
                                   <th class="col-md-2"><div class="th">
-                                      ID
+                                      Code
                                       <span class="glyphicon glyphicon-chevron-up" data-ng-click=" order('code') " data-ng-class="{active: row == 'code'}"></span>
                                       <span class="glyphicon glyphicon-chevron-down" data-ng-click=" order('-code') " data-ng-class="{active: row == '-code'}"></span>
                                   </div></th>
@@ -113,7 +113,7 @@
                           <thead>
                               <tr>
                                  <th class="col-md-3"> <div class="th">
-                                      ID
+                                      Code
                                       <span class="glyphicon glyphicon-chevron-up"
                                             data-ng-click=" order('code') "
                                             data-ng-class="{active: row == 'code'}"></span>
@@ -143,7 +143,7 @@
                             <tbody>
                               <tr data-ng-repeat="area in currentPageAreas">
                                   <td>{{area.code}}</td>
-                                  <td>{{area._id}}</td>
+                                  <td>{{area._region.name}}</td>
                                   <td>{{area.name}}</td>
                                   <td><span class="glyphicon glyphicon-globe"></span></td>                                 
                                   <td class="col-sn" data-ng-show="true">
@@ -163,7 +163,7 @@
                                               data-ng-options="num for num in numPerPageOpt"
                                               data-ng-change="onNumPerPageChange()">
                                       </select> 
-                                      entries per page
+                                      Entries Per Page
                                   </span>
                               </div>
                               <div class="col-md-6 text-right pagination-container">
@@ -238,8 +238,8 @@
                             </thead>
                             <tbody>
                               <tr data-ng-repeat="territory in currentPageTerritorys">
-                                  <td>{{territory._id}}</td>
-                                  <td>{{territory._id}}</td>
+                                  <td>{{territory._area._region.name}}</td>
+                                  <td>{{territory._area.name}}</td>
                                   <td>{{territory.name}}</td>
                                   <td><span class="glyphicon glyphicon-globe"></span></td>                                                                   
                                   <td class="col-sn" data-ng-show="true">
@@ -278,7 +278,7 @@
                     </tab>
                     
                     <tab heading="Bricks">
-                         <div data-ng-controller="tableCtrl">
+                         <div data-ng-controller="tableBrickCtrl">
                         <div class="table-filters">
                           <div class="row">
                               <div class="col-sm-4 col-xs-6">
@@ -288,11 +288,11 @@
                               </div>
                               <div class="col-sm-3 col-xs-6 filter-result-info">
                                   <span>
-                                      Showing {{filteredStores.length}}/{{stores.length}} entries
+                                      Showing {{filteredBricks.length}}/{{bricks.length}} entries
                                   </span>              
                               </div>
 
-                              <div class="col-sm-5 text-right" data-ng-controller="ModalDemoCtrl">                               
+                              <div class="col-sm-5 text-right">                               
                                 <button class="btn btn-gap-v btn-info" ng-click="open('brick')"><span class="glyphicon glyphicon-plus"></span> Add Bricks</button>                            
                               </div>
                           </div>
@@ -349,16 +349,16 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr data-ng-repeat="store in currentPageStores">
-                                  <td>{{store.name}}</td>
-                                  <td>{{store.price}}</td>
-                                  <td>{{store.sales}}</td>
-                                  <td>{{store.rating}}</td>                                  
-                                  <td>{{store.sales}}</td>
+                              <tr data-ng-repeat="brick in currentPageBricks">
+                                  <td>{{brick._territory._area._region.name}}</td>
+                                  <td>{{brick._territory._area.name}}</td>
+                                  <td>{{brick._territory.name}}</td>
+                                  <td>{{brick.name}}</td>                                  
+                                  <td>{{brick.color}}</td>
                                   <td><span class="glyphicon glyphicon-globe"></span></td>
                                   <td class="col-sn" data-ng-show="true">
-                                    <span class="glyphicon glyphicon-edit"  data-ng-click=""></span>
-                                    <span class="glyphicon glyphicon-trash" data-ng-click=""></span>
+                                     <span class="glyphicon glyphicon-edit"  data-ng-click="edit('brick', brick._id, brick.name)"></span>
+                                    <span class="glyphicon glyphicon-trash" data-ng-click="delete('brick', brick._id)"></span>
                                   </td>
                               </tr>
                            </tbody>
@@ -379,7 +379,7 @@
                               <div class="col-md-6 text-right pagination-container">
                                   <pagination class="pagination-sm"
                                               ng-model="currentPage"
-                                              total-items="filteredStores.length"
+                                              total-items="filteredBricks.length"
                                               max-size="4"
                                               ng-change="select(currentPage)"
                                               items-per-page="numPerPage"
@@ -392,7 +392,7 @@
                     </tab>
                     
                     <tab heading="Locations">
-                        <div data-ng-controller="tableCtrl">
+                        <div data-ng-controller="tableLocationCtrl">
                         <div class="table-filters">
                           <div class="row">
                               <div class="col-sm-4 col-xs-6">
@@ -402,10 +402,10 @@
                               </div>
                               <div class="col-sm-3 col-xs-6 filter-result-info">
                                   <span>
-                                      Showing {{filteredStores.length}}/{{stores.length}} entries
+                                      Showing {{filteredLocations.length}}/{{locations.length}} entries
                                   </span>              
                               </div>
-                              <div class="col-sm-5 text-right" data-ng-controller="ModalDemoCtrl">                               
+                              <div class="col-sm-5 text-right">                               
                                 <button class="btn btn-gap-v btn-info" ng-click="open('location')"><span class="glyphicon glyphicon-plus"></span> Add Location</button>                            
                               </div>
                           </div>
@@ -470,17 +470,17 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr data-ng-repeat="store in currentPageStores">
-                                  <td>{{store.name}}</td>
-                                  <td>{{store.price}}</td>
-                                  <td>{{store.sales}}</td>
-                                  <td>{{store.rating}}</td>
-                                  <td>{{store.name}}</td>
-                                  <td>{{store.sales}}</td>
+                              <tr data-ng-repeat="location in currentPageLocations">
+                                  <td>{{location._brick._territory._area._region.name}}</td>
+                                  <td>{{location._brick._territory._area.name}}</td>
+                                  <td>{{location._brick._territory.name}}</td>
+                                  <td>{{location._brick.name}}</td>
+                                  <td>{{location.name}}</td>
+                                  <td>{{location._category.name}}</td>
                                   <td><span class="glyphicon glyphicon-globe"></span></td>
                                   <td class="col-sn" data-ng-show="true">
-                                    <span class="glyphicon glyphicon-edit"  data-ng-click=""></span>
-                                    <span class="glyphicon glyphicon-trash" data-ng-click=""></span>
+                                    <span class="glyphicon glyphicon-edit"  data-ng-click="edit('location', location._id, location.name)"></span>
+                                    <span class="glyphicon glyphicon-trash" data-ng-click="delete('location', location._id)"></span>
                                   </td>
                               </tr>
                            </tbody>
@@ -522,37 +522,39 @@
 
 <script type="text/ng-template" id="myModalContent.html">
   <div class="modal-header">
-    <h3>{{items.modalName}} Info</h3>
+    <h3>{{items.modalName | capitalize}} Info</h3>
   </div>
   <div class="modal-body">
   <form class="form-horizontal">
-    <div class="form-group" ng-show="isRegion || isArea">
-        <label for="" class="col-sm-2">ID</label>
+    <div class="form-group">
+        <label for="" class="col-sm-2">Code</label>
         <div class="col-sm-10">
-            <input tooltip="Please enter ID of Region" type="text" class="form-control" data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.code" ></input>
+            <input tooltip="Enter Code" type="text" class="form-control" data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.code" ></input>
         </div>
     </div>
-    <div class="form-group" ng-show="isArea || isTeritory || isBrick">
+    <div class="form-group">
+        <label for="" class="col-sm-2">Name</label>
+        <div class="col-sm-10">
+            <input tooltip="Enter name" type="text" class="form-control" data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.name" ></input>
+        </div>
+    </div>
+    <div class="form-group" ng-show="isArea">
         <label for="" class="col-sm-2">Region</label>
         <div class="col-sm-10">
             <span class="ui-select">
-                <select>
-                    <option>Mustard</option>
-                    <option>Ketchup</option>
-                    <option>Barbecue</option>
+                <select data-ng-model="items.region" ng-options="region.name for region in data">
+                          <option value="">Select Region</option>
                 </select>
             </span>
         </div>
     </div>
 
-    <div class="form-group" ng-show="isTeritory || isBrick">
+    <div class="form-group" ng-show="isTeritory">
         <label for="" class="col-sm-2">Area</label>
         <div class="col-sm-10">
             <span class="ui-select">
-                <select>
-                    <option>Mustard</option>
-                    <option>Ketchup</option>
-                    <option>Barbecue</option>
+                <select data-ng-model="items.region" ng-options="region.name for region in data">
+                          <option value="">Select Area</option>
                 </select>
             </span>
         </div>
@@ -562,10 +564,8 @@
         <label for="" class="col-sm-2">Territory</label>
         <div class="col-sm-10">
             <span class="ui-select">
-                <select>
-                    <option>Mustard</option>
-                    <option>Ketchup</option>
-                    <option>Barbecue</option>
+                <select data-ng-model="items.region" ng-options="region.name for region in data">
+                          <option value="">Select Territory</option>
                 </select>
             </span>
         </div>
@@ -584,12 +584,6 @@
         </div>
     </div>
 
-    <div class="form-group">
-        <label for="" class="col-sm-2">Name</label>
-        <div class="col-sm-10">
-            <input tooltip="Please enter name of Region" type="text" class="form-control" data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.name" ></input>
-        </div>
-    </div>
   </form>
   </div>
   <div class="modal-footer">

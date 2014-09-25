@@ -30,8 +30,8 @@ angular.module('app.ui.ctrls', [])
 
 
 .controller('ModalInstanceCtrl', [
-    '$scope', '$modalInstance', 'items', '$http' , 'ServerUrl', '$log'
-    ($scope, $modalInstance, items, $http, ServerUrl, $log) ->
+    '$scope', '$modalInstance', 'items', 'data', '$http' , 'ServerUrl', '$log'
+    ($scope, $modalInstance, items, data, $http, ServerUrl, $log) ->
         $scope.items = items
         
         $scope.isRegion = false
@@ -39,6 +39,15 @@ angular.module('app.ui.ctrls', [])
         $scope.isTeritory = false
         $scope.isBrick = false
         $scope.isLocation = false
+
+        $scope.getData  = (urlString) ->
+            $http(             
+              url: ServerUrl.getUrl() + urlString           
+            ).success((data, status, headers, config) ->            
+                $scope.data = data
+                data
+            ).error (data, status, headers, config) ->
+                null
         
         if $scope.items.modalName == 'region'
             $scope.isRegion = true
@@ -47,24 +56,28 @@ angular.module('app.ui.ctrls', [])
             $scope.isBrick = false
             $scope.isLocation = false
         else if $scope.items.modalName == 'area'
+            $scope.getData('region')
             $scope.isRegion = false
             $scope.isArea = true
             $scope.isTeritory = false
             $scope.isBrick = false
             $scope.isLocation = false
         else if $scope.items.modalName == 'territory'
+            $scope.getData('area')
             $scope.isRegion = false
             $scope.isArea = false
             $scope.isTeritory = true
             $scope.isBrick = false
             $scope.isLocation = false
         else if $scope.items.modalName == 'brick'
+            $scope.getData('territory')
             $scope.isRegion = false
             $scope.isArea = false
             $scope.isTeritory = false
             $scope.isBrick = true
             $scope.isLocation = false
         else if $scope.items.modalName == 'location'
+            $scope.getData('brick')
             $scope.isRegion = false
             $scope.isArea = false
             $scope.isTeritory = false
@@ -79,7 +92,8 @@ angular.module('app.ui.ctrls', [])
               _id: $scope.items.id
               name: $scope.items.name
               code: $scope.items.code
-            
+              _ref: $scope.items.region
+            $log.info data
             $http(
               method: methodtype              
               url: ServerUrl.getUrl() + modalname
@@ -172,8 +186,8 @@ angular.module('app.ui.ctrls', [])
 ])
 
 .controller('ModalDeleteInstanceCtrl', [
-    '$scope', '$modalInstance', 'items', '$http', 'ServerUrl'
-    ($scope, $modalInstance, items, $http, ServerUrl) ->
+    '$scope', '$modalInstance', 'items', 'data', '$http', 'ServerUrl'
+    ($scope, $modalInstance, items, data, $http, ServerUrl) ->
         $scope.items = items       
         
         $scope.confirm = ->            

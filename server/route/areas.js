@@ -3,7 +3,7 @@ var db = require('../database/database-config.js');
 
 exports.getAll = function(req, res) {
 	var query = db.areaModel.find();
-
+  query.populate('_region')
 	query.exec(function(err, results) {
 		if (err) {
   			console.log(err);
@@ -84,6 +84,7 @@ exports.create = function(req, res) {
   var areaModel = new db.areaModel();
   areaModel.code = area.code;
   areaModel.name = area.name;
+  areaModel._region = area._ref._id;
 
   areaModel.save(function(err, area) {
     if (err) {

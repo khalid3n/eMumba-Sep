@@ -6,7 +6,7 @@ var morgan  = require('morgan'); // logger
 //var tokenManager = require('./config/token_manager');
 //var secret = require('./config/secret');
 
-app.listen(3002);
+app.listen(3001);
 app.use(bodyParser());
 app.use(morgan());
 
@@ -17,6 +17,8 @@ routes.regions = require('./route/regions.js');
 routes.areas = require('./route/areas.js');
 routes.territories = require('./route/territories.js');
 routes.categories = require('./route/categories.js');
+routes.bricks = require('./route/bricks.js');
+routes.locations = require('./route/locations.js');
 
 
 app.all('*', function(req, res, next) {
@@ -41,15 +43,6 @@ app.put('/user', routes.users.update);
 app.post('/user/authorize', routes.users.authorize);
 app.post('/user/restrict', routes.users.restrict);
 
-//Logout
-//Create a new post
-//app.post('/post', jwt({secret: secret.secretToken}), tokenManager.verifyToken , routes.posts.create); 
-
-//Edit the post id
-//app.put('/post', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.posts.update); 
-
-//Delete the post id
-//app.delete('/post/:id', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.posts.delete); 
 app.get('/region', routes.regions.getAll);
 app.post('/region', routes.regions.create);
 app.delete('/region/:id', routes.regions.delete); 
@@ -73,4 +66,14 @@ app.post('/category', routes.categories.create);
 app.delete('/category/:id', routes.categories.delete); 
 app.put('/category', routes.categories.update);
 
-console.log('Blog API is starting on port 3002');
+app.get('/brick', routes.bricks.getAll);
+app.post('/brick', routes.bricks.create);
+app.delete('/brick/:id', routes.bricks.delete); 
+app.put('/brick', routes.bricks.update);
+
+app.get('/location', routes.locations.getAll);
+app.post('/location', routes.locations.create);
+app.delete('/location/:id', routes.locations.delete); 
+app.put('/location', routes.locations.update);
+
+console.log('Blog API is starting on port 3001');

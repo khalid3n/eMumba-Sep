@@ -3,7 +3,7 @@
 angular.module('app', [
     # Angular modules
     'ngRoute'
-    'ngAnimate'    
+    'ngAnimate'        
 
     # 3rd Party Modules
     'ui.bootstrap'

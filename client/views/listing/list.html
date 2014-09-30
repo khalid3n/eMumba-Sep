@@ -241,7 +241,7 @@
                                   <td>{{territory._area._region.name}}</td>
                                   <td>{{territory._area.name}}</td>
                                   <td>{{territory.name}}</td>
-                                  <td><span class="glyphicon glyphicon-globe"></span></td>                                                                   
+                                  <td><span class="glyphicon glyphicon-globe" data-ng-click="mapView(territory.name)"></span></td>                                                                   
                                   <td class="col-sn" data-ng-show="true">
                                     <span class="glyphicon glyphicon-edit"  data-ng-click="edit('territory', territory._id, territory.code, territory.name)"></span>
                                     <span class="glyphicon glyphicon-trash" data-ng-click="delete('territory', territory._id)"></span>

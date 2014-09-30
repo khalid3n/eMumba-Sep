@@ -3,11 +3,10 @@
 angular.module('app.map', [])
 
 .controller('MapDemoCtrl', [
-    '$scope', '$http', '$interval', '$log'
-    ($scope, $http, $interval, $log) ->
- 
-        $log.info $scope.map
-
+    '$scope', '$http', '$interval', '$log' ,'$rootScope'
+    ($scope, $http, $interval, $log, $rootScope) ->
+        
+        #$log.info $scope.map
         $scope.drawingManager = new google.maps.drawing.DrawingManager(          
           drawingControl: true
           drawingControlOptions:
@@ -65,4 +64,24 @@ angular.module('app.map', [])
             $log.info event.overlay.getBounds()  
             google.maps.event.addListener event.overlay, 'dragend', (rectangle) ->
               $log.info event.overlay.getBounds()
-])
+ 
+        $scope.codeAddress = (territoryAdrs) ->                   
+          geocoder = new google.maps.Geocoder()
+          geocoder.geocode
+            address: territoryAdrs
+          , (results, status) ->
+            if status is google.maps.GeocoderStatus.OK
+              
+              $scope.map.setCenter results[0].geometry.location
+              $log.info results[0].geometry.location
+              $log.info territoryAdrs
+            else
+              $log.info "Geocode was not successful for the following reason: " + status
+            return
+
+
+        $rootScope.$on "findAddress", (event, args) ->
+           $scope.codeAddress(args)
+
+        #$scope.codeAddress('Al Rigga')
+ ])

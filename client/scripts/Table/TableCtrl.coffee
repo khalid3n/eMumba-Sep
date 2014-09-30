@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('app.tables', [])
+angular.module('app.tables', ['app.map'])
 
 #Region
 .controller('tableRegionCtrl', [
@@ -336,8 +336,8 @@ angular.module('app.tables', [])
 
 #Territory
 .controller('tableTerritoryCtrl', [
-    '$scope', '$filter', '$http', 'ServerUrl', '$log','$modal'
-    ($scope, $filter, $http, ServerUrl, $log, $modal) ->
+    '$scope', '$filter', '$http', 'ServerUrl', '$log','$modal','$location', '$interval'
+    ($scope, $filter, $http, ServerUrl, $log, $modal, $location, $interval) ->
         # filter
 
         $scope.territorys = []
@@ -496,6 +496,14 @@ angular.module('app.tables', [])
                 return
 
             return
+
+        #map
+        $scope.mapView = (territoryAdrs)->  
+            
+            $scope.$emit('findAddress', territoryAdrs)
+            $location.path('/maps/gmap')            
+            
+            $log.info "End"    
 
         return
 

@@ -64,6 +64,8 @@ exports.update = function(req, res) {
     updateArea.name = area.name;
   } 
 
+  updateArea._region = area._ref._id;
+
   db.areaModel.update({_id: area._id}, updateArea, function(err, nbRows, raw) {
     return res.json(200, area);
     //return res.send(200);

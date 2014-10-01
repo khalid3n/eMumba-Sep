@@ -1,18 +1,26 @@
 var db = require('../database/database-config.js');
 var jwt = require('jsonwebtoken');
+var nodemailer = require('nodemailer');
+
+// create reusable transporter object using SMTP transport
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'khalid.khan@emumba.com',
+        pass: 'et3rc3sa'
+    }
+});
+
 
 exports.login = function(req, res) {
 	var email = req.body.email || '';
 	var password = req.body.password || '';
-	console.log("I am here");
-	console.log("here is " + req.body.email + " sdfasd " + req.body.password);
 	if (email == '' || password == '') { 
 	 	return res.send(401); 
 	}
 	console.log(req.body.email + " " + req.body.password);
 
 	db.userModel.findOne({email: email}, function (err, user) {
-		console.log("user "+ user.email);
 		if (err) {
 			console.log(err);
 			return res.send(401);
@@ -208,7 +216,14 @@ exports.authorize = function(req, res) {
 			console.log(err);
 			return res.send(400);
 		}
-
+		var mailOptions = setMailOptions('khalid.khan@emumba.com', req.body.email, 'testsubject', 'some body text');
+		transporter.sendMail(mailOptions, function(error, info){
+			if (error) {
+				console.log(error);
+			} else {
+				console.log('Message sent: '+ info.response);
+			}
+		});
 		return res.send(200);
 	});
 }
@@ -229,13 +244,13 @@ exports.restrict = function(req, res) {
 	});
 }
 
-exports.makeAdmin = function(req, res) {
+exports.makeadmin = function(req, res) {
 	var id = req.body.id || '';
 	if (id == '') {
 		return res.send(400);
 	}
 
-	db.userModel.update({_id: id}, { is_authorized: true }, function(err, nbRows, raw) {
+	db.userModel.update({_id: id}, { is_admin: true }, function(err, nbRows, raw) {
 		if (err) {
 			console.log(err);
 			return res.send(400);
@@ -245,13 +260,13 @@ exports.makeAdmin = function(req, res) {
 	});
 }
 
-exports.makeNonAdmin = function(req, res) {
+exports.restrictadmin = function(req, res) {
 	var id = req.body.id || '';
 	if (id == '') {
 		return res.send(400);
 	}
 
-	db.userModel.update({_id: id}, { is_authorized: false }, function(err, nbRows, raw) {
+	db.userModel.update({_id: id}, { is_admin: false }, function(err, nbRows, raw) {
 		if (err) {
 			console.log(err);
 			return res.send(400);
@@ -259,4 +274,13 @@ exports.makeNonAdmin = function(req, res) {
 
 		return res.send(200);
 	});
+}
+
+function setMailOptions(from, to, subject, body){
+	return {
+		from: from, 
+		to: to, 
+		subject: subject, 
+		text: body
+	}
 }

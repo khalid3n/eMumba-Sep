@@ -42,6 +42,8 @@ app.delete('/user/:id', routes.users.delete);
 app.put('/user', routes.users.update);
 app.post('/user/authorize', routes.users.authorize);
 app.post('/user/restrict', routes.users.restrict);
+app.post('/user/makeadmin', routes.users.makeadmin);
+app.post('/user/restrictadmin', routes.users.restrictadmin);
 
 app.get('/region', routes.regions.getAll);
 app.post('/region', routes.regions.create);

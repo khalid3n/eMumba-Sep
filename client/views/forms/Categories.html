@@ -23,7 +23,7 @@
               <thead>
                   <tr>
                       <th class="col-md-2"><div class="th">
-                          Category Name
+                          Name
                           <span class="glyphicon glyphicon-chevron-up" data-ng-click=" order('name') " data-ng-class="{active: row == 'name'}"></span>
                           <span class="glyphicon glyphicon-chevron-down" data-ng-click=" order('-name') " data-ng-class="{active: row == '-name'}"></span>
                       </div></th>
@@ -86,12 +86,12 @@
 
 <script type="text/ng-template" id="categoryModalContent.html">
   <div class="modal-header">
-    <h3>{{items.modalName}} Info</h3>
+    <h3>{{items.modalName | capitalize}} Info</h3>
   </div>
   <div class="modal-body">
   <form class="form-horizontal">
     <div class="form-group">
-        <label for="" class="col-sm-2">Category Name</label>
+        <label for="" class="col-sm-2">Name</label>
         <div class="col-sm-10">
             <input tooltip="Please enter Category name" type="text" class="form-control" data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.name" ></input>
         </div>

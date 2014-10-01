@@ -23,7 +23,7 @@ angular.module('app.controllers', [])
             ], path )
 
         $scope.main =
-            brand: 'Sanofi-WebTool'
+            brand: 'Sanofi'
             name: 'Administrator' # those which uses i18n can not be replaced for now.            
 ])
 

@@ -9,7 +9,7 @@
                           <div class="row">
                               <div class="col-sm-4 col-xs-6">
                                   <form>
-                                      <input type="text" placeholder="search" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></input>
+                                      <input type="text" placeholder="Search Regions" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></input>
                                   </form>
                               </div>
                               <div class="col-sm-3 col-xs-6 filter-result-info">
@@ -67,7 +67,7 @@
                                               data-ng-options="num for num in numPerPageOpt"
                                               data-ng-change="onNumPerPageChange()">
                                       </select> 
-                                      entries per page
+                                      Entries Per Page
                                   </span>
                               </div>
                               <div class="col-md-6 text-right pagination-container">
@@ -94,7 +94,7 @@
                           <div class="row">
                               <div class="col-sm-4 col-xs-6">
                                   <form>
-                                      <input type="text" placeholder="search" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></input>
+                                      <input type="text" placeholder="Search Areas" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></input>
                                   </form>
                               </div>
                               <div class="col-sm-3 col-xs-6 filter-result-info">
@@ -147,7 +147,7 @@
                                   <td>{{area.name}}</td>
                                   <td><span class="glyphicon glyphicon-globe"></span></td>                                 
                                   <td class="col-sn" data-ng-show="true">
-                                    <span class="glyphicon glyphicon-edit"  data-ng-click="edit('area', area._id, area.code, area.name)"></span>
+                                    <span class="glyphicon glyphicon-edit"  data-ng-click="edit('area', area._id, area.code, area.name, area._region)"></span>
                                     <span class="glyphicon glyphicon-trash" data-ng-click="delete('area', area._id)"></span>
                                   </td>
                               </tr>
@@ -190,7 +190,7 @@
                           <div class="row">
                               <div class="col-sm-4 col-xs-6">
                                   <form>
-                                      <input type="text" placeholder="search" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></input>
+                                      <input type="text" placeholder="Search Territories" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></input>
                                   </form>
                               </div>
                               <div class="col-sm-3 col-xs-6 filter-result-info">
@@ -283,7 +283,7 @@
                           <div class="row">
                               <div class="col-sm-4 col-xs-6">
                                   <form>
-                                      <input type="text" placeholder="search" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></input>
+                                      <input type="text" placeholder="Search Bricks" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></input>
                                   </form>
                               </div>
                               <div class="col-sm-3 col-xs-6 filter-result-info">
@@ -397,7 +397,7 @@
                           <div class="row">
                               <div class="col-sm-4 col-xs-6">
                                   <form>
-                                      <input type="text" placeholder="search" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></input>
+                                      <input type="text" placeholder="Search Locations" class="form-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></input>
                                   </form>
                               </div>
                               <div class="col-sm-3 col-xs-6 filter-result-info">
@@ -447,7 +447,7 @@
                                             data-ng-class="{active: row == '-brick'}"></span>
                                   </div></th>
                                   <th class="col-md-2"><div class="th">
-                                      Location Name
+                                      Location
                                       <span class="glyphicon glyphicon-chevron-up"
                                             data-ng-click=" order('location') "
                                             data-ng-class="{active: row == 'location'}"></span>
@@ -495,7 +495,7 @@
                                               data-ng-options="num for num in numPerPageOpt"
                                               data-ng-change="onNumPerPageChange()">
                                       </select> 
-                                      entries per page
+                                      Entries Per Page
                                   </span>
                               </div>
                               <div class="col-md-6 text-right pagination-container">
@@ -541,9 +541,9 @@
     <div class="form-group" ng-show="isArea">
         <label for="" class="col-sm-2">Region</label>
         <div class="col-sm-10">
-            <span class="ui-select">
-                <select data-ng-model="items.region" ng-options="region.name for region in data">
-                          <option value="">Select Region</option>
+            <span class="ui-select">                
+                <select ng-model="items.region" ng-options="region.name for region in data">
+                  <option value="">Select Region</option>
                 </select>
             </span>
         </div>
@@ -571,14 +571,20 @@
         </div>
     </div>
 
+    <div class="form-group" ng-show="isBrick">
+        <label for="" class="col-sm-2">Color</label>
+        <div class="col-sm-10">
+            <ui-colorpicker ng-model="color"></ui-colorpicker>
+            <input ng-model='color' />
+        </div>
+    </div>
+
     <div class="form-group" ng-show="isLocation">
         <label for="" class="col-sm-2">Brick</label>
         <div class="col-sm-10">
             <span class="ui-select">
-                <select>
-                    <option>Mustard</option>
-                    <option>Ketchup</option>
-                    <option>Barbecue</option>
+                <select data-ng-model="items.region" ng-options="region.name for region in data">
+                          <option value="">Select Brick</option>
                 </select>
             </span>
         </div>

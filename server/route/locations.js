@@ -67,14 +67,11 @@ exports.update = function(req, res) {
 
   var updatelocation = {};
 
-  if (location.code != null && location.code != "") {
-    updatelocation.code = location.code;
-  } 
-
   if (location.name != null && location.name != "") {
     updatelocation.name = location.name;
   } 
-
+  updatelocation._brick = location._ref._id;
+  
   db.locationModel.update({_id: location._id}, updatelocation, function(err, nbRows, raw) {
     //return res.send(200);
     return res.json(200, location);
@@ -88,15 +85,15 @@ exports.create = function(req, res) {
   //}
 
   var location = req.body.location;
-  console.log(location)
+  console.log(location._ref._id)
   if (location == null || location.name == null) {
     return res.send(400);
   }
 
   var locationModel = new db.locationModel();
   locationModel.name = location.name;
-  locationModel._category = location._category
-  locationModel._brick = location._brick;
+  locationModel._brick = location._ref._id;
+  //locationModel._brick = location._brick;
 
   locationModel.save(function(err, location) {
     if (err) {

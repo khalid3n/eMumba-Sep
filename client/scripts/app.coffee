@@ -3,7 +3,7 @@
 angular.module('app', [
     # Angular modules
     'ngRoute'
-    'ngAnimate'    
+    'ngAnimate'        
 
     # 3rd Party Modules
     'ui.bootstrap'
@@ -150,6 +150,16 @@ angular.module('app', [
       ServerUrl.url
 
   ServerUrl
+
+.factory "MapAddress", ->
+  MapAddress =
+    address: "SHARJAH"
+    setMapAddress: (address) ->
+      MapAddress.address = address
+    getMapAddress: ->
+      MapAddress.address
+
+  MapAddress
 
 .filter 'capitalize', -> 
     (input, $scope) -> 

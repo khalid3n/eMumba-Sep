@@ -3,9 +3,10 @@
 angular.module('app.map', [])
 
 .controller('MapDemoCtrl', [
-    '$scope', '$http', '$interval', '$log'
-    ($scope, $http, $interval, $log) ->
- 
+    '$scope', '$http', '$interval', '$log' ,'$rootScope','MapAddress'
+    ($scope, $http, $interval, $log, $rootScope, MapAddress) ->
+        
+        #$log.info $scope.map
         $scope.drawingManager = new google.maps.drawing.DrawingManager(          
           drawingControl: true
           drawingControlOptions:
@@ -63,4 +64,18 @@ angular.module('app.map', [])
             $log.info event.overlay.getBounds()  
             google.maps.event.addListener event.overlay, 'dragend', (rectangle) ->
               $log.info event.overlay.getBounds()
-])
+ 
+        $scope.codeAddress = (mapAdrs) ->        
+          geocoder = new google.maps.Geocoder()
+          geocoder.geocode
+            address: mapAdrs
+          , (results, status) ->
+            if status is google.maps.GeocoderStatus.OK              
+              $scope.map.setCenter results[0].geometry.location              
+            else
+              $log.info "Geocode was not successful for the following reason: " + status
+            return
+
+
+        $scope.codeAddress(MapAddress.getMapAddress())
+ ])

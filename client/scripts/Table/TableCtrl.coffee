@@ -336,8 +336,8 @@ angular.module('app.tables', ['app.map'])
 
 #Territory
 .controller('tableTerritoryCtrl', [
-    '$scope', '$filter', '$http', 'ServerUrl', '$log','$modal','$location', '$interval'
-    ($scope, $filter, $http, ServerUrl, $log, $modal, $location, $interval) ->
+    '$scope', '$filter', '$http', 'ServerUrl', '$log','$modal','$location', '$interval' , 'MapAddress'
+    ($scope, $filter, $http, ServerUrl, $log, $modal, $location, $interval, MapAddress) ->
         # filter
 
         $scope.territorys = []
@@ -498,13 +498,10 @@ angular.module('app.tables', ['app.map'])
             return
 
         #map
-        $scope.mapView = (territoryAdrs)->  
+        $scope.mapView = (territoryAdrs)->            
+            MapAddress.setMapAddress(territoryAdrs)            
+            $location.path('/maps/gmap') 
             
-            $scope.$emit('findAddress', territoryAdrs)
-            $location.path('/maps/gmap')            
-            
-            $log.info "End"    
-
         return
 
 ])

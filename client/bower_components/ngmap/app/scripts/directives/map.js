@@ -17,6 +17,7 @@ ngMap.directive('map', ['Attr2Options', '$parse', 'NavigatorGeolocation', 'GeoCo
          * Initialize map and events
          */ 
         this.initializeMap = function(scope, element, attrs) {
+          console.log("map initialize");
           var filtered = parser.filter(attrs);
           scope.google = google;
           var mapOptions = parser.getOptions(filtered, scope);

@@ -23,7 +23,10 @@ var User = new Schema({
     is_authorized: { type: Boolean, default: false }, 
     designation: { type: String },
     is_email_send: { type: Boolean, default: false},
-    email: { type: String, required: true}
+    email: { type: String, required: true}, 
+    resetPassowordToken: { type: String },
+    resetPasswordExpiry: { type: Date}
+
 });
 
 

@@ -1,14 +1,16 @@
 var db = require('../database/database-config.js');
 var jwt = require('jsonwebtoken');
 var nodemailer = require('nodemailer');
+var async = require('async');
+var crypto = require('crypto');
 
 // create reusable transporter object using SMTP transport
-var transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-        user: 'khalid.khan@emumba.com',
-        pass: 'et3rc3sa'
-    }
+var smtpTransport = nodemailer.createTransport('SMTP', {
+	service: 'SendGrid',
+	auth: {
+	  user: 'khalid.khan@emumba.com',
+	  pass: 'et3rc3sa'
+	}
 });
 
 
@@ -276,11 +278,55 @@ exports.restrictadmin = function(req, res) {
 	});
 }
 
-function setMailOptions(from, to, subject, body){
-	return {
-		from: from, 
-		to: to, 
-		subject: subject, 
-		text: body
-	}
+exports.resetPassword = function(req, res) {
+	  // async waterfall will run an array of fucntions in a series
+  async.waterfall([
+  	// create password reset token
+    function(done) {
+      crypto.randomBytes(20, function(err, buf) {
+        var token = buf.toString('hex');
+        done(err, token);
+      });
+    },
+
+    function(token, done) {
+      console.log(req.body.email);
+      db.userModel.findOne({ email: req.body.email }, function(err, user) {
+        if (!user) {
+          // if user doesn't exsit with the provided email
+          //req.flash('error', 'No account with that email address exists.');
+          return res.redirect('/forgot');
+        }
+
+        db.userModel.update({_id: user._id}, { resetPassowordToken: token, 
+        	resetPasswordExpiry: Date.now() + (3600000 * 24)}, function(err, nbRows, raw) {
+			done(err, token, db.userModel);
+		});
+
+      });
+    },
+    function(token, user, done) {
+      
+      var mailOptions = {
+        to: user.email,
+        from: 'khalid.khan@emumba.com',
+        subject: 'Sanofi Password Reset',
+        text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+          'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+      };
+      smtpTransport.sendMail(mailOptions, function(err) {
+        //req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+        done(err, 'done');
+      });
+    }
+  ], function(err) {
+    if (err) {
+    	console.log("asdfasdf")
+    	//return next(err);
+    }
+    //res.redirect('/forgot');
+    res.send(200);
+  });
 }

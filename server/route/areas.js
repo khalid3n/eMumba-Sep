@@ -9,7 +9,6 @@ exports.getAll = function(req, res) {
   			console.log(err);
   			return res.send(400);
   		}
-
   		return res.json(200, results);
 	});
 };

@@ -49,7 +49,7 @@
                               <tr data-ng-repeat="region in currentPageRegions">
                                   <td>{{region.code}}</td>
                                   <td>{{region.name}}</td>
-                                  <td><span class="glyphicon glyphicon-globe"></span></td>                              
+                                  <td><span class="glyphicon glyphicon-globe" data-ng-click="mapView(region.name)"></span></td>                              
                                   <td class="col-sn" data-ng-show="true">
                                     <span class="glyphicon glyphicon-edit"  data-ng-click="edit('region', region._id, region.code, region.name)"></span>
                                     <span class="glyphicon glyphicon-trash" data-ng-click="delete('region', region._id)"></span>
@@ -145,7 +145,7 @@
                                   <td>{{area.code}}</td>
                                   <td>{{area._region.name}}</td>
                                   <td>{{area.name}}</td>
-                                  <td><span class="glyphicon glyphicon-globe"></span></td>                                 
+                                  <td><span class="glyphicon glyphicon-globe" data-ng-click="mapView(area.name)"></span></td>                                 
                                   <td class="col-sn" data-ng-show="true">
                                     <span class="glyphicon glyphicon-edit"  data-ng-click="edit('area', area._id, area.code, area.name)"></span>
                                     <span class="glyphicon glyphicon-trash" data-ng-click="delete('area', area._id)"></span>
@@ -355,7 +355,7 @@
                                   <td>{{brick._territory.name}}</td>
                                   <td>{{brick.name}}</td>                                  
                                   <td>{{brick.color}}</td>
-                                  <td><span class="glyphicon glyphicon-globe"></span></td>
+                                  <td><span class="glyphicon glyphicon-globe" data-ng-click="mapView(brick._territory.name +', '+brick._territory._area.name)"></span></td>
                                   <td class="col-sn" data-ng-show="true">
                                      <span class="glyphicon glyphicon-edit"  data-ng-click="edit('brick', brick._id, brick.name)"></span>
                                     <span class="glyphicon glyphicon-trash" data-ng-click="delete('brick', brick._id)"></span>
@@ -477,7 +477,7 @@
                                   <td>{{location._brick.name}}</td>
                                   <td>{{location.name}}</td>
                                   <td>{{location._category.name}}</td>
-                                  <td><span class="glyphicon glyphicon-globe"></span></td>
+                                  <td><span class="glyphicon glyphicon-globe" data-ng-click="mapView(location.name +', '+location._brick._territory.name +', '+location._brick._territory._area._region.name)"></span></td>
                                   <td class="col-sn" data-ng-show="true">
                                     <span class="glyphicon glyphicon-edit"  data-ng-click="edit('location', location._id, location.name)"></span>
                                     <span class="glyphicon glyphicon-trash" data-ng-click="delete('location', location._id)"></span>

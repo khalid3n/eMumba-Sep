@@ -526,7 +526,7 @@
   </div>
   <div class="modal-body">
   <form class="form-horizontal">
-    <div class="form-group">
+    <div class="form-group" ng-show="isArea || isRegion || isTeritory">
         <label for="" class="col-sm-2">Code</label>
         <div class="col-sm-10">
             <input tooltip="Enter Code" type="text" class="form-control" data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.code" ></input>

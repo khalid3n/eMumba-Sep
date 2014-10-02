@@ -59,13 +59,10 @@ exports.update = function(req, res) {
 
   var updatebrick = {};
 
-  if (brick.code != null && brick.code != "") {
-    updatebrick.code = brick.code;
-  } 
-
   if (brick.name != null && brick.name != "") {
     updatebrick.name = brick.name;
   } 
+  brickModel._territory = brick._ref._id;
 
   db.brickModel.update({_id: brick._id}, updatebrick, function(err, nbRows, raw) {
     //return res.send(200);

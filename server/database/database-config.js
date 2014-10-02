@@ -21,58 +21,60 @@ var User = new Schema({
     is_admin: { type: Boolean,  default: false }, 
     name: { type: String,  required: true }, 
     is_authorized: { type: Boolean, default: false }, 
-    designation: { type: String }, 
-    email: { type: String, required: true}
-});
+    designation: { type: String },
+    is_email_send: { type: Boolean, default: false},
+    email: { type: String, required: true}, 
+    resetPassowordToken: { type: String },
+    resetPasswordExpiry: { type: Date}
 
-var Post = new Schema({
-    title: { type: String, required: true },
-    tags: [ {type: String} ],
-    is_published: { type: Boolean, default: false },
-    content: { type: String, required: true },
-    created: { type: Date, default: Date.now },
-    updated: { type: Date, default: Date.now },
-    read: { type: Number, default: 0 },
-    likes: { type: Number, default: 0 }
 });
 
 
 var Region = new Schema({
     code: { type: String },
-    name: { type: String },  
+    name: { type: String }, 
+    created: { type: Date, default: Date.now },
+    updated: { type: Date, default: Date.now } 
 });
 
 
 var Area = new Schema({
     code: { type: String },
     name: { type: String },
-    _region: { type: String, ref: "Region" }  
+    created: { type: Date, default: Date.now },
+    updated: { type: Date, default: Date.now },
+    _region: { type: String, ref: "Region" }
 });
 
 var Territory = new Schema({
     code: { type: String },
     name: { type: String },
-    _area: { type: String, ref: "Area" }  
+    created: { type: Date, default: Date.now },
+    updated: { type: Date, default: Date.now },
+    _area: { type: String, ref: "Area" }
 });
 
 var Category = new Schema({
     name: { type: String },
     description: { type: String },
-    icon: { type: String }
+    icon: { type: String },
+    created: { type: Date, default: Date.now },
+    updated: { type: Date, default: Date.now }
 });
 
 var Brick = new Schema({
-    code: { type: String },
     name: { type: String },
     color: { type: String},
+    created: { type: Date, default: Date.now },
+    updated: { type: Date, default: Date.now },
     _territory: { type: String, ref: "Territory"}
-
 });
 
 var Location = new Schema({
     name: { type: String },
-    _brick: { type: String, ref: "Brick"},
-    _category: { type: String, ref: "Category"}  
+    created: { type: Date, default: Date.now },
+    updated: { type: Date, default: Date.now },
+    _brick: { type: String, ref: "Brick"}
 });
 //////////////////Schema////////////////////////
 
@@ -105,7 +107,6 @@ User.methods.comparePassword = function(password, cb) {
 
 //Define Models
 var userModel = mongoose.model('User', User);
-var postModel = mongoose.model('Post', Post);
 var regionModel = mongoose.model('Region', Region);
 var areaModel = mongoose.model('Area', Area);
 var territoryModel = mongoose.model('Territory', Territory);
@@ -116,7 +117,6 @@ var locationModel = mongoose.model('Location', Location);
 
 // Export Models
 exports.userModel = userModel;
-exports.postModel = postModel;
 exports.regionModel = regionModel;
 exports.areaModel = areaModel;
 exports.territoryModel = territoryModel;

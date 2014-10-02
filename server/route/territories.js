@@ -69,6 +69,7 @@ exports.update = function(req, res) {
   if (territory.name != null && territory.name != "") {
     updateTerritory.name = territory.name;
   } 
+  updateTerritory._area = territory._ref._id
 
   db.territoryModel.update({_id: territory._id}, updateTerritory, function(err, nbRows, raw) {
     //return res.send(200);

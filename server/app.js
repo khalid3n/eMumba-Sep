@@ -42,6 +42,9 @@ app.delete('/user/:id', routes.users.delete);
 app.put('/user', routes.users.update);
 app.post('/user/authorize', routes.users.authorize);
 app.post('/user/restrict', routes.users.restrict);
+app.post('/user/makeadmin', routes.users.makeadmin);
+app.post('/user/restrictadmin', routes.users.restrictadmin);
+app.post('/resetPassword', routes.users.resetPassword);
 
 app.get('/region', routes.regions.getAll);
 app.post('/region', routes.regions.create);
@@ -76,4 +79,4 @@ app.post('/location', routes.locations.create);
 app.delete('/location/:id', routes.locations.delete); 
 app.put('/location', routes.locations.update);
 
-console.log('Blog API is starting on port 3001');
+console.log('Sanofi API is starting on port 3001');

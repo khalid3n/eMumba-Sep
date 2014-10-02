@@ -48,6 +48,14 @@ angular.module('app.ui.ctrls', [])
                 data
             ).error (data, status, headers, config) ->
                 null
+        $scope.getCategoryData  = ->
+            $http(             
+              url: ServerUrl.getUrl() + 'category'           
+            ).success((data, status, headers, config) ->            
+                $scope.items.category = data
+                data
+            ).error (data, status, headers, config) ->
+                null
         
         if $scope.items.modalName == 'region'
             $scope.isRegion = true
@@ -78,6 +86,7 @@ angular.module('app.ui.ctrls', [])
             $scope.isLocation = false
         else if $scope.items.modalName == 'location'
             $scope.getData('brick')
+            $scope.getCategoryData()
             $scope.isRegion = false
             $scope.isArea = false
             $scope.isTeritory = false

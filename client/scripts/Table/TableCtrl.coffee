@@ -82,7 +82,9 @@ angular.module('app.tables', ['app.map'])
                 controller: 'ModalDeleteInstanceCtrl'
                 resolve:
                     items: ->
-                        $scope.deleteAction                  
+                        $scope.deleteAction      
+                    data: ->
+                        $scope.data                
             )
             modalInstance.result.then ((items) ->
                 
@@ -100,10 +102,6 @@ angular.module('app.tables', ['app.map'])
 
             return
 
-        
-
-
-
         $scope.items = [
             id: ''
             code: ''
@@ -113,18 +111,19 @@ angular.module('app.tables', ['app.map'])
         ]
         $scope.open = (modalName)->
             $scope.items.modalName = modalName  
-            $scope.items.id = ''                 
+            $scope.items.id = ''  
+            $log.info "here"               
             modalInstance = $modal.open(
                 templateUrl: "myModalContent.html"
                 controller: 'ModalInstanceCtrl'
                 resolve:
                     items: ->
-                        $scope.items                  
+                        $scope.items 
+                    data: -> 
+                        $scope.data                 
             )
-            modalInstance.result.then ((items) ->                
-                #$log.info items                
+            modalInstance.result.then ((items) ->                                
                 $scope.regions.push items
-                #$log.info $scope.regions
                 init()                  
                 return
             ), ->                
@@ -135,7 +134,7 @@ angular.module('app.tables', ['app.map'])
         
 
         #edit
-        $scope.edit = (modalName,id,code,name)->
+        $scope.edit = (modalName, id, code, name)->
             $scope.items.modalName = modalName  
             $scope.items.id = id
             $scope.items.code = code
@@ -145,17 +144,17 @@ angular.module('app.tables', ['app.map'])
                 controller: 'ModalInstanceCtrl'
                 resolve:
                     items: ->
-                        $scope.items                  
+                        $scope.items
+                    data: -> 
+                        $scope.data                    
             )
-            modalInstance.result.then ((items) ->
-               # $log.info items                
+            modalInstance.result.then ((items) ->                
                 i = 0
                 while i < $scope.regions.length
                   if $scope.regions[i]._id is items._id
                     $scope.regions[i] = items
                     break
                   i++
-               # $log.info $scope.regions
                 init()                
                 return
             ), ->
@@ -253,7 +252,9 @@ angular.module('app.tables', ['app.map'])
                 controller: 'ModalDeleteInstanceCtrl'
                 resolve:
                     items: ->
-                        $scope.deleteAction                  
+                        $scope.deleteAction 
+                    data: ->
+                        $scope.data                 
             )
             modalInstance.result.then ((items) ->
                 
@@ -295,7 +296,6 @@ angular.module('app.tables', ['app.map'])
                         $scope.data                 
             )
             modalInstance.result.then ((items) -> 
-                $log.info "ffgsdf" 
                 $log.info items                         
                 $scope.areas.push items
                 init()                  
@@ -308,17 +308,21 @@ angular.module('app.tables', ['app.map'])
         
 
         #edit
-        $scope.edit = (modalName,id,code,name)->
+        $scope.edit = (modalName, id, code, name, region)->
             $scope.items.modalName = modalName  
             $scope.items.id = id
             $scope.items.code = code
-            $scope.items.name = name                 
+            $scope.items.name = name
+            $scope.items.region = region 
+            $log.info $scope.items.region            
             modalInstance = $modal.open(
                 templateUrl: "myModalContent.html"
                 controller: 'ModalInstanceCtrl'
                 resolve:
                     items: ->
-                        $scope.items                  
+                        $scope.items
+                    data: ->
+                        $scope.data                 
             )
             modalInstance.result.then ((items) ->
                # $log.info items                
@@ -426,7 +430,9 @@ angular.module('app.tables', ['app.map'])
                 controller: 'ModalDeleteInstanceCtrl'
                 resolve:
                     items: ->
-                        $scope.deleteAction                  
+                        $scope.deleteAction
+                    data: ->
+                        $scope.data                 
             )
             modalInstance.result.then ((items) ->
                 
@@ -491,7 +497,9 @@ angular.module('app.tables', ['app.map'])
                 controller: 'ModalInstanceCtrl'
                 resolve:
                     items: ->
-                        $scope.items                  
+                        $scope.items
+                    data: ->
+                        $scope.data                  
             )
             modalInstance.result.then ((items) ->
                # $log.info items                
@@ -599,7 +607,9 @@ angular.module('app.tables', ['app.map'])
                 controller: 'ModalDeleteInstanceCtrl'
                 resolve:
                     items: ->
-                        $scope.deleteAction                  
+                        $scope.deleteAction 
+                    data: ->
+                        $scope.data                 
             )
             modalInstance.result.then ((items) ->
                 
@@ -664,7 +674,9 @@ angular.module('app.tables', ['app.map'])
                 controller: 'ModalInstanceCtrl'
                 resolve:
                     items: ->
-                        $scope.items                  
+                        $scope.items
+                    data: -> 
+                        $scope.data                
             )
             modalInstance.result.then ((items) ->
                # $log.info items                
@@ -770,7 +782,9 @@ angular.module('app.tables', ['app.map'])
                 controller: 'ModalDeleteInstanceCtrl'
                 resolve:
                     items: ->
-                        $scope.deleteAction                  
+                        $scope.deleteAction 
+                    data: -> 
+                        $scope.data                
             )
             modalInstance.result.then ((items) ->
                 
@@ -832,7 +846,9 @@ angular.module('app.tables', ['app.map'])
                 controller: 'ModalInstanceCtrl'
                 resolve:
                     items: ->
-                        $scope.items                  
+                        $scope.items
+                    data: -> 
+                        $scope.data                  
             )
             modalInstance.result.then ((items) ->
                # $log.info items                
@@ -941,7 +957,9 @@ angular.module('app.tables', ['app.map'])
                 controller: 'ModalDeleteInstanceCtrl'
                 resolve:
                     items: ->
-                        $scope.deleteAction                  
+                        $scope.deleteAction
+                    data: ->
+                        $scope.data               
             )
             modalInstance.result.then ((items) ->
                 
@@ -1006,7 +1024,9 @@ angular.module('app.tables', ['app.map'])
                 controller: 'ModalCategoryInstanceCtrl'
                 resolve:
                     items: ->
-                        $scope.items                  
+                        $scope.items  
+                    data: ->
+                        $scope.data                  
             )
             modalInstance.result.then ((items) ->
                # $log.info items                
@@ -1109,7 +1129,9 @@ angular.module('app.tables', ['app.map'])
                 controller: 'ModalDeleteInstanceCtrl'
                 resolve:
                     items: ->
-                        $scope.deleteAction                  
+                        $scope.deleteAction
+                    data: ->
+                        $scope.data                
             )
             modalInstance.result.then ((items) ->
                 
@@ -1149,7 +1171,9 @@ angular.module('app.tables', ['app.map'])
                 controller: 'ModalUserInstanceCtrl'
                 resolve:
                     items: ->
-                        $scope.items                  
+                        $scope.items
+                    data: ->
+                        $scope.data                 
             )
             modalInstance.result.then ((items) ->                
                 #$log.info items                
@@ -1178,7 +1202,9 @@ angular.module('app.tables', ['app.map'])
                 controller: 'ModalUserInstanceCtrl'
                 resolve:
                     items: ->
-                        $scope.items                  
+                        $scope.items 
+                    data: -> 
+                        $scope.data                
             )
             modalInstance.result.then ((items) ->
                # $log.info items                
@@ -1223,6 +1249,64 @@ angular.module('app.tables', ['app.map'])
                     break
                   i++
                # $log.info $scope.regions
+                init() 
+                return 
+            ).error (data, status, headers, config) ->
+
+        
+
+        #check toggle authorize
+        $scope.toggleAuthorize = (is_checked, userId, email) ->         
+            data = {"id": userId, "email": email}
+                    
+            
+            if is_checked
+                urlString = "user/authorize"
+            else 
+                urlString = "user/restrict"
+
+            $http(
+              method: 'post'          
+              url: ServerUrl.getUrl() + urlString
+              headers:
+                "Content-Type": "application/json"
+              data: data
+            ).success((data, status, headers, config) ->                
+                i = 0
+                while i < $scope.users.length
+                  if $scope.users[i]._id is data._id
+                    $scope.users[i] = data
+                    break
+                  i++
+                init() 
+                return 
+            ).error (data, status, headers, config) ->
+
+
+
+        #check toggle Admin
+        $scope.toggleAdmin = (is_checked, userId)->
+            urlString = ""           
+            data = {"id": userId}
+            
+            if is_checked
+                urlString = "user/makeadmin"
+            else 
+                urlString = "user/restrictadmin"
+
+            $http(
+              method: 'post'          
+              url: ServerUrl.getUrl() + urlString
+              headers:
+                "Content-Type": "application/json"
+              data: data
+            ).success((data, status, headers, config) ->                
+                i = 0
+                while i < $scope.users.length
+                  if $scope.users[i]._id is data._id
+                    $scope.users[i] = data
+                    break
+                  i++
                 init() 
                 return 
             ).error (data, status, headers, config) ->

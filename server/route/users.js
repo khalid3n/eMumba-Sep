@@ -1,18 +1,28 @@
 var db = require('../database/database-config.js');
 var jwt = require('jsonwebtoken');
+var nodemailer = require('nodemailer');
+var async = require('async');
+var crypto = require('crypto');
+
+// create reusable transporter object using SMTP transport
+var smtpTransport = nodemailer.createTransport('SMTP', {
+	service: 'SendGrid',
+	auth: {
+	  user: 'khalid.khan@emumba.com',
+	  pass: 'et3rc3sa'
+	}
+});
+
 
 exports.login = function(req, res) {
 	var email = req.body.email || '';
 	var password = req.body.password || '';
-	console.log("I am here");
-	console.log("here is " + req.body.email + " sdfasd " + req.body.password);
 	if (email == '' || password == '') { 
 	 	return res.send(401); 
 	}
 	console.log(req.body.email + " " + req.body.password);
 
 	db.userModel.findOne({email: email}, function (err, user) {
-		console.log("user "+ user.email);
 		if (err) {
 			console.log(err);
 			return res.send(401);
@@ -208,7 +218,14 @@ exports.authorize = function(req, res) {
 			console.log(err);
 			return res.send(400);
 		}
-
+		var mailOptions = setMailOptions('khalid.khan@emumba.com', req.body.email, 'testsubject', 'some body text');
+		transporter.sendMail(mailOptions, function(error, info){
+			if (error) {
+				console.log(error);
+			} else {
+				console.log('Message sent: '+ info.response);
+			}
+		});
 		return res.send(200);
 	});
 }
@@ -229,13 +246,13 @@ exports.restrict = function(req, res) {
 	});
 }
 
-exports.makeAdmin = function(req, res) {
+exports.makeadmin = function(req, res) {
 	var id = req.body.id || '';
 	if (id == '') {
 		return res.send(400);
 	}
 
-	db.userModel.update({_id: id}, { is_authorized: true }, function(err, nbRows, raw) {
+	db.userModel.update({_id: id}, { is_admin: true }, function(err, nbRows, raw) {
 		if (err) {
 			console.log(err);
 			return res.send(400);
@@ -245,13 +262,13 @@ exports.makeAdmin = function(req, res) {
 	});
 }
 
-exports.makeNonAdmin = function(req, res) {
+exports.restrictadmin = function(req, res) {
 	var id = req.body.id || '';
 	if (id == '') {
 		return res.send(400);
 	}
 
-	db.userModel.update({_id: id}, { is_authorized: false }, function(err, nbRows, raw) {
+	db.userModel.update({_id: id}, { is_admin: false }, function(err, nbRows, raw) {
 		if (err) {
 			console.log(err);
 			return res.send(400);
@@ -259,4 +276,57 @@ exports.makeNonAdmin = function(req, res) {
 
 		return res.send(200);
 	});
+}
+
+exports.resetPassword = function(req, res) {
+	  // async waterfall will run an array of fucntions in a series
+  async.waterfall([
+  	// create password reset token
+    function(done) {
+      crypto.randomBytes(20, function(err, buf) {
+        var token = buf.toString('hex');
+        done(err, token);
+      });
+    },
+
+    function(token, done) {
+      console.log(req.body.email);
+      db.userModel.findOne({ email: req.body.email }, function(err, user) {
+        if (!user) {
+          // if user doesn't exsit with the provided email
+          //req.flash('error', 'No account with that email address exists.');
+          return res.redirect('/forgot');
+        }
+
+        db.userModel.update({_id: user._id}, { resetPassowordToken: token, 
+        	resetPasswordExpiry: Date.now() + (3600000 * 24)}, function(err, nbRows, raw) {
+			done(err, token, db.userModel);
+		});
+
+      });
+    },
+    function(token, user, done) {
+      
+      var mailOptions = {
+        to: user.email,
+        from: 'khalid.khan@emumba.com',
+        subject: 'Sanofi Password Reset',
+        text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+          'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+      };
+      smtpTransport.sendMail(mailOptions, function(err) {
+        //req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+        done(err, 'done');
+      });
+    }
+  ], function(err) {
+    if (err) {
+    	console.log("asdfasdf")
+    	//return next(err);
+    }
+    //res.redirect('/forgot');
+    res.send(200);
+  });
 }

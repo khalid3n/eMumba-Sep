@@ -9,7 +9,6 @@ exports.getAll = function(req, res) {
   			console.log(err);
   			return res.send(400);
   		}
-
   		return res.json(200, results);
 	});
 };
@@ -63,6 +62,8 @@ exports.update = function(req, res) {
   if (area.name != null && area.name != "") {
     updateArea.name = area.name;
   } 
+
+  updateArea._region = area._ref._id;
 
   db.areaModel.update({_id: area._id}, updateArea, function(err, nbRows, raw) {
     return res.json(200, area);

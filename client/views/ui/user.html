@@ -58,9 +58,9 @@
                       <td>{{user.name}}</td>
                       <td>{{user.designation}}</td>
                       <td>{{user.email}}</td>  
-                      <td><label class="switch switch-info"><input type="checkbox" ng-checked = "user.is_authorized" ng-model="user.is_authorized" ng-change="checkEdit('user', user._id, user.name, user.designation, user.email, user.is_authorized, user.is_admin)"><i></i></label></td> 
+                      <td><label class="switch switch-info"><input type="checkbox" ng-checked = "user.is_authorized" ng-model="user.is_authorized" ng-change="toggleAuthorize(user.is_authorized, user._id, user.email)"><i></i></label></td> 
                       
-                      <td><label class="switch switch-info"><input type="checkbox" ng-checked = "user.is_admin" ng-model="user.is_admin" ng-change="checkEdit('user', user._id, user.name, user.designation, user.email, user.is_authorized, user.is_admin)"><i></i>       
+                      <td><label class="switch switch-info"><input type="checkbox" ng-checked = "user.is_admin" ng-model="user.is_admin" ng-change="toggleAdmin(user.is_admin, user._id)"><i></i>       
                       
                       <td class="col-sn" data-ng-show="true">
                         <span class="glyphicon glyphicon-edit"  data-ng-click="edit('user', user._id, user.name, user.designation, user.email, user.is_authorized, user.is_admin)"></span>
@@ -102,21 +102,27 @@
 
 <script type="text/ng-template" id="userModalContent.html">
   <div class="modal-header">
-    <h3>{{items.modalName}} Info</h3>
+    <h3>{{items.modalName | capitalize}} Info</h3>
   </div>
   <div class="modal-body">
   <form class="form-horizontal">
     <div class="form-group">
         <label for="" class="col-sm-2">Name</label>
         <div class="col-sm-10">
-            <input tooltip="Please enter Category name" type="text" class="form-control" data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.name" ></input>
+            <input tooltip="Enter Full Name" type="text" class="form-control" data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.name" ></input>
         </div>
     </div>
     
     <div class="form-group">
         <label for="" class="col-sm-2">Designation</label>
         <div class="col-sm-10">
-            <input tooltip="Please enter description" type="text" class="form-control" data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.designation" ></input>
+            <input tooltip="Enter Designation" type="text" class="form-control" data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.designation" ></input>
+        </div>
+    </div>
+     <div class="form-group">
+        <label for="" class="col-sm-2">Email</label>
+        <div class="col-sm-10">
+            <input tooltip="Enter Email" type="text" class="form-control" data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.email" ></input>
         </div>
     </div>
     <div class="form-group">

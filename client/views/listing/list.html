@@ -355,9 +355,9 @@
                                   <td>{{brick._territory.name}}</td>
                                   <td>{{brick.name}}</td>                                  
                                   <td>{{brick.color}}</td>
-                                  <td><span class="glyphicon glyphicon-globe" data-ng-click="mapView(brick._territory.name +', '+brick._territory._area.name)"></span></td>
+                                  <td><span class="glyphicon glyphicon-globe" data-ng-click="mapView(brick._territory.name +', '+brick._territory._area.name, brick.loc, brick.color)"></span></td>
                                   <td class="col-sn" data-ng-show="true">
-                                     <span class="glyphicon glyphicon-edit"  data-ng-click="edit('brick', brick._id, brick.name)"></span>
+                                     <span class="glyphicon glyphicon-edit"  data-ng-click="edit('brick', brick._id, brick.name, brick.loc, brick.color)"></span>
                                     <span class="glyphicon glyphicon-trash" data-ng-click="delete('brick', brick._id)"></span>
                                   </td>
                               </tr>
@@ -574,7 +574,7 @@
     <div class="form-group" ng-show="isBrick">
         <label for="" class="col-sm-2">Color</label>
         <div class="col-sm-10">
-            <ui-colorpicker ng-model="color"></ui-colorpicker>
+            <ui-colorpicker ng-model="items.color"></ui-colorpicker>
             <input ng-model='color' />
         </div>
     </div>
@@ -593,7 +593,8 @@
   </form>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="ok()">Save</button>
+    <button class="btn btn-primary" ng-show="isBrick" ng-click="showMap('brick')">Draw at Map</button>
+    <button class="btn btn-primary" ng-show="!isBrick" ng-click="ok()">Save</button>
     <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
   </div>
 </script>

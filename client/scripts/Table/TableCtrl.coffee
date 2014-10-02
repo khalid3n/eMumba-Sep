@@ -635,6 +635,8 @@ angular.module('app.tables', ['app.map'])
             id: ''
             code: ''
             name: ''
+            color: ''
+            loc: ''
             modalType : ''
             modalName : ''
         ]
@@ -664,11 +666,13 @@ angular.module('app.tables', ['app.map'])
         
 
         #edit
-        $scope.edit = (modalName,id,code,name)->
+        $scope.edit = (modalName,id,code,name,loc,color)->
             $scope.items.modalName = modalName  
             $scope.items.id = id
             $scope.items.code = code
-            $scope.items.name = name                 
+            $scope.items.name = name 
+            $scope.items.loc = loc   
+            $scope.items.color = color                
             modalInstance = $modal.open(
                 templateUrl: "myModalContent.html"
                 controller: 'ModalInstanceCtrl'
@@ -695,9 +699,16 @@ angular.module('app.tables', ['app.map'])
             return
 
         #map
-        $scope.mapView = (brickAdrs)->            
+        $scope.mapView = (brickAdrs,loc,color)->            
+            MapAddress.setMapZoom(0)
+            MapAddress.setMapAddress('') 
+            MapAddress.setLoc('')
+            MapAddress.setColor('')  
+
             MapAddress.setMapZoom(17)
-            MapAddress.setMapAddress(brickAdrs)                   
+            MapAddress.setMapAddress(brickAdrs) 
+            MapAddress.setLoc(loc)
+            MapAddress.setColor(color)                  
             $location.path('/maps/gmap') 
 
         return

@@ -19,3 +19,15 @@
     <div data-ng-controller="MapDemoCtrl"></div>
 </section>
 
+<script type="text/ng-template" id="ModalMapContent.html">
+  <div class="modal-header">
+    <h3>Confirmation!</h3>
+  </div>
+  <div class="modal-body">
+      Are you sure, You want to save this Brick?
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" ng-click="confirm()">Save</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+  </div>
+</script>

@@ -5,8 +5,8 @@ var async = require('async');
 var crypto = require('crypto');
 
 // create reusable transporter object using SMTP transport
-var smtpTransport = nodemailer.createTransport('SMTP', {
-	service: 'SendGrid',
+var smtpTransport = nodemailer.createTransport({
+	service: 'gmail',
 	auth: {
 	  user: 'khalid.khan@emumba.com',
 	  pass: 'et3rc3sa'
@@ -279,6 +279,7 @@ exports.restrictadmin = function(req, res) {
 }
 
 exports.resetPassword = function(req, res) {
+  console.log(11111);
 	  // async waterfall will run an array of fucntions in a series
   async.waterfall([
   	// create password reset token
@@ -294,8 +295,8 @@ exports.resetPassword = function(req, res) {
       db.userModel.findOne({ email: req.body.email }, function(err, user) {
         if (!user) {
           // if user doesn't exsit with the provided email
-          //req.flash('error', 'No account with that email address exists.');
-          return res.redirect('/forgot');
+          req.flash('error', 'No account with that email address exists.');
+          return res.redirect('http://localhost/dist/index.html#/pages/forgot');
         }
 
         db.userModel.update({_id: user._id}, { resetPassowordToken: token, 
@@ -317,6 +318,7 @@ exports.resetPassword = function(req, res) {
           'If you did not request this, please ignore this email and your password will remain unchanged.\n'
       };
       smtpTransport.sendMail(mailOptions, function(err) {
+      	console.log(err);
         //req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
         done(err, 'done');
       });

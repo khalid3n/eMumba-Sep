@@ -27,7 +27,7 @@ angular.module('app.form.validation', [])
             if $scope.canSubmit()
                 $http(
                   method: "post"
-                  url: ServerUrl.getUrl() + "forgot"
+                  url: ServerUrl.getUrl() + "resetPassword"
                   headers:
                     "Content-Type": "application/json"
                   data:

@@ -710,9 +710,6 @@ angular.module('app.tables', ['app.map'])
             start = (page - 1) * $scope.numPerPage
             end = start + $scope.numPerPage
             $scope.currentPageBricks = $scope.filteredBricks.slice(start, end)
-            # console.log start
-            # console.log end
-            # console.log $scope.currentPageStores
 
         # on page change: change numPerPage, filtering string
         $scope.onFilterChange = ->
@@ -824,10 +821,9 @@ angular.module('app.tables', ['app.map'])
         
 
         #edit
-        $scope.edit = (modalName,id,code,name)->
+        $scope.edit = (modalName,id,name)->
             $scope.items.modalName = modalName  
             $scope.items.id = id
-            $scope.items.code = code
             $scope.items.name = name                 
             modalInstance = $modal.open(
                 templateUrl: "myModalContent.html"
@@ -990,10 +986,9 @@ angular.module('app.tables', ['app.map'])
         
 
         #edit
-        $scope.edit = (modalName,id,code,name)->
+        $scope.edit = (modalName,id,name)->
             $scope.items.modalName = modalName  
             $scope.items.id = id
-            $scope.items.code = code
             $scope.items.name = name                 
             modalInstance = $modal.open(
                 templateUrl: "myModalContent.html"
@@ -1012,7 +1007,6 @@ angular.module('app.tables', ['app.map'])
                     $scope.locations[i] = items
                     break
                   i++
-               # $log.info $scope.regions
                 init()                
                 return
             ), ->

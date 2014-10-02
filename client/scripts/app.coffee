@@ -154,10 +154,15 @@ angular.module('app', [
 .factory "MapAddress", ->
   MapAddress =
     address: "SHARJAH"
+    zoom: 11
     setMapAddress: (address) ->
       MapAddress.address = address
     getMapAddress: ->
       MapAddress.address
+    setMapZoom: (zoom) ->
+      MapAddress.zoom = zoom
+    getMapZoom: ->
+      MapAddress.zoom
 
   MapAddress
 

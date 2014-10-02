@@ -666,10 +666,9 @@ angular.module('app.tables', ['app.map'])
         
 
         #edit
-        $scope.edit = (modalName,id,code,name,loc,color)->
+        $scope.edit = (modalName,id,name,loc,color)->
             $scope.items.modalName = modalName  
-            $scope.items.id = id
-            $scope.items.code = code
+            $scope.items.id = id            
             $scope.items.name = name 
             $scope.items.loc = loc   
             $scope.items.color = color                

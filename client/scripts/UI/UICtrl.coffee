@@ -238,8 +238,7 @@ angular.module('app.ui.ctrls', [])
             data = {}
             data[modalname] =
               _id: $scope.items.id
-              name: $scope.items.name
-              code: $scope.items.code
+              name: $scope.items.name              
               loc: $scope.items.loc
               color: $scope.items.color
               _ref: $scope.items.region

@@ -20,8 +20,6 @@ exports.login = function(req, res) {
 	if (email == '' || password == '') { 
 	 	return res.send(401); 
 	}
-	console.log(req.body.email + " " + req.body.password);
-
 	db.userModel.findOne({email: email}, function (err, user) {
 		if (err) {
 			console.log(err);
@@ -228,7 +226,7 @@ exports.authorize = function(req, res) {
 		});
 		return res.send(200);
 	});
-}
+};
 
 exports.restrict = function(req, res) {
 	var id = req.body.id || '';
@@ -244,7 +242,7 @@ exports.restrict = function(req, res) {
 
 		return res.send(200);
 	});
-}
+};
 
 exports.makeadmin = function(req, res) {
 	var id = req.body.id || '';
@@ -260,7 +258,7 @@ exports.makeadmin = function(req, res) {
 
 		return res.send(200);
 	});
-}
+};
 
 exports.restrictadmin = function(req, res) {
 	var id = req.body.id || '';
@@ -276,10 +274,9 @@ exports.restrictadmin = function(req, res) {
 
 		return res.send(200);
 	});
-}
+};
 
 exports.resetPassword = function(req, res) {
-  console.log(11111);
 	  // async waterfall will run an array of fucntions in a series
   async.waterfall([
   	// create password reset token
@@ -299,7 +296,7 @@ exports.resetPassword = function(req, res) {
           return res.redirect('http://localhost/dist/index.html#/pages/forgot');
         }
 
-        db.userModel.update({_id: user._id}, { resetPassowordToken: token, 
+        db.userModel.update({_id: user._id}, { is_email_send: true, resetPassowordToken: token, 
         	resetPasswordExpiry: Date.now() + (3600000 * 24)}, function(err, nbRows, raw) {
 			done(err, token, db.userModel);
 		});
@@ -309,12 +306,12 @@ exports.resetPassword = function(req, res) {
     function(token, user, done) {
       
       var mailOptions = {
-        to: user.email,
-        from: 'khalid.khan@emumba.com',
+        to: req.body.email,
+        from: req.body.email,
         subject: 'Sanofi Password Reset',
         text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
           'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+          'http://' + req.headers.host + '/reset_password/' + token + '\n\n' +
           'If you did not request this, please ignore this email and your password will remain unchanged.\n'
       };
       smtpTransport.sendMail(mailOptions, function(err) {
@@ -325,10 +322,66 @@ exports.resetPassword = function(req, res) {
     }
   ], function(err) {
     if (err) {
-    	console.log("asdfasdf")
+    	console.log(err);
     	//return next(err);
     }
     //res.redirect('/forgot');
     res.send(200);
   });
+};
+
+exports.setupPassword = function(req, res) {
+	var token = req.params.token || '';
+	if (token == '') {
+		return res.send(400);
+	}
+	db.userModel.findOne({ resetPassowordToken: token}, function(err, user) {
+	    if (!user) {
+	      // if user doesn't exsit with the provided email
+	      //req.flash('error', 'No account with that email address exists.');
+	      return res.redirect('http://localhost/dist/index.html#/pages/setup-pass');
+	    }
+    });
+	return res.redirect('http://localhost/dist/index.html#/pages/setup-pass')
+}
+
+exports.setupNewPassword = function(req, res) {
+	var password = req.body.password  || '';
+	if (password == '') {
+		return res.send(400);
+	}
+
+	async.waterfall([
+  	// create password reset token
+	    function(done) {
+	      db.bcrypt.genSalt(10, function(err, salt) {
+		    if (err) return res.send(400);
+		    done(err, salt);
+	    },
+	    function(salt, done) {
+	        db.bcrypt.hash(password, salt, function(err, hash) {
+		        if (err) return res.send(400);
+		        password = hash;
+		        done(err, password);
+		    });
+	      });
+	    },
+	    function(password, done) {
+	        db.userModel.update({email: 'khalid3n@yahoo.com'}, { password: password, 
+				resetPasswordExpiry: null, resetPassowordToken: null }, function(err, nbRows, raw) {
+				if (err) {
+					return res.send(400);
+				}
+				done(err, 'done');
+			});
+	    }
+	  ], function(err) {
+	    if (err) {
+	    	console.log(err);
+	    	//return next(err);
+	    }
+	    //res.redirect('/forgot');
+	    return res.redirect('http://localhost/dist/index.html#/pages/signin')
+  });
+	
 }

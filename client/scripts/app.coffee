@@ -69,6 +69,10 @@ angular.module('app', [
                 templateUrl: 'views/pages/signup.html'
             )
             .when(
+                '/pages/setup-pass'
+                templateUrl: 'views/pages/setup-pass.html'
+            )
+            .when(
                 '/pages/forgot'
                 templateUrl: 'views/pages/forgot-password.html'
             )
@@ -104,6 +108,7 @@ angular.module('app', [
                 else if next.templateUrl == "views/pages/forgot-password.html"
                 else if next.templateUrl == "views/pages/404.html"
                 else if next.templateUrl == "views/pages/500.html"
+                else if next.templateUrl == "views/pages/setup-pass.html"
                 else
                     $location.path('/pages/signin')
          )

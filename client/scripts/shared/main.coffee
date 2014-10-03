@@ -20,6 +20,7 @@ angular.module('app.controllers', [])
                 '/pages/signup2'
                 '/pages/forgot'
                 '/pages/lock-screen'
+                '/pages/setup-pass'
             ], path )
 
         $scope.main =

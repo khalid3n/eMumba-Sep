@@ -30,8 +30,8 @@ angular.module('app.ui.ctrls', [])
 
 
 .controller('ModalInstanceCtrl', [
-    '$scope', '$modalInstance', 'items', 'data', '$http' , 'ServerUrl', '$log'
-    ($scope, $modalInstance, items, data, $http, ServerUrl, $log) ->
+    '$scope', '$modalInstance', 'items', 'data', '$http' , 'ServerUrl', '$log', 'MapAddress','$location'
+    ($scope, $modalInstance, items, data, $http, ServerUrl, $log, MapAddress, $location) ->
         $scope.items = items
         
         $scope.isRegion = false
@@ -114,6 +114,18 @@ angular.module('app.ui.ctrls', [])
                 return 
             ).error (data, status, headers, config) ->
                 $modalInstance.dismiss "cancel"
+
+
+        $scope.showMap = (modalName)->
+            $scope.items.modalName = modalName            
+            MapAddress.setMapZoom(17)
+            MapAddress.setLoc($scope.items.loc)
+            MapAddress.setColor($scope.items.color)
+            MapAddress.setMapAddress($scope.items.region.name)
+            MapAddress.setItem($scope.items)                  
+            $location.path('/maps/gmap') 
+            $modalInstance.dismiss "cancel"
+
         $scope.cancel = ->
             $scope.isRegion = false
             $scope.isArea = false
@@ -214,6 +226,43 @@ angular.module('app.ui.ctrls', [])
 
         return
 ])
+
+.controller('ModalMapInstanceCtrl', [
+    '$scope', '$modalInstance', 'items', '$log', '$http', 'ServerUrl'
+    ($scope, $modalInstance, items, $log, $http, ServerUrl) ->
+        $scope.items = items       
+        
+        $scope.confirm = ->            
+            modalname = $scope.items.modalName
+            methodtype = (if ($scope.items.id is "") then "post" else "put")
+            data = {}
+            data[modalname] =
+              _id: $scope.items.id
+              name: $scope.items.name              
+              loc: $scope.items.loc
+              color: $scope.items.color
+              _ref: $scope.items.region
+            $log.info data
+            $http(
+              method: methodtype              
+              url: ServerUrl.getUrl() + modalname
+              headers:
+                "Content-Type": "application/json"
+              data: data                
+            ).success((data, status, headers, config) ->                
+                $modalInstance.close data
+                return 
+            ).error (data, status, headers, config) ->
+                $modalInstance.dismiss false              
+
+        $scope.cancel = ->
+            $modalInstance.dismiss false
+            return
+
+        return
+])
+
+
 
 .controller('PaginationDemoCtrl', [
     '$scope'

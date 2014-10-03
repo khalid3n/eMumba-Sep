@@ -3,14 +3,14 @@
 angular.module('app.map', [])
 
 .controller('MapDemoCtrl', [
-    '$scope', '$http', '$interval', '$log' ,'$rootScope','MapAddress'
-    ($scope, $http, $interval, $log, $rootScope, MapAddress) ->
+    '$scope', '$http', '$interval', '$log' ,'$rootScope','MapAddress', '$modal', '$location'
+    ($scope, $http, $interval, $log, $rootScope, MapAddress, $modal, $location) ->
         $scope.isDrawing = true
-        $scope.brickColor = '#ff0000'
+        $scope.brickColor = MapAddress.getColor()
         $scope.brickeditable = true
         $scope.brickdraggable = true
         $scope.brickclickable = true
-        
+
         if $scope.isDrawing
           $scope.drawingManager = new google.maps.drawing.DrawingManager(          
             drawingControl: true
@@ -30,12 +30,33 @@ angular.module('app.map', [])
               zIndex: 1
           )
           $scope.drawingManager.setMap $scope.map
+
+          $scope.addBrick = (items) ->
+              modalInstance = $modal.open(
+                  templateUrl: "ModalMapContent.html"
+                  controller: 'ModalMapInstanceCtrl'
+                  resolve:
+                      items: ->
+                          items                                       
+              )
+              modalInstance.result.then ((items) ->                                  
+                  if items
+                    $location.path('/listing')
+                  else
+                    $scope.drawingManager.drawingMode google.maps.drawing.OverlayType.MARKER
+              ), ->                
+                  return
+
+
           google.maps.event.addListener $scope.drawingManager, 'overlaycomplete', (event) ->          
-            if event.type == google.maps.drawing.OverlayType.POLYGON 
-              $log.info event.overlay.getPaths().getArray()[0].j
+            if event.type == google.maps.drawing.OverlayType.POLYGON               
+              $scope.items = MapAddress.getItem()
+              $scope.items.loc = event.overlay.getPaths().getArray()[0].j
+              $scope.addBrick($scope.items); 
               google.maps.event.addListener event.overlay, 'mouseup', (polygon) ->
-                $log.info event.overlay.getPaths().getArray()[0].j
-          
+                $scope.items = MapAddress.getItem()
+                $scope.items.loc = event.overlay.getPaths().getArray()[0].j
+                $scope.addBrick($scope.items);   
           
  
         $scope.codeAddress = (mapAdrs, mapzoom) ->        
@@ -52,4 +73,23 @@ angular.module('app.map', [])
 
 
         $scope.codeAddress(MapAddress.getMapAddress(), MapAddress.getMapZoom())
+
+
+        $scope.polygonShape = new google.maps.Polygon(
+          paths: MapAddress.getLoc()
+          fillColor: MapAddress.getColor()
+          strokeColor: MapAddress.getColor()
+          strokeOpacity: .8
+          strokeWeight: .5
+          clickable: $scope.brickclickable
+          editable: $scope.brickeditable
+          draggable: $scope.brickdraggable
+          zIndex: 1
+        )
+
+        $scope.polygonShape $scope.map
+
+
+                 
+
  ])

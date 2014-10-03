@@ -160,6 +160,9 @@ angular.module('app', [
   MapAddress =
     address: "SHARJAH"
     zoom: 11
+    item: ''
+    loc: ''
+    color: '#ff0000'
     setMapAddress: (address) ->
       MapAddress.address = address
     getMapAddress: ->
@@ -168,6 +171,18 @@ angular.module('app', [
       MapAddress.zoom = zoom
     getMapZoom: ->
       MapAddress.zoom
+    setItem: (item) ->
+      MapAddress.item = item
+    getItem: ->
+      MapAddress.item
+    setLoc: (loc) ->
+      MapAddress.loc = loc
+    getLoc: ->
+      MapAddress.loc
+    setColor: (color) ->
+      MapAddress.color = color
+    getColor: ->
+      MapAddress.color
 
   MapAddress
 

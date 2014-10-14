@@ -1,5 +1,7 @@
 var express = require('express');
 var app = express();
+var expressSession = require('express-session');
+var cookieParser = require('cookie-parser');
 var jwt = require('express-jwt');
 var bodyParser = require('body-parser'); //bodyparser + json + urlencoder
 var morgan  = require('morgan'); // logger
@@ -7,6 +9,8 @@ var morgan  = require('morgan'); // logger
 //var secret = require('./config/secret');
 
 app.listen(3001);
+app.use(cookieParser());
+app.use(expressSession({secret:'jasonbournwillbebackagain'}));
 app.use(bodyParser());
 app.use(morgan());
 
@@ -45,6 +49,8 @@ app.post('/user/restrict', routes.users.restrict);
 app.post('/user/makeadmin', routes.users.makeadmin);
 app.post('/user/restrictadmin', routes.users.restrictadmin);
 app.post('/resetPassword', routes.users.resetPassword);
+app.get('/reset_password/:token', routes.users.setupPassword);
+app.post('/setup_new_pass', routes.users.setupNewPassword);
 
 app.get('/region', routes.regions.getAll);
 app.post('/region', routes.regions.create);

@@ -67,6 +67,8 @@ var Brick = new Schema({
     color: { type: String},
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now },
+    loc: {},
+    color: { type: String },
     _territory: { type: String, ref: "Territory"}
 });
 
@@ -123,3 +125,4 @@ exports.territoryModel = territoryModel;
 exports.categoryModel = categoryModel;
 exports.brickModel = brickModel;
 exports.locationModel = locationModel;
+exports.bcrypt = bcrypt;

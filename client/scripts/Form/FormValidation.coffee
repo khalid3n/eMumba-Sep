@@ -128,6 +128,47 @@ angular.module('app.form.validation', [])
 
 ])
 
+.controller('resetPassCtrl', [
+    '$scope', '$location', '$http', 'Session', '$log', 'ServerUrl'
+    ($scope, $location, $http, Session, $log , ServerUrl) ->
+        
+        $scope.user =
+            password: ''
+            confirmPassword: ''
+
+        $scope.showInfoOnSubmit = false
+
+        original = angular.copy($scope.user)
+        
+        
+        $scope.revert = ->
+            $scope.user = angular.copy(original)
+            $scope.form_reset_pass.$setPristine()
+
+        $scope.canRevert = ->
+            return !angular.equals($scope.user, original) || !$scope.form_reset_pass.$pristine
+
+        $scope.canSubmit = ->
+            return $scope.form_reset_pass.$valid && !angular.equals($scope.user, original)
+
+        $scope.submitForm = ->             
+            if $scope.canSubmit()
+                $http(
+                  method: "post"
+                  url: ServerUrl.getUrl() + "setup_new_pass"
+                  headers:
+                    "Content-Type": "application/json"
+                  data:
+                    password: $scope.user.password                  
+                ).success((data, status, headers, config) ->
+                    Session.saveSession(data)
+                    $location.path('/pages/signin') 
+                ).error (data, status, headers, config) ->
+                    $scope.showInfoOnSubmit = true
+                                
+])
+
+
 # used for confirm password
 # Note: if you modify the "confirm" input box, and then update the target input box to match it, it'll still show invalid style though the values are the same now
 # Note2: also remember to use " ng-trim='false' " to disable the trim
@@ -149,4 +190,5 @@ angular.module('app.form.validation', [])
             )
     }
 ])
+
 

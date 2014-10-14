@@ -164,6 +164,12 @@ angular.module('app.tables', ['app.map'])
 
         #map
         $scope.mapView = (regionAdrs)->            
+            MapAddress.setMapZoom(0)
+            MapAddress.setMapAddress('') 
+            MapAddress.setLoc('')
+            MapAddress.setColor('') 
+            MapAddress.setIsDrawing(false)
+
             MapAddress.setMapZoom(12)
             MapAddress.setMapAddress(regionAdrs)            
             $location.path('/maps/gmap') 
@@ -342,6 +348,12 @@ angular.module('app.tables', ['app.map'])
 
         #map
         $scope.mapView = (areaAdrs)->            
+            MapAddress.setMapZoom(0)
+            MapAddress.setMapAddress('') 
+            MapAddress.setLoc('')
+            MapAddress.setColor('') 
+            MapAddress.setIsDrawing(false)
+
             MapAddress.setMapZoom(13)
             MapAddress.setMapAddress(areaAdrs)            
             $location.path('/maps/gmap') 
@@ -518,7 +530,13 @@ angular.module('app.tables', ['app.map'])
             return
 
         #map
-        $scope.mapView = (territoryAdrs)->            
+        $scope.mapView = (territoryAdrs)->
+            MapAddress.setMapZoom(0)
+            MapAddress.setMapAddress('') 
+            MapAddress.setLoc('')
+            MapAddress.setColor('') 
+            MapAddress.setIsDrawing(false)
+
             MapAddress.setMapZoom(15)
             MapAddress.setMapAddress(territoryAdrs)            
             $location.path('/maps/gmap') 
@@ -636,7 +654,7 @@ angular.module('app.tables', ['app.map'])
             code: ''
             name: ''
             color: ''
-            loc: ''
+            loc : ''
             modalType : ''
             modalName : ''
         ]
@@ -698,16 +716,27 @@ angular.module('app.tables', ['app.map'])
             return
 
         #map
-        $scope.mapView = (brickAdrs,loc,color)->            
+        $scope.mapView = (modalName,id, brickName, brickAdrs, loc, color)->            
             MapAddress.setMapZoom(0)
             MapAddress.setMapAddress('') 
-            MapAddress.setLoc('')
-            MapAddress.setColor('')  
+            MapAddress.setLoc(null)
+           # MapAddress.setColor('') 
+            MapAddress.setIsDrawing(false) 
 
-            MapAddress.setMapZoom(17)
-            MapAddress.setMapAddress(brickAdrs) 
-            MapAddress.setLoc(loc)
-            MapAddress.setColor(color)                  
+            $scope.items.modalName = modalName  
+            $scope.items.id = id            
+            $scope.items.name = brickName 
+            $scope.items.loc = loc   
+            $scope.items.color = color
+            $scope.items.region = brickAdrs              
+            
+            MapAddress.setMapZoom(17)           
+            MapAddress.setLoc($scope.items.loc)
+            MapAddress.setColor($scope.items.color)
+            MapAddress.setMapAddress($scope.items.region.name)
+            MapAddress.setIsDrawing(true)
+            MapAddress.setItem($scope.items)
+
             $location.path('/maps/gmap') 
 
         return
@@ -874,6 +903,12 @@ angular.module('app.tables', ['app.map'])
 
         #map
         $scope.mapView = (locationAdrs)->            
+            MapAddress.setMapZoom(0)
+            MapAddress.setMapAddress('') 
+            MapAddress.setLoc('')
+            MapAddress.setColor('') 
+            MapAddress.setIsDrawing(false)
+
             MapAddress.setMapZoom(18)
             MapAddress.setMapAddress(locationAdrs)            
             $location.path('/maps/gmap') 

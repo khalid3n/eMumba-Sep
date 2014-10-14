@@ -122,6 +122,7 @@ angular.module('app.ui.ctrls', [])
             MapAddress.setLoc($scope.items.loc)
             MapAddress.setColor($scope.items.color)
             MapAddress.setMapAddress($scope.items.region.name)
+            MapAddress.setIsDrawing(true)
             MapAddress.setItem($scope.items)                  
             $location.path('/maps/gmap') 
             $modalInstance.dismiss "cancel"

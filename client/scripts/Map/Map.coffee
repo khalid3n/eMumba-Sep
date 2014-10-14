@@ -5,7 +5,7 @@ angular.module('app.map', [])
 .controller('MapDemoCtrl', [
     '$scope', '$http', '$interval', '$log' ,'$rootScope','MapAddress', '$modal', '$location'
     ($scope, $http, $interval, $log, $rootScope, MapAddress, $modal, $location) ->
-        $scope.isDrawing = true
+        $scope.isDrawing = MapAddress.getIsDrawing()
         $scope.brickColor = MapAddress.getColor()
         $scope.brickeditable = true
         $scope.brickdraggable = true
@@ -73,10 +73,9 @@ angular.module('app.map', [])
 
 
         $scope.codeAddress(MapAddress.getMapAddress(), MapAddress.getMapZoom())
-
-
+              
         $scope.polygonShape = new google.maps.Polygon(
-          paths: MapAddress.getLoc()
+          paths:MapAddress.getLoc()
           fillColor: MapAddress.getColor()
           strokeColor: MapAddress.getColor()
           strokeOpacity: .8
@@ -87,7 +86,7 @@ angular.module('app.map', [])
           zIndex: 1
         )
 
-        $scope.polygonShape $scope.map
+        $scope.polygonShape.setMap $scope.map
 
 
                  

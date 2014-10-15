@@ -64,6 +64,7 @@ exports.update = function(req, res) {
   } 
   brickModel._territory = brick._ref._id;
   brickModel.loc = brick.loc;
+  brickModel.color = brick.color;
 
   db.brickModel.update({_id: brick._id}, updatebrick, function(err, nbRows, raw) {
     //return res.send(200);
@@ -86,6 +87,7 @@ exports.create = function(req, res) {
   brickModel.name = brick.name;
   brickModel._territory = brick._ref._id;
   brickModel.loc = brick.loc;
+  brickModel.color = brick.color;
 
 
   brickModel.save(function(err, brick) {

@@ -68,7 +68,6 @@ var Brick = new Schema({
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now },
     loc: {},
-    color: { type: String },
     _territory: { type: String, ref: "Territory"}
 });
 

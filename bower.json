@@ -33,7 +33,8 @@
     "angular-ui-tree": "~2.0.3",
     "ngmap": "~0.6.0",
     "jqvmap": "*",
-    "ng-tags-input": "~2.0.1"
+    "ng-tags-input": "~2.0.1",
+    "spectrum": "~1.5.1"
   },
   "devDependencies": {
     "responsive-tables": "*",

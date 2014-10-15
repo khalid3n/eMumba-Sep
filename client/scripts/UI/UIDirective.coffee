@@ -45,4 +45,26 @@ angular.module('app.ui.directives', [])
     }
 ])
 
+.directive('uiColorpicker', [ ->
+    return {
+      restrict: "E"
+      require: "ngModel"      
+      template: "<span><input class='input-small' /></span>"
+      link: (scope, element, attrs, ngModel) ->
+        input = element.find("input")  
+        console.log input      
+        options = angular.extend(
+          color: ngModel.$viewValue
+          change: (color) ->
+            scope.$apply ->
+              ngModel.$setViewValue color.toHexString()
+
+        , scope.$eval(attrs.options))
+        ngModel.$render = ->
+          input.spectrum "set", ngModel.$viewValue or ""          
+
+        input.spectrum options
+    }
+])    
+
 

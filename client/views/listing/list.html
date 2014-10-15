@@ -355,7 +355,7 @@
                                   <td>{{brick._territory.name}}</td>
                                   <td>{{brick.name}}</td>                                  
                                   <td>{{brick.color}}</td>
-                                  <td><span class="glyphicon glyphicon-globe" data-ng-click="mapView(brick._territory.name +', '+brick._territory._area.name, brick.loc, brick.color)"></span></td>
+                                  <td><span class="glyphicon glyphicon-globe" data-ng-click="mapView('brick',brick._id, brick._territory.name, brick._territory , brick.loc, brick.color)"></span></td>
                                   <td class="col-sn" data-ng-show="true">
                                      <span class="glyphicon glyphicon-edit"  data-ng-click="edit('brick', brick._id, brick.name, brick.loc, brick.color)"></span>
                                     <span class="glyphicon glyphicon-trash" data-ng-click="delete('brick', brick._id)"></span>

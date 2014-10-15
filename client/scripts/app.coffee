@@ -161,8 +161,9 @@ angular.module('app', [
     address: "SHARJAH"
     zoom: 11
     item: ''
-    loc: ''
+    loc: []
     color: '#ff0000'
+    isDrawing: false
     setMapAddress: (address) ->
       MapAddress.address = address
     getMapAddress: ->
@@ -175,14 +176,31 @@ angular.module('app', [
       MapAddress.item = item
     getItem: ->
       MapAddress.item
-    setLoc: (loc) ->
-      MapAddress.loc = loc
+    setLoc: (locArray) ->
+      if locArray
+        i = 0
+        while i < locArray.length
+          MapAddress.loc[i] = new google.maps.LatLng(locArray[i].k, locArray[i].B)
+          i++    
+        
+      else
+          MapAddress.loc = [
+              new google.maps.LatLng(25.774252, -80.190262)
+              new google.maps.LatLng(18.466465, -66.118292)
+              new google.maps.LatLng(32.321384, -64.75737)
+              new google.maps.LatLng(25.774252, -80.190262)
+          ]
+      return MapAddress.loc
     getLoc: ->
       MapAddress.loc
     setColor: (color) ->
       MapAddress.color = color
     getColor: ->
       MapAddress.color
+    setIsDrawing: (isDrawing) ->
+      MapAddress.isDrawing = isDrawing
+    getIsDrawing: ->
+      MapAddress.isDrawing
 
   MapAddress
 

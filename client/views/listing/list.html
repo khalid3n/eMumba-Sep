@@ -49,10 +49,10 @@
                               <tr data-ng-repeat="region in currentPageRegions">
                                   <td>{{region.code}}</td>
                                   <td>{{region.name}}</td>
-                                  <td><span class="glyphicon glyphicon-globe" data-ng-click="mapView(region.name)"></span></td>                              
+                                  <td><a href="javascript:;"><span class="color-info-alt glyphicon glyphicon-globe" data-ng-click="mapView(region.name)"></span></a></td>                              
                                   <td class="col-sn" data-ng-show="true">
-                                    <span class="glyphicon glyphicon-edit"  data-ng-click="edit('region', region._id, region.code, region.name)"></span>
-                                    <span class="glyphicon glyphicon-trash" data-ng-click="delete('region', region._id)"></span>
+                                    <a href="javascript:;"><span class="color-info glyphicon glyphicon-edit"  data-ng-click="edit('region', region._id, region.code, region.name)"></span></a>
+                                    <a href="javascript:;"><span class="color-danger glyphicon glyphicon-trash" data-ng-click="delete('region', region._id)"></span></a>
                                   </td>
                               </tr>
                            </tbody>
@@ -145,10 +145,10 @@
                                   <td>{{area.code}}</td>
                                   <td>{{area._region.name}}</td>
                                   <td>{{area.name}}</td>
-                                  <td><span class="glyphicon glyphicon-globe" data-ng-click="mapView(area.name)"></span></td>                                 
+                                  <td><a href="javascript:;"><span class="color-info-alt glyphicon glyphicon-globe" data-ng-click="mapView(area.name)"></span></a></td>                                 
                                   <td class="col-sn" data-ng-show="true">
-                                    <span class="glyphicon glyphicon-edit"  data-ng-click="edit('area', area._id, area.code, area.name, area._region)"></span>
-                                    <span class="glyphicon glyphicon-trash" data-ng-click="delete('area', area._id)"></span>
+                                    <a href="javascript:;"><span class="color-info glyphicon glyphicon-edit"  data-ng-click="edit('area', area._id, area.code, area.name, area._region)"></span></a>
+                                    <a href="javascript:;"><span class="color-danger glyphicon glyphicon-trash" data-ng-click="delete('area', area._id)"></span></a>
                                   </td>
                               </tr>
                            </tbody>
@@ -241,10 +241,10 @@
                                   <td>{{territory._area._region.name}}</td>
                                   <td>{{territory._area.name}}</td>
                                   <td>{{territory.name}}</td>
-                                  <td><span class="glyphicon glyphicon-globe" data-ng-click="mapView(territory.name)"></span></td>                                                                   
+                                  <td><a href="javascript:;"><span class="color-info-alt glyphicon glyphicon-globe" data-ng-click="mapView(territory.name)"></span></a></td>                                                                   
                                   <td class="col-sn" data-ng-show="true">
-                                    <span class="glyphicon glyphicon-edit"  data-ng-click="edit('territory', territory._id, territory.code, territory.name)"></span>
-                                    <span class="glyphicon glyphicon-trash" data-ng-click="delete('territory', territory._id)"></span>
+                                    <a href="javascript:;"><span class="color-info glyphicon glyphicon-edit"  data-ng-click="edit('territory', territory._id, territory.code, territory.name)"></span></a>
+                                    <a href="javascript:;"><span class="color-danger glyphicon glyphicon-trash" data-ng-click="delete('territory', territory._id)"></span></a>
                                   </td>
                               </tr>
                            </tbody>
@@ -355,10 +355,10 @@
                                   <td>{{brick._territory.name}}</td>
                                   <td>{{brick.name}}</td>                                  
                                   <td>{{brick.color}}</td>
-                                  <td><span class="glyphicon glyphicon-globe" data-ng-click="mapView('brick',brick._id, brick._territory.name, brick._territory , brick.loc, brick.color)"></span></td>
+                                  <td><a href="javascript:;"><span class="color-info-alt glyphicon glyphicon-globe" data-ng-click="mapView('brick',brick._id, brick.name, brick._territory , brick.loc, brick.color)"></span></a></td>
                                   <td class="col-sn" data-ng-show="true">
-                                     <span class="glyphicon glyphicon-edit"  data-ng-click="edit('brick', brick._id, brick.name, brick.loc, brick.color)"></span>
-                                    <span class="glyphicon glyphicon-trash" data-ng-click="delete('brick', brick._id)"></span>
+                                     <a href="javascript:;"><span class="color-info glyphicon glyphicon-edit"  data-ng-click="edit('brick', brick._id, brick.name, brick.loc, brick.color)"></span></a>
+                                    <a href="javascript:;"><span class="color-danger glyphicon glyphicon-trash" data-ng-click="delete('brick', brick._id)"></span></a>
                                   </td>
                               </tr>
                            </tbody>
@@ -476,11 +476,11 @@
                                   <td>{{location._brick._territory.name}}</td>
                                   <td>{{location._brick.name}}</td>
                                   <td>{{location.name}}</td>
-                                  <td>{{location._category.name}}</td>
-                                  <td><span class="glyphicon glyphicon-globe" data-ng-click="mapView(location.name +', '+location._brick._territory.name +', '+location._brick._territory._area._region.name)"></span></td>
+                                  <td><i class="{{location._category.icon}}"></i>{{location._category.name}}</td>
+                                  <td><a href="javascript:;"><span class="color-info-alt glyphicon glyphicon-globe" data-ng-click="mapView('location',location._brick._id, location._brick._territory , location._brick.loc, location._brick.color, location.name, location._category, location.loc)"></span></a></td>
                                   <td class="col-sn" data-ng-show="true">
-                                    <span class="glyphicon glyphicon-edit"  data-ng-click="edit('location', location._id, location.name)"></span>
-                                    <span class="glyphicon glyphicon-trash" data-ng-click="delete('location', location._id)"></span>
+                                    <a href="javascript:;"><span class="color-info glyphicon glyphicon-edit"  data-ng-click="edit('location', location._id, location.name, location._brick.loc, location._brick.color, location._category, location.loc)"></span></a>
+                                    <a href="javascript:;"><span class="color-danger glyphicon glyphicon-trash" data-ng-click="delete('location', location._id)"></span></a>
                                   </td>
                               </tr>
                            </tbody>
@@ -521,21 +521,23 @@
 
 
 <script type="text/ng-template" id="myModalContent.html">
+  
   <div class="modal-header">
     <h3>{{items.modalName | capitalize}} Info</h3>
   </div>
-  <div class="modal-body">
-  <form class="form-horizontal">
+  <div class="modal-body form-container">
+    <alert type="danger" ng-show="showInfoOnSubmit">First correct the field's below.</alert>
+   <form name="form_listing" class="form-horizontal form-validation">
     <div class="form-group" ng-show="isArea || isRegion || isTeritory">
         <label for="" class="col-sm-2">Code</label>
         <div class="col-sm-10">
-            <input tooltip="Enter Code" type="text" class="form-control" data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.code" ></input>
+            <input tooltip="Enter Code" type="text" class="form-control" data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.code" required data-ng-minlength="2" data-ng-maxlength="15"></input>
         </div>
     </div>
     <div class="form-group">
         <label for="" class="col-sm-2">Name</label>
         <div class="col-sm-10">
-            <input tooltip="Enter name" type="text" class="form-control" data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.name" ></input>
+            <input tooltip="Enter name" type="text" class="form-control" required data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.name" data-ng-minlength="2" data-ng-maxlength="30"></input>
         </div>
     </div>
     <div class="form-group" ng-show="isArea">
@@ -590,13 +592,25 @@
         </div>
     </div>
 
-  </form>
+    <div class="form-group" ng-show="isLocation">
+        <label for="" class="col-sm-2">Type</label>
+        <div class="col-sm-10">
+            <span class="ui-select">
+              <select data-ng-model="items.category" ng-options="category.name for category in items.categoryData">
+                <option value="">Select Type</option>
+              </select>
+            </span>
+        </div>
+    </div>
+    </form>
+  
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary" ng-show="isBrick" ng-click="showMap('brick')">Draw at Map</button>
-    <button class="btn btn-primary" ng-show="!isBrick" ng-click="ok()">Save</button>
+    <button class="btn btn-primary" ng-show="isBrick" ng-click="showMap('brick', 17)">Draw at Map</button>
+    <button class="btn btn-primary" ng-show="isLocation" ng-click="showMap('location', 18)">Draw at Map</button>
+    <button class="btn btn-primary" ng-show="(!isBrick) && (!isLocation)" ng-click="ok()">Save</button>
     <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-  </div>
+  </div>  
 </script>
 
 <script type="text/ng-template" id="ModalDeleteContent.html">

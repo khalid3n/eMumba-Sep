@@ -33,7 +33,7 @@ angular.module('app.ui.ctrls', [])
     '$scope', '$modalInstance', 'items', 'data', '$http' , 'ServerUrl', '$log', 'MapAddress','$location'
     ($scope, $modalInstance, items, data, $http, ServerUrl, $log, MapAddress, $location) ->
         $scope.items = items
-        
+
         $scope.isRegion = false
         $scope.isArea = false
         $scope.isTeritory = false
@@ -43,7 +43,7 @@ angular.module('app.ui.ctrls', [])
         $scope.getData  = (urlString) ->
             $http(             
               url: ServerUrl.getUrl() + urlString           
-            ).success((data, status, headers, config) ->            
+            ).success((data, status, headers, config) ->
                 $scope.data = data
                 data
             ).error (data, status, headers, config) ->
@@ -52,7 +52,7 @@ angular.module('app.ui.ctrls', [])
             $http(             
               url: ServerUrl.getUrl() + 'category'           
             ).success((data, status, headers, config) ->            
-                $scope.items.category = data
+                $scope.items.categoryData = data
                 data
             ).error (data, status, headers, config) ->
                 null
@@ -102,6 +102,7 @@ angular.module('app.ui.ctrls', [])
               name: $scope.items.name
               code: $scope.items.code
               _ref: $scope.items.region
+              _category_ref: $scope.items.category
             $log.info data
             $http(
               method: methodtype              
@@ -116,12 +117,21 @@ angular.module('app.ui.ctrls', [])
                 $modalInstance.dismiss "cancel"
 
 
-        $scope.showMap = (modalName)->
-            $scope.items.modalName = modalName            
-            MapAddress.setMapZoom(17)
+        $scope.showMap = (modalName, zoom)->            
+            $scope.items.modalName = modalName                      
+            MapAddress.setMapZoom(zoom)
             MapAddress.setLoc($scope.items.loc)
-            MapAddress.setColor($scope.items.color)
-            MapAddress.setMapAddress($scope.items.region.name)
+            if modalName is 'location'
+                MapAddress.setLocationLoc($scope.items.locationLoc)
+                MapAddress.setLoc($scope.items.region.loc)
+                MapAddress.setColor($scope.items.region.color)
+            else
+                MapAddress.setLoc($scope.items.loc)
+                MapAddress.setColor($scope.items.color)            
+            if modalName is 'location'
+                MapAddress.setMapAddress($scope.items.region._territory.name+', '+$scope.items.region._territory._area.name)
+            else
+                MapAddress.setMapAddress($scope.items.region.name+', '+$scope.items.region._area.name)
             MapAddress.setIsDrawing(true)
             MapAddress.setItem($scope.items)                  
             $location.path('/maps/gmap') 
@@ -167,6 +177,10 @@ angular.module('app.ui.ctrls', [])
                 $modalInstance.dismiss "cancel"
         $scope.cancel = ->            
             $modalInstance.dismiss "cancel"
+            return
+
+        $scope.pickIcon = (text) ->
+            $scope.items.icon = text
             return
 
         return
@@ -235,14 +249,16 @@ angular.module('app.ui.ctrls', [])
         
         $scope.confirm = ->            
             modalname = $scope.items.modalName
+            objLoc = (if (modalname is "brick") then $scope.items.loc else $scope.items.locationLoc)
             methodtype = (if ($scope.items.id is "") then "post" else "put")
             data = {}
             data[modalname] =
               _id: $scope.items.id
               name: $scope.items.name              
-              loc: $scope.items.loc
+              loc: objLoc
               color: $scope.items.color
               _ref: $scope.items.region
+              _category_ref: $scope.items.category
             $log.info data
             $http(
               method: methodtype              

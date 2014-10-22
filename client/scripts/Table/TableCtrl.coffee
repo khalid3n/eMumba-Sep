@@ -733,7 +733,7 @@ angular.module('app.tables', ['app.map'])
             MapAddress.setMapZoom(17)           
             MapAddress.setLoc($scope.items.loc)
             MapAddress.setColor($scope.items.color)
-            MapAddress.setMapAddress($scope.items.region.name)
+            MapAddress.setMapAddress($scope.items.region.name+', '+$scope.items.region._area.name)
             MapAddress.setIsDrawing(true)
             MapAddress.setItem($scope.items)
 
@@ -846,6 +846,7 @@ angular.module('app.tables', ['app.map'])
             name: ''
             modalType : ''
             modalName : ''
+            category: ''
         ]
         $scope.open = (modalName)->
             $scope.items.modalName = modalName  
@@ -872,10 +873,14 @@ angular.module('app.tables', ['app.map'])
         
 
         #edit
-        $scope.edit = (modalName,id,name)->
+        $scope.edit = (modalName,id,name, loc, color,  category, locationLoc)->
             $scope.items.modalName = modalName  
             $scope.items.id = id
-            $scope.items.name = name                 
+            $scope.items.name = name            
+            $scope.items.loc = loc   
+            $scope.items.locationLoc = locationLoc   
+            $scope.items.color = color                     
+            $scope.items.category = category                
             modalInstance = $modal.open(
                 templateUrl: "myModalContent.html"
                 controller: 'ModalInstanceCtrl'
@@ -902,15 +907,30 @@ angular.module('app.tables', ['app.map'])
             return
 
         #map
-        $scope.mapView = (locationAdrs)->            
+        $scope.mapView = (modalName,id, brickAdrs, loc, color, locName, category, locationLoc)->            
             MapAddress.setMapZoom(0)
             MapAddress.setMapAddress('') 
-            MapAddress.setLoc('')
-            MapAddress.setColor('') 
-            MapAddress.setIsDrawing(false)
+            MapAddress.setLoc(null)
+           # MapAddress.setColor('') 
+            MapAddress.setIsDrawing(false) 
 
-            MapAddress.setMapZoom(18)
-            MapAddress.setMapAddress(locationAdrs)            
+            $scope.items.modalName = modalName  
+            $scope.items.id = id            
+            $scope.items.name = locName 
+            $scope.items.loc = loc   
+            $scope.items.locationLoc = locationLoc   
+            $scope.items.color = color
+            $scope.items.region = brickAdrs            
+            $scope.items.category = category
+
+            MapAddress.setMapZoom(18)           
+            MapAddress.setLoc($scope.items.loc)
+            MapAddress.setLocationLoc($scope.items.locationLoc)
+            MapAddress.setColor($scope.items.color)
+            MapAddress.setMapAddress($scope.items.region.name+', '+$scope.items.region._area.name)
+            MapAddress.setIsDrawing(true)
+            MapAddress.setItem($scope.items)
+
             $location.path('/maps/gmap') 
 
         return

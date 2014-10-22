@@ -45,10 +45,10 @@
                   <tr data-ng-repeat="category in currentPageCategories">
                       <td>{{category.name}}</td>
                       <td>{{category.description}}</td>
-                      <td>{{category.icon}}</td>                                  
+                      <td><i class="{{category.icon}}"></i></td>                                  
                       <td class="col-sn" data-ng-show="true">
-                        <span class="glyphicon glyphicon-edit"  data-ng-click="edit('category', category._id, category.name, category.description, category.icon)"></span>
-                        <span class="glyphicon glyphicon-trash" data-ng-click="delete('category', category._id)"></span>
+                        <a href="javascript:;"><span class="color-info glyphicon glyphicon-edit"  data-ng-click="edit('category', category._id, category.name, category.description, category.icon)"></span></a>
+                        <a href="javascript:;"><span class="color-danger glyphicon glyphicon-trash" data-ng-click="delete('category', category._id)"></span></a>
                       </td>
                   </tr>
                </tbody>
@@ -104,10 +104,20 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="" class="col-sm-2">Icon</label>
-        <div class="col-sm-10">
-            <input tooltip="Please choose icon" type="text" class="form-control" data-toggle="tooltip" data-placement="top" tooltip-trigger="focus" data-ng-model="items.icon" ></input>
-        </div>
+      <label for="" class="col-sm-2">Icon</label>
+      <div class="col-sm-10">
+        <ul class="nav nav-boxed nav-justified">
+          <li><a href="javascript:;" ng-click="pickIcon('color-success glyphicon glyphicon-plus')"><i class="color-success glyphicon glyphicon-plus"></i></a></li>
+          <li><a href="javascript:;" ng-click="pickIcon('color-info glyphicon glyphicon-star-empty')"><i class="color-info glyphicon glyphicon-star-empty"></i></a></li>
+          <li><a href="javascript:;" ng-click="pickIcon('color-danger glyphicon glyphicon-heart')"><i class="color-danger glyphicon glyphicon-heart"></i></a></li>
+          <li><a href="javascript:;" ng-click="pickIcon('color-warning wi-day-sunny')"><i class="color-warning wi-day-sunny"></i></a></li>
+          <li><a href="javascript:;" ng-click="pickIcon('color-primary wi-night-clear')"><i class="color-primary wi-night-clear"></i></a></li>
+          <li><a href="javascript:;" ng-click="pickIcon('color-info-alt glyphicon glyphicon-cloud')"><i class="color-info-alt glyphicon glyphicon-cloud"></i></a></li>
+          <li><a href="javascript:;" ng-click="pickIcon('color-gray glyphicon glyphicon-shopping-cart')"><i class="color-gray glyphicon glyphicon-shopping-cart"></i></a></li>
+          <li><a href="javascript:;" ng-click="pickIcon('color-info glyphicon glyphicon-plane')"><i class="color-info glyphicon glyphicon-plane"></i></a></li>
+        </ul>       
+        <input tooltip="Please choose icon" type="text" class="form-control" data-toggle="tooltip" ng-hide="true" data-placement="top" tooltip-trigger="focus" data-ng-model="items.icon" ></input>
+      </div>
     </div>
   </form>
   </div>

@@ -10,14 +10,10 @@ angular.module('app', [
     'easypiechart'
     'mgo-angular-wizard'
     'textAngular'
-    'ui.tree'
-    'ngMap'
+    'ui.tree'    
     'ngTagsInput'
 
-    # Custom modules
-    'app.ui.ctrls'
-    'app.ui.directives'
-    'app.ui.services'
+    # Custom modules    
     'app.controllers'
     'app.directives'
     'app.form.validation'
@@ -25,6 +21,9 @@ angular.module('app', [
     'app.ui.form.directives'
     'app.tables'
     'app.map'
+    'app.ui.ctrls'
+    'app.ui.directives'
+    'app.ui.services'
     'app.task'
     'app.localization'    
     'app.page.ctrls'
@@ -162,6 +161,7 @@ angular.module('app', [
     zoom: 11
     item: ''
     loc: []
+    locationLoc: ''
     color: '#ff0000'
     isDrawing: false
     setMapAddress: (address) ->
@@ -193,6 +193,13 @@ angular.module('app', [
       return MapAddress.loc
     getLoc: ->
       MapAddress.loc
+    setLocationLoc: (locArray) ->
+      if locArray
+        MapAddress.locationLoc = new google.maps.LatLng(locArray.k, locArray.B)
+      else
+        MapAddress.locationLoc = new google.maps.LatLng(25.774252, -80.190262)
+    getLocationLoc: ->
+      MapAddress.locationLoc
     setColor: (color) ->
       MapAddress.color = color
     getColor: ->

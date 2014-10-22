@@ -63,8 +63,8 @@
                       <td><label class="switch switch-info"><input type="checkbox" ng-checked = "user.is_admin" ng-model="user.is_admin" ng-change="toggleAdmin(user.is_admin, user._id)"><i></i>       
                       
                       <td class="col-sn" data-ng-show="true">
-                        <span class="glyphicon glyphicon-edit"  data-ng-click="edit('user', user._id, user.name, user.designation, user.email, user.is_authorized, user.is_admin)"></span>
-                        <span class="glyphicon glyphicon-trash" data-ng-click="delete('user', user._id)"></span>
+                        <a href="javascript:;"><span class="color-info glyphicon glyphicon-edit"  data-ng-click="edit('user', user._id, user.name, user.designation, user.email, user.is_authorized, user.is_admin)"></span></a>
+                        <a href="javascript:;"><span class="color-danger glyphicon glyphicon-trash" data-ng-click="delete('user', user._id)"></span></a>
                       </td>
                   </tr>
                </tbody>

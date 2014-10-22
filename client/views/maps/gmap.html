@@ -1,7 +1,7 @@
 <section class="panel panel-default col-sm-12">    
     <div class="panel-body">
         <map class="ui-map" zoom="11" center="[40.74, -74.18]" scrollwheel="false" pan-control="false" draggable="true" street-view-control="false" rotate-control="false" scale-control="false" map-type-control="false" >
-            
+        </map>    
     </div>
     <div data-ng-controller="MapDemoCtrl"></div>
 </section>
@@ -12,6 +12,19 @@
   </div>
   <div class="modal-body">
       Are you sure, You want to save this Brick?
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" ng-click="confirm()">Save</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+  </div>
+</script>
+
+<script type="text/ng-template" id="ModalMapLocationContent.html">
+  <div class="modal-header">
+    <h3>Confirmation!</h3>
+  </div>
+  <div class="modal-body">
+      Are you sure, You want to save this Location?
   </div>
   <div class="modal-footer">
     <button class="btn btn-primary" ng-click="confirm()">Save</button>

@@ -64,6 +64,8 @@ exports.update = function(req, res) {
   } 
 
   updateArea._region = area._ref._id;
+  area._region = area._ref; 
+  area._ref = null;
 
   db.areaModel.update({_id: area._id}, updateArea, function(err, nbRows, raw) {
     return res.json(200, area);
@@ -86,8 +88,10 @@ exports.create = function(req, res) {
   areaModel.code = area.code;
   areaModel.name = area.name;
   areaModel._region = area._ref._id;
+  area._region = area._ref; 
+  area._ref = null;
 
-  areaModel.save(function(err, area) {
+  areaModel.save(function(err) {
     if (err) {
       console.log(err);
       return res.send(400);

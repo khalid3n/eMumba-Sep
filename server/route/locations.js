@@ -71,6 +71,8 @@ exports.update = function(req, res) {
     updatelocation.name = location.name;
   } 
   updatelocation._brick = location._ref._id;
+  updatelocation._category = location._category_ref._id;
+  updatelocation.loc = location.loc;
   
   db.locationModel.update({_id: location._id}, updatelocation, function(err, nbRows, raw) {
     //return res.send(200);
@@ -92,10 +94,15 @@ exports.create = function(req, res) {
 
   var locationModel = new db.locationModel();
   locationModel.name = location.name;
+  locationModel.loc = location.loc;
   locationModel._brick = location._ref._id;
-  //locationModel._brick = location._brick;
+  locationModel._category = location._category_ref._id;
+  location._brick = location._ref; 
+  location._ref = null;
+  location._category = location._category_ref;
+  location._category_ref = null;
 
-  locationModel.save(function(err, location) {
+  locationModel.save(function(err) {
     if (err) {
       console.log(err);
       return res.send(400);

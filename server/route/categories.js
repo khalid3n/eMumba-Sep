@@ -63,7 +63,8 @@ exports.update = function(req, res) {
   if (category.name != null && category.name != "") {
     updatecategory.name = category.name;
   } 
-
+  updatecategory.icon = category.icon; 
+  
   db.categoryModel.update({_id: category._id}, updatecategory, function(err, nbRows, raw) {
     return res.json(category);
     //return res.send(200);
@@ -84,6 +85,7 @@ exports.create = function(req, res) {
   var categoryModel = new db.categoryModel();
   categoryModel.description = category.description;
   categoryModel.name = category.name;
+  categoryModel.icon = category.icon;
 
   categoryModel.save(function(err, category) {
     if (err) {

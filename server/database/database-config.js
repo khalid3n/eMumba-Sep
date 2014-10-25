@@ -75,7 +75,9 @@ var Location = new Schema({
     name: { type: String },
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now },
-    _brick: { type: String, ref: "Brick"}
+    loc: {},
+    _brick: { type: String, ref: "Brick"},
+    _category: { type: String, ref: "Category"}
 });
 //////////////////Schema////////////////////////
 

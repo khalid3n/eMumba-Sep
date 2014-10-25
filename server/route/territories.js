@@ -69,7 +69,9 @@ exports.update = function(req, res) {
   if (territory.name != null && territory.name != "") {
     updateTerritory.name = territory.name;
   } 
-  updateTerritory._area = territory._ref._id
+  updateTerritory._area = territory._ref._id;
+    territory._area = territory._ref; 
+  territory._ref = null;
 
   db.territoryModel.update({_id: territory._id}, updateTerritory, function(err, nbRows, raw) {
     //return res.send(200);
@@ -92,8 +94,10 @@ exports.create = function(req, res) {
   territoryModel.code = territory.code;
   territoryModel.name = territory.name;
   territoryModel._area = territory._ref._id
+  territory._area = territory._ref; 
+  territory._ref = null;
 
-  territoryModel.save(function(err, territory) {
+  territoryModel.save(function(err) {
     if (err) {
       console.log(err);
       return res.send(400);

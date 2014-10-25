@@ -216,14 +216,14 @@ exports.authorize = function(req, res) {
 			console.log(err);
 			return res.send(400);
 		}
-		var mailOptions = setMailOptions('khalid.khan@emumba.com', req.body.email, 'testsubject', 'some body text');
-		transporter.sendMail(mailOptions, function(error, info){
-			if (error) {
-				console.log(error);
-			} else {
-				console.log('Message sent: '+ info.response);
-			}
-		});
+		//var mailOptions = setMailOptions('khalid.khan@emumba.com', req.body.email, 'testsubject', 'some body text');
+		//transporter.sendMail(mailOptions, function(error, info){
+		//	if (error) {
+		//		console.log(error);
+		//	} else {
+		//		console.log('Message sent: '+ info.response);
+		//	}
+		//});
 		return res.send(200);
 	});
 };

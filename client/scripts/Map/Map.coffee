@@ -28,6 +28,11 @@ angular.module('app.map', ['ngMap'])
             return fontawesome.markers.SHOPPING_CART
           else if classText == 'color-info glyphicon glyphicon-plane'
             return fontawesome.markers.PLANE
+
+        $scope.iconToColor = (classText) ->
+          colorClass = classText.split(' ')[0]         
+          return angular.element($('.'+colorClass)).css('color')
+
         
         if $scope.isDrawing
           $scope.drawingManager = new google.maps.drawing.DrawingManager(
@@ -133,7 +138,7 @@ angular.module('app.map', ['ngMap'])
                 strokeWeight: 0.2
                 strokeColor: 'black'
                 strokeOpacity: 1
-                fillColor: '#f8ae5f'
+                fillColor: $scope.iconToColor(MapAddress.getItem().category.icon)
                 fillOpacity: 0.7
                 clickable: $scope.isDrawing
                 editable: $scope.isDrawing
@@ -150,7 +155,7 @@ angular.module('app.map', ['ngMap'])
               strokeWeight: 0.2
               strokeColor: 'black'
               strokeOpacity: 1
-              fillColor: '#f8ae5f'
+              fillColor: $scope.iconToColor(MapAddress.getItem().category.icon)
               fillOpacity: 0.7
               clickable: $scope.isDrawing
               editable: $scope.isDrawing
